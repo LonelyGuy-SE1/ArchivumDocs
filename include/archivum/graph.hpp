@@ -32,16 +32,15 @@ namespace archivum {
     class DependencyGraph {
         std::unordered_map<NodeId, Node> registry;
         std::unordered_map<NodeId, std::vector<NodeId>> downstream_edges;
-    }
 
     public:
         DependencyGraph() = default;
 
-        void register_node(const NOde& node);
+        void register_node(const Node& node);
         void add_dependency(NodeId provider, NodeId consumer);
 
         std::unordered_set<NodeId> calculate_blast_radius(NodeId origin_id) const;
         bool contains(NodeId id) const;
         const Node& get_node(NodeId id) const;
-
+    };
 }
