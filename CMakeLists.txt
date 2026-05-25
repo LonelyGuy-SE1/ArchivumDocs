@@ -18,11 +18,14 @@ set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(libgit2)
 
 FetchContent_Declare(
-  tree-sitter
+  tree_sitter
   GIT_REPOSITORY https://github.com/tree-sitter/tree-sitter.git
   GIT_TAG        v0.22.6
 )
-FetchContent_MakeAvailable(tree-sitter)
+FetchContent_Populate(tree_sitter)
+
+add_library(tree-sitter STATIC ${tree_sitter_SOURCE_DIR}/lib/src/lib.c)
+target_include_directories(tree-sitter PUBLIC ${tree_sitter_SOURCE_DIR}/lib/include)
 
 add_executable(archivum 
     src/main.cpp 
@@ -34,4 +37,4 @@ add_executable(archivum
 
 target_include_directories(archivum PRIVATE include)
 
-target_link_libraries(archivum PRIVATE git2 tree-sitter)
+target_link_libraries(archivum PRIVATE libgit2 tree-sitter)
