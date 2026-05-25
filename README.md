@@ -1,4 +1,4 @@
-![ArchivumDocs Banner](/docs/assets/archivum_banner.gif)
+![ArchivumDocs Banner](https://github.com/LonelyGuy-SE1/ArchivumDocs/blob/main/docs/assets/archivum_banner.gif)
 
 ArchivumDocs is an AST driven, incremental documentation engine built for GitHub Actions. Rather than relying on file-level updates or manual triggers, it constructs a repository-wide structural dependency graph to minimize LLM context windows and reduce documentation drift.
 
