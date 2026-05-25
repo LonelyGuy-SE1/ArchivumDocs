@@ -15,6 +15,8 @@ FetchContent_Declare(
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 set(BUILD_CLI OFF CACHE BOOL "" FORCE)
 set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(USE_SSH OFF CACHE BOOL "" FORCE) 
+set(USE_HTTPS OFF CACHE BOOL "" FORCE) 
 FetchContent_MakeAvailable(libgit2)
 
 FetchContent_Declare(
@@ -22,10 +24,7 @@ FetchContent_Declare(
   GIT_REPOSITORY https://github.com/tree-sitter/tree-sitter.git
   GIT_TAG        v0.22.6
 )
-FetchContent_Populate(tree_sitter)
-
-add_library(tree-sitter STATIC ${tree_sitter_SOURCE_DIR}/lib/src/lib.c)
-target_include_directories(tree-sitter PUBLIC ${tree_sitter_SOURCE_DIR}/lib/include)
+FetchContent_MakeAvailable(tree_sitter)
 
 add_executable(archivum 
     src/main.cpp 
@@ -33,8 +32,24 @@ add_executable(archivum
     src/parser.cpp 
     src/git_utils.cpp 
     src/api.cpp
+    ${tree_sitter_SOURCE_DIR}/lib/src/lib.c
 )
 
-target_include_directories(archivum PRIVATE include)
+target_include_directories(archivum PRIVATE 
+    include
+    ${tree_sitter_SOURCE_DIR}/lib/include
+)
 
-target_link_libraries(archivum PRIVATE libgit2 tree-sitter)
+if (TARGET libgit2package)
+    set(GIT2_TARGET libgit2package)
+elseif (TARGET libgit2::libgit2)
+    set(GIT2_TARGET libgit2::libgit2)
+elseif (TARGET libgit2)
+    set(GIT2_TARGET libgit2)
+elseif (TARGET git2)
+    set(GIT2_TARGET git2)
+else()
+    message(FATAL_ERROR "[ArchivumDocs] CRITICAL: libgit2 target name not found in the build graph.")
+endif()
+
+target_link_libraries(archivum PRIVATE ${GIT2_TARGET})
