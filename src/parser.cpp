@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <functional>
+#include <iostream>
 
 extern "C"{
     #include <tree_sitter/api.h>
