@@ -26,6 +26,13 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(tree_sitter)
 
+FetchContent_Declare(
+  tree_sitter_cpp
+  GIT_REPOSITORY https://github.com/tree-sitter/tree-sitter-cpp.git
+  GIT_TAG        v0.22.0
+)
+FetchContent_MakeAvailable(tree_sitter_cpp)
+
 add_executable(archivum 
     src/main.cpp 
     src/graph.cpp 
@@ -33,11 +40,14 @@ add_executable(archivum
     src/git_utils.cpp 
     src/api.cpp
     ${tree_sitter_SOURCE_DIR}/lib/src/lib.c
+    ${tree_sitter_cpp_SOURCE_DIR}/src/parser.c
+    ${tree_sitter_cpp_SOURCE_DIR}/src/scanner.c
 )
 
 target_include_directories(archivum PRIVATE 
     include
     ${tree_sitter_SOURCE_DIR}/lib/include
+    ${tree_sitter_cpp_SOURCE_DIR}/src
 )
 
 if (TARGET libgit2package)
