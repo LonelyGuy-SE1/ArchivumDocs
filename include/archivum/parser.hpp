@@ -1,13 +1,10 @@
-//AST Parser
-//RAII 
-
 #pragma once
 
 #include <string>
 #include <vector>
 #include <archivum/graph.hpp>
 
-extern "C"{
+extern "C" {
     typedef struct TSLanguage TSLanguage;
     typedef struct TSParser TSParser;
     typedef struct TSTree TSTree;
@@ -15,17 +12,20 @@ extern "C"{
     const TSLanguage *tree_sitter_cpp();
 }
 
-namespace archivum{
-    private:
-        TSParser* parser;
+namespace archivum {
 
-        void extract_structural_nodes(TSNode ts_node, std::vector<Node>& extracted_node, const std::string& filepath);
-        uint64_t generate_node_id(const std::string& filename, const std::string& symbol_name ) const;
-    public:
-        ASTParser();
-        ~ASTParser();
-        ASTParser(const ASTParser&) = delete;
-        ASTParser& operator=(const ASTParser&) = delete;
+class ASTParser {
+private:
+    TSParser* parser;
+    void extract_structural_nodes(TSNode ts_node, std::vector<Node>& extracted_nodes, const std::string& filepath);
+    uint64_t generate_node_id(const std::string& filepath, const std::string& symbol_name) const;
 
-        std::vector<Node> parse_file(const std::string& filepath);
+public:
+    ASTParser();
+    ~ASTParser();
+    ASTParser(const ASTParser&) = delete;
+    ASTParser& operator=(const ASTParser&) = delete;
+    std::vector<Node> parse_file(const std::string& filepath);
+};
+
 }
