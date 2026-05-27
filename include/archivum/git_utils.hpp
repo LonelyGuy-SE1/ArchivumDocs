@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -23,7 +24,7 @@ struct FileDiff {
 class GitScanner {
    private:
     git_repository* repo;
-    git_commit* lookup_commit(const std::string& sha);
+    git_commit* lookup_commit(const std::string& sha) const;
 
    public:
     explicit GitScanner(const std::string& repo_path);
@@ -33,5 +34,7 @@ class GitScanner {
     GitScanner& operator=(const GitScanner&) = delete;
 
     std::vector<FileDiff> calculate_diff(const std::string& base_sha, const std::string& head_sha);
+    std::string resolve_reference(const std::string& reference) const;
+    std::optional<std::string> parent_of(const std::string& sha) const;
 };
 }  // namespace archivum

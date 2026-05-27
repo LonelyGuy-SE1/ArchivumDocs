@@ -22,7 +22,7 @@ jobs:
         uses: jidicula/clang-format-action@v4.11.0
         with:
           clang-format-version: '15'
-          check-path: 'src'
+          check-path: '.'
           fallback-style: 'Google'
 
       - name: Install System Dependencies
@@ -31,10 +31,13 @@ jobs:
           sudo apt-get install -y cmake build-essential pkg-config libssl-dev
 
       - name: Configure CMake
-        run: cmake -B build -S .
+        run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
 
       - name: Build Engine (Max Cores)
         run: cmake --build build --config Release -j$(nproc)
+
+      - name: Run Tests
+        run: ctest --test-dir build --output-on-failure
 
       - name: Execute Dry Run
         run: ./build/archivum
