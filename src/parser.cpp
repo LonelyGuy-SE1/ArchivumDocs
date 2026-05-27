@@ -51,11 +51,70 @@ namespace archivum{
         return extracted_nodes;
     }
     TSNode root_node=ts_tree_root_node(tree);
-    extract_structural_nodes(root_node, extracted_nodes, filepath);
+    extract_structural_nodes(root_node, extracted_nodes, filepath, source_code);
     ts_tree_delete(tree);
     return extracted_nodes;
     }
-void ASTParser::extract_structural_nodes(TSNode ts_node, std::vector<Node>& extracted_nodes, const std::string& filepath){
-//tbw
-}
+
+void ASTParser::extract_structural_nodes(TSNode ts_node, std::vector<Node>& extracted_nodes, const std::string& filepath, const std::string& source_code){
+    TSTreeCursor cursor=ts_tree_cursor_new(root_node);
+    bool reached_root = false;
+
+    while(!reached_root){
+
+        TSnode current_node=ts_tree_cursor_current_node(&cursor);
+        std::string node_type=ts_node_type(current_node);
+
+        if (type=="function_definition" || type=="class_specifier" || type=="struct_specifier"){
+            Node current;
+            current.file_path=filepath;
+
+            TSPoint start_point=ts_node_start_point(current_node);
+            TSPoint end_point=ts_node_end_point(current_node);
+            current.start_line=start_point.row+1;
+            current.end_line=end_point.row+1;
+            
+            if(type=="function_definition"){current.type=NodeType::FUNCTION;}
+            else if(type=="class_specifier"){current.type=NodeType::CLASS;}
+            else if(type=="struct_specifier"){current.type=NodeType::STRUCT;}
+
+            TSNode name_node = ts_node_child_by_field_name(current_node, "declarator", 10);
+            if (ts_node_is_null(name_node)) {
+                name_node = ts_node_child_by_field_name(current_node, "name", 4);
+            }
+
+            if (!ts_node_is_null(name_node)) {
+                uint32_t start_byte = ts_node_start_byte(name_node);
+                uint32_t end_byte = ts_node_end_byte(name_node);
+                current.name = source_code.substr(start_byte, end_byte - start_byte);
+            } else {
+                current.name = "unnamed_" + type + "_" + std::to_string(current.start_line);
+            }
+
+            current.id=generate_node_id(filepath, current.name);
+            //todo: generate semantic interface
+            current.interface_hash=0;
+            extracted_nodes.push_back(current);
+        }
+        if(ts_tree_cursor_goto_first_child(&cursor)){
+            continue;
+        }
+        if(ts_tree_cursor_goto_next_sibling(&cursor)){
+            continue;
+        }
+
+        bool retracing=true;
+        while(retracing){
+            if(!ts_tree_cursor_goto_parent(&cursor)){
+                reached_root=true;
+                break;
+            }
+            if(ts_tree_cursor_goto_next_sibling(&cursor)){
+                retracing=false;
+                break;
+            }
+        }
+
+    }
+    ts_tree_cursor_delete(&cursor);
 }

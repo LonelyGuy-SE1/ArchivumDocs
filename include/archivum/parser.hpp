@@ -19,7 +19,7 @@ namespace archivum{
     private:
         TSParser* parser;
 
-        void extract_structural_nodes(TSNode ts_node, std::vector<Node>& extracted_node, const std::string& filepath);
+        void extract_structural_nodes(TSNode ts_node, std::vector<Node>& extracted_nodes, const std::string& filepath, const std::string& source_code);
         uint64_t generate_node_id(const std::string& filename, const std::string& symbol_name ) const;
     public:
         ASTParser();
