@@ -14,6 +14,11 @@ int main(int argc, char* argv[]) {
     std::string base_sha = argv[1];
     std::string head_sha = argv[2];
 
+    if (base_sha == "FIRST_COMMIT") {
+        std::cout << "[ArchivumDocs] Initial commit detected. Skipping diff calculation.\n";
+        return 0;
+    }
+
     std::cout << "[ArchivumDocs] Domain Expansion Initiated.\n";
     std::cout << "[ArchivumDocs] Trajectory: " << base_sha << " -> " << head_sha << "\n\n";
 

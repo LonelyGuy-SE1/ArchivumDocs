@@ -41,12 +41,17 @@ jobs:
       
       - name: Execute Engine (Shadow Mode)
         run: |
-          echo "[CI System] Extracting SHAs for Shadow Mode execution..."
+          echo "[CI System] Interrogating GitHub Payload..."
           
           BASE_SHA="${{ github.event.before }}"
           HEAD_SHA="${{ github.sha }}"
           
-          echo "Base Payload: $BASE_SHA"
-          echo "Head Payload: $HEAD_SHA"
-           
-          ./build/archivum "$BASE_SHA" "$HEAD_SHA"
+          if [ -z "$BASE_SHA" ] || [ "$BASE_SHA" == "0000000000000000000000000000000000000000" ]; then
+            echo "[CI System] Void SHA detected. Overriding to local Git history."
+            BASE_SHA=$(git rev-parse HEAD~1 || echo "")
+          fi
+          
+          echo "Base Target: $BASE_SHA"
+          echo "Head Target: $HEAD_SHA"
+          
+          ./build/archivum "${BASE_SHA:-FIRST_COMMIT}" "$HEAD_SHA"
