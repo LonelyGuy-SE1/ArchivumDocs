@@ -16,6 +16,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Enforce Clang-Format
+        uses: jidicula/clang-format-action@v4.11.0
+        with:
+          clang-format-version: '15'
+          check-path: 'src'
+          fallback-style: 'Google'
+
       - name: Install System Dependencies
         run: |
           sudo apt-get update
