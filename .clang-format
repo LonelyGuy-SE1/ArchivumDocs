@@ -7,4 +7,3 @@ AllowShortIfStatementsOnASingleLine: false
 PointerAlignment: Left
 DerivePointerAlignment: false
 MaxEmptyLinesToKeep: 1
----
