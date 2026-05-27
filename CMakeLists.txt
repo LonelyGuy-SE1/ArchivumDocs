@@ -48,6 +48,7 @@ target_include_directories(archivum PRIVATE
     include
     ${tree_sitter_SOURCE_DIR}/lib/include
     ${tree_sitter_cpp_SOURCE_DIR}/src
+    ${libgit2_SOURCE_DIR}/include
 )
 
 if (TARGET libgit2package)
