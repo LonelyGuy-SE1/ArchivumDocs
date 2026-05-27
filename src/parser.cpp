@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <functional>
+#include <iostream>
 
 extern "C"{
     #include <tree_sitter/api.h>
@@ -11,7 +12,7 @@ extern "C"{
 namespace archivum{
     //memory alloc
     ASTParser::ASTParser(){
-        pareser=ts_parser_new();
+        parser=ts_parser_new();
         ts_parser_set_language(parser, tree_sitter_cpp());
     }
     //RAII enforcer
@@ -22,7 +23,7 @@ namespace archivum{
     }
 
     //64 bit id generator
-    uint64_t ASTParser::generate_node_id(const std:;string& filename, const std::string& symbol_name) const{
+    uint64_t ASTParser::generate_node_id(const std::string& filename, const std::string& symbol_name) const{
        std::string composite_key=filename+"::"+symbol_name;
        return std::hash<std::string>{}(composite_key); 
     }
