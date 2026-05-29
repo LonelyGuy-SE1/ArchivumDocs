@@ -1,9 +1,16 @@
+---
+layout: default
+title: "Symbol: run"
+---
+
 # run
 
-- Type: function
-- Source: `src/main.cpp:241-334`
-- Interface hash: `7998046516298296678`
-- Source hash: `13857618139881685442`
+| Metadata | Value |
+| :--- | :--- |
+| **Type** | Function |
+| **Location** | `src/main.cpp:240-333` |
+| **Interface Hash** | `7998046516298296678` |
+| **Source Hash** | `13857618139881685442` |
 
 ## Signature
 
@@ -11,7 +18,7 @@
 int run(int argc, char* argv[])
 ```
 
-## References
+## Dependencies
 
 - `ASTParser`
 - `AnalysisReport`
@@ -116,7 +123,7 @@ int run(int argc, char* argv[])
 - `write_documentation`
 - `written_files`
 
-## Source
+## Implementation
 
 ```cpp
 int run(int argc, char* argv[]) {

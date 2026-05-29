@@ -1,9 +1,16 @@
+---
+layout: default
+title: "Symbol: main"
+---
+
 # main
 
-- Type: function
-- Source: `src/main.cpp:338-345`
-- Interface hash: `4510716788629620878`
-- Source hash: `7292126862172104891`
+| Metadata | Value |
+| :--- | :--- |
+| **Type** | Function |
+| **Location** | `src/main.cpp:337-344` |
+| **Interface Hash** | `4510716788629620878` |
+| **Source Hash** | `7292126862172104891` |
 
 ## Signature
 
@@ -11,7 +18,7 @@
 int main(int argc, char* argv[])
 ```
 
-## References
+## Dependencies
 
 - `argc`
 - `argv`
@@ -22,7 +29,7 @@ int main(int argc, char* argv[])
 - `std`
 - `what`
 
-## Source
+## Implementation
 
 ```cpp
 int main(int argc, char* argv[]) {

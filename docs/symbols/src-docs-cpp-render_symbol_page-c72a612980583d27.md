@@ -1,9 +1,16 @@
+---
+layout: default
+title: "Symbol: render_symbol_page"
+---
+
 # render_symbol_page
 
-- Type: function
-- Source: `src/docs.cpp:112-138`
-- Interface hash: `13319630199632855732`
-- Source hash: `789825869120612670`
+| Metadata | Value |
+| :--- | :--- |
+| **Type** | Function |
+| **Location** | `src/docs.cpp:111-146` |
+| **Interface Hash** | `13319630199632855732` |
+| **Source Hash** | `15465518283548782265` |
 
 ## Signature
 
@@ -11,7 +18,7 @@
 std::string render_symbol_page(const Node& node, const std::string& source)
 ```
 
-## References
+## Dependencies
 
 - `Node`
 - `empty`
@@ -34,31 +41,40 @@ std::string render_symbol_page(const Node& node, const std::string& source)
 - `type`
 - `type_name`
 
-## Source
+## Implementation
 
 ```cpp
 std::string render_symbol_page(const Node& node, const std::string& source) {
     std::ostringstream out;
+    out << "---\n";
+    out << "layout: default\n";
+    out << "title: \"Symbol: " << node.name << "\"\n";
+    out << "---\n\n";
+
     out << "# " << node.name << "\n\n";
-    out << "- Type: " << type_name(node.type) << "\n";
-    out << "- Source: `" << node.file_path << ":" << node.start_line << "-" << node.end_line << "`\n";
-    out << "- Interface hash: `" << node.interface_hash << "`\n";
-    out << "- Source hash: `" << node.source_hash << "`\n";
+
+    out << "| Metadata | Value |\n";
+    out << "| :--- | :--- |\n";
+    out << "| **Type** | " << type_name(node.type) << " |\n";
+    out << "| **Location** | `" << node.file_path << ":" << node.start_line << "-" << node.end_line << "` |\n";
+    out << "| **Interface Hash** | `" << node.interface_hash << "` |\n";
+    out << "| **Source Hash** | `" << node.source_hash << "` |\n\n";
 
     if (!node.signature.empty()) {
-        out << "\n## Signature\n\n";
-        out << "```cpp\n" << node.signature << "\n```\n";
+        out << "## Signature\n\n";
+        out << "```cpp\n" << node.signature << "\n```\n\n";
     }
 
     if (!node.references.empty()) {
-        out << "\n## References\n\n";
+        out << "## Dependencies\n\n";
         for (const std::string& reference : node.references) {
             out << "- `" << reference << "`\n";
         }
+        out << "\n";
     }
 
     if (!source.empty()) {
-        out << "\n## Source\n\n";
+        out << "## Implementation\n\n";
         out << "```cpp\n" << source << "\n```\n";
     }
 

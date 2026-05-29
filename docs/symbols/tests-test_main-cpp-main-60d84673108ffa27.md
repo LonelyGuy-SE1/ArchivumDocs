@@ -1,9 +1,16 @@
+---
+layout: default
+title: "Symbol: main"
+---
+
 # main
 
-- Type: function
-- Source: `tests/test_main.cpp:275-295`
-- Interface hash: `5561091575973751992`
-- Source hash: `390801323986888620`
+| Metadata | Value |
+| :--- | :--- |
+| **Type** | Function |
+| **Location** | `tests/test_main.cpp:275-295` |
+| **Interface Hash** | `5561091575973751992` |
+| **Source Hash** | `390801323986888620` |
 
 ## Signature
 
@@ -11,7 +18,7 @@
 int main()
 ```
 
-## References
+## Dependencies
 
 - `archivum`
 - `cerr`
@@ -30,7 +37,7 @@ int main()
 - `std`
 - `what`
 
-## Source
+## Implementation
 
 ```cpp
 int main() {
