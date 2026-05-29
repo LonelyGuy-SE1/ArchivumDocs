@@ -1,10 +1,10 @@
 {
-  "base_sha": "e3064ed64f1163d1677babf8974f67d48407b199",
-  "head_sha": "5b1d9e56528c1e5b516fd904cec42e0e3808d418",
+  "base_sha": "36c69a683a97710a761f4b46fc97ce5f7b3c2e13",
+  "head_sha": "9cc0a05fbc5c2e047d2a9110e63978b8ac2252d7",
   "source_files": 14,
-  "changed_files": 12,
+  "changed_files": 4,
   "graph_nodes": 131,
-  "graph_edges": 325,
-  "mutated_symbols": 76,
-  "context_symbols": 100
+  "graph_edges": 324,
+  "mutated_symbols": 7,
+  "context_symbols": 14
 }

@@ -1,9 +1,16 @@
+---
+layout: default
+title: "Symbol: print_nodes"
+---
+
 # print_nodes
 
-- Type: function
-- Source: `src/main.cpp:206-219`
-- Interface hash: `15257581353757047444`
-- Source hash: `7321665852407165890`
+| Metadata | Value |
+| :--- | :--- |
+| **Type** | Function |
+| **Location** | `src/main.cpp:205-218` |
+| **Interface Hash** | `15257581353757047444` |
+| **Source Hash** | `7321665852407165890` |
 
 ## Signature
 
@@ -11,7 +18,7 @@
 void print_nodes(const std::string& title, const std::vector<archivum::Node>& nodes, size_t limit)
 ```
 
-## References
+## Dependencies
 
 - `Node`
 - `archivum`
@@ -34,7 +41,7 @@ void print_nodes(const std::string& title, const std::vector<archivum::Node>& no
 - `type_name`
 - `vector`
 
-## Source
+## Implementation
 
 ```cpp
 void print_nodes(const std::string& title, const std::vector<archivum::Node>& nodes, size_t limit) {

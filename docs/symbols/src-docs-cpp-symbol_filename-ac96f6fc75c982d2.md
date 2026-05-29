@@ -1,9 +1,16 @@
+---
+layout: default
+title: "Symbol: symbol_filename"
+---
+
 # symbol_filename
 
-- Type: function
-- Source: `src/docs.cpp:57-61`
-- Interface hash: `6651250992335654481`
-- Source hash: `5397213886734098262`
+| Metadata | Value |
+| :--- | :--- |
+| **Type** | Function |
+| **Location** | `src/docs.cpp:56-60` |
+| **Interface Hash** | `6651250992335654481` |
+| **Source Hash** | `5397213886734098262` |
 
 ## Signature
 
@@ -11,7 +18,7 @@
 std::string symbol_filename(const Node& node)
 ```
 
-## References
+## Dependencies
 
 - `Node`
 - `file_path`
@@ -26,7 +33,7 @@ std::string symbol_filename(const Node& node)
 - `str`
 - `string`
 
-## Source
+## Implementation
 
 ```cpp
 std::string symbol_filename(const Node& node) {

@@ -1,9 +1,16 @@
+---
+layout: default
+title: "Symbol: documentation_writer_creates_index_symbols_and_manifest"
+---
+
 # documentation_writer_creates_index_symbols_and_manifest
 
-- Type: function
-- Source: `tests/test_main.cpp:206-252`
-- Interface hash: `4360394839124156987`
-- Source hash: `15720397496256251524`
+| Metadata | Value |
+| :--- | :--- |
+| **Type** | Function |
+| **Location** | `tests/test_main.cpp:206-252` |
+| **Interface Hash** | `4360394839124156987` |
+| **Source Hash** | `15720397496256251524` |
 
 ## Signature
 
@@ -11,7 +18,7 @@
 void documentation_writer_creates_index_symbols_and_manifest()
 ```
 
-## References
+## Dependencies
 
 - `AnalysisReport`
 - `ArchivumConfig`
@@ -52,7 +59,7 @@ void documentation_writer_creates_index_symbols_and_manifest()
 - `write_file`
 - `write_mode`
 
-## Source
+## Implementation
 
 ```cpp
 void documentation_writer_creates_index_symbols_and_manifest() {
