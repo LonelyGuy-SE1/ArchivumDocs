@@ -63,16 +63,37 @@ case "$mode" in
     echo "pull_request_url=" >> "$GITHUB_OUTPUT"
     exit 0
     ;;
-  pull_request|pr|auto_merge)
-    branch="${branch_prefix}-${GITHUB_RUN_ID:-local}-${GITHUB_RUN_ATTEMPT:-1}"
+    pull_request|pr|auto_merge)
+    current_branch="$(git rev-parse --abbrev-ref HEAD)"
+    if [[ "$current_branch" == "${branch_prefix}"* ]]; then
+      echo "Already on a documentation branch. Skipping to avoid recursion."
+      exit 0
+    fi
+
+    branch="${branch_prefix}-update"
     git checkout -B "$branch"
     git add -A
+    
+    if git diff --staged --quiet; then
+      echo "docs_changed=false" >> "$GITHUB_OUTPUT"
+      exit 0
+    fi
+
     git commit -m "$commit_message"
-    git push --set-upstream origin "$branch" --force-with-lease
+    git push origin "$branch" --force
+    
     export GH_TOKEN="${INPUT_GITHUB_TOKEN:-${GITHUB_TOKEN:-}}"
     base_branch="${GITHUB_BASE_REF:-$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')}"
     base_branch="${base_branch:-main}"
-    pr_url="$(gh pr create --title "$pr_title" --body "ArchivumDocs updated documentation from the current code graph." --head "$branch" --base "$base_branch")"
+    
+    # Check if PR already exists
+    existing_pr="$(gh pr list --head "$branch" --base "$base_branch" --json url --jq '.[0].url')"
+    if [[ -z "$existing_pr" ]]; then
+      pr_url="$(gh pr create --title "$pr_title" --body "ArchivumDocs updated documentation from the current code graph." --head "$branch" --base "$base_branch")"
+    else
+      pr_url="$existing_pr"
+    fi
+    
     echo "pull_request_url=$pr_url" >> "$GITHUB_OUTPUT"
     if [[ "${INPUT_AUTO_MERGE:-false}" == "true" || "$mode" == "auto_merge" ]]; then
       gh pr merge "$pr_url" --auto --squash >/dev/null

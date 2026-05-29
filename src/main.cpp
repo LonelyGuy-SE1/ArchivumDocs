@@ -316,7 +316,18 @@ int run(int argc, char* argv[]) {
         report.mutated_nodes = mutated_nodes;
         report.context_nodes = impacted_nodes;
 
-        std::string prompt = archivum::build_documentation_prompt(config, report, ".");
+        std::string existing_docs;
+        std::filesystem::path index_path = std::filesystem::path(".") / config.docs_dir / config.index_file;
+        if (std::filesystem::exists(index_path)) {
+            std::ifstream index_file(index_path);
+            if (index_file.is_open()) {
+                std::stringstream buffer;
+                buffer << index_file.rdbuf();
+                existing_docs = buffer.str();
+            }
+        }
+
+        std::string prompt = archivum::build_documentation_prompt(config, report, ".", existing_docs);
         std::optional<std::string> generated =
             archivum::generate_documentation_update(provider_request(config, prompt));
         archivum::DocumentationWriteResult docs =

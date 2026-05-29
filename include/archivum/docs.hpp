@@ -29,7 +29,8 @@ struct DocumentationWriteResult {
 };
 
 std::string build_documentation_prompt(const ArchivumConfig& config, const AnalysisReport& report,
-                                       const std::filesystem::path& root);
+                                       const std::filesystem::path& root,
+                                       const std::string& existing_docs);
 
 DocumentationWriteResult write_documentation(const ArchivumConfig& config, const AnalysisReport& report,
                                              const std::string& generated_update, const std::filesystem::path& root);

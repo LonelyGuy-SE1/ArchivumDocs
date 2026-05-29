@@ -1,8 +1,18 @@
-title: ArchivumDocs
-description: AST-aware documentation for your C++ projects.
+title: "ArchivumDocs"
+description: "AST-aware documentation for high-integrity C++ projects."
 theme: jekyll-theme-cayman
 
-# GitHub Pages settings
-repository: ${{ github.repository }}
-baseurl: "" # set this if your site is served from a subpath
-url: "" # the base hostname & protocol for your site
+# Remote theme often works better for direct GitHub Pages rendering
+remote_theme: pages-themes/cayman@v0.2.0
+
+# Site structure
+baseurl: "/ArchivumDocs" # Required because your site is at lonelyguy-se1.github.io/ArchivumDocs/
+url: "https://lonelyguy-se1.github.io"
+
+# Markdown processor settings
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+sass:
+  style: compressed

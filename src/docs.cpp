@@ -55,7 +55,7 @@ std::string relative_link(const std::filesystem::path& from, const std::filesyst
 
 std::string symbol_filename(const Node& node) {
     std::ostringstream out;
-    out << sanitize(node.file_path) << "-" << sanitize(node.name) << "-" << std::hex << node.id << ".md";
+    out << sanitize(node.file_path) << "-" << sanitize(node.name) << "-" << std::hex << node.id << ".html";
     return out.str();
 }
 
@@ -111,18 +111,18 @@ bool write_if_changed(const std::filesystem::path& path, const std::string& cont
 std::string render_symbol_page(const Node& node, const std::string& source) {
     std::ostringstream out;
     out << "---\n";
-    out << "layout: default\n";
-    out << "title: \"Symbol: " << node.name << "\"\n";
+    out << "title: \"" << node.name << " | API Reference\"\n";
     out << "---\n\n";
 
     out << "# " << node.name << "\n\n";
+    out << "> " << type_name(node.type) << " defined in `" << node.file_path << "`\n\n";
 
-    out << "| Metadata | Value |\n";
+    out << "## Technical Specification\n\n";
+    out << "| Attribute | Details |\n";
     out << "| :--- | :--- |\n";
-    out << "| **Type** | " << type_name(node.type) << " |\n";
-    out << "| **Location** | `" << node.file_path << ":" << node.start_line << "-" << node.end_line << "` |\n";
-    out << "| **Interface Hash** | `" << node.interface_hash << "` |\n";
-    out << "| **Source Hash** | `" << node.source_hash << "` |\n\n";
+    out << "| **Namespace** | `archivum` |\n";
+    out << "| **Source Range** | Lines " << node.start_line << " to " << node.end_line << " |\n";
+    out << "| **Interface Hash** | `" << node.interface_hash << "` |\n\n";
 
     if (!node.signature.empty()) {
         out << "## Signature\n\n";
@@ -149,7 +149,6 @@ std::string render_index(const ArchivumConfig& config, const AnalysisReport& rep
                          const std::string& generated_update, const std::filesystem::path& docs_root) {
     std::ostringstream out;
     out << "---\n";
-    out << "layout: default\n";
     out << "title: \"ArchivumDocs | Code Intelligence\"\n";
     out << "---\n\n";
 
@@ -158,7 +157,7 @@ std::string render_index(const ArchivumConfig& config, const AnalysisReport& rep
     out << "## System Status\n\n";
     out << "| Statistic | Value |\n";
     out << "| :--- | :--- |\n";
-    out << "| **Analysis Range** | `" << short_sha(report.base_sha) << "` &rarr; `" << short_sha(report.head_sha)
+    out << "| **Analysis Range** | `" << short_sha(report.base_sha) << "` -> `" << short_sha(report.head_sha)
         << "` |\n";
     out << "| **Source Files** | " << report.source_file_count << " |\n";
     out << "| **Changed Files** | " << report.changed_file_count << " |\n";
@@ -222,12 +221,26 @@ std::string render_manifest(const AnalysisReport& report) {
 }  // namespace
 
 std::string build_documentation_prompt(const ArchivumConfig& config, const AnalysisReport& report,
-                                       const std::filesystem::path& root) {
+                                       const std::filesystem::path& root,
+                                       const std::string& existing_docs) {
     std::ostringstream prompt;
-    prompt << "You are ArchivumDocs, a documentation maintainer for an elegant and high-integrity C++ codebase. ";
-    prompt << "Write a sophisticated and professional Markdown summary of the changes in this range. ";
-    prompt << "Focus on architectural implications, changes in API contracts, and how downstream components might be affected. ";
-    prompt << "Maintain a refined, technical tone. Do not use code fences for the summary text itself.\n\n";
+    prompt << "You are ArchivumDocs, a world-class Technical Documentation Architect and C++ expert.\n\n";
+
+    if (!existing_docs.empty()) {
+        prompt << "### CURRENT DOCUMENTATION:\n";
+        prompt << "```markdown\n" << existing_docs << "\n```\n\n";
+    }
+
+    prompt << "### MISSION:\n";
+    prompt << "Your mission is to update the documentation to reflect the latest changes while ensuring a high-quality, comprehensive project overview remains intact.\n\n";
+
+    prompt << "### INSTRUCTIONS:\n";
+    prompt << "1. **Analyze existing documentation**: If it already has a good overview, preserve it but update any outdated details. If it's missing or poor, create a professional project overview describing what this project is and its core architecture based on the symbols provided below.\n";
+    prompt << "2. **Detailed Impact Analysis**: Analyze the structural changes and write a section on architectural implications. Explain WHY these changes matter.\n";
+    prompt << "3. **Merge and Refine**: Do NOT just list changes. Integrate the information into a cohesive narrative. Your output will be used as the 'AI Analysis' section of the main documentation page.\n";
+    prompt << "4. **Output Format**: Use clean Markdown with headers and bullet points. Do NOT include YAML frontmatter or code fences for the entire response.\n\n";
+
+    prompt << "### NEW ANALYSIS DATA:\n";
     prompt << "Range: " << report.base_sha << " -> " << report.head_sha << "\n";
     prompt << "Mutated symbols: " << report.mutated_nodes.size() << "\n";
     prompt << "Context symbols: " << report.context_nodes.size() << "\n\n";
