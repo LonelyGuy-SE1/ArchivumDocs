@@ -1,9 +1,16 @@
+---
+layout: default
+title: "Symbol: relative_link"
+---
+
 # relative_link
 
-- Type: function
-- Source: `src/docs.cpp:53-55`
-- Interface hash: `17767781130707924402`
-- Source hash: `10031664026895184680`
+| Metadata | Value |
+| :--- | :--- |
+| **Type** | Function |
+| **Location** | `src/docs.cpp:52-54` |
+| **Interface Hash** | `17767781130707924402` |
+| **Source Hash** | `10031664026895184680` |
 
 ## Signature
 
@@ -11,7 +18,7 @@
 std::string relative_link(const std::filesystem::path& from, const std::filesystem::path& to)
 ```
 
-## References
+## Dependencies
 
 - `filesystem`
 - `from`
@@ -23,7 +30,7 @@ std::string relative_link(const std::filesystem::path& from, const std::filesyst
 - `string`
 - `to`
 
-## Source
+## Implementation
 
 ```cpp
 std::string relative_link(const std::filesystem::path& from, const std::filesystem::path& to) {
