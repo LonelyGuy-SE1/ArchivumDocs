@@ -1,0 +1,10 @@
+{
+  "base_sha": "b6eaa9c8530a66c5a8b40de50425dfab990b2c36",
+  "head_sha": "099b043e2144f3743fb2e324f0697eb8f045b606",
+  "source_files": 14,
+  "changed_files": 1,
+  "graph_nodes": 131,
+  "graph_edges": 325,
+  "mutated_symbols": 0,
+  "context_symbols": 0
+}
