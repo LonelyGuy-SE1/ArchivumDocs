@@ -18,6 +18,9 @@ std::string provider_name() {
     if (present(std::getenv("ARCHIVUM_LLM_ENDPOINT"))) {
         return "custom";
     }
+    if (present(std::getenv("OPENROUTER_API_KEY"))) {
+        return "openrouter";
+    }
     if (present(std::getenv("OPENAI_API_KEY"))) {
         return "openai";
     }
@@ -135,7 +138,17 @@ std::optional<std::string> extract_json_string_after(const std::string& body, si
     return std::nullopt;
 }
 
-std::optional<std::string> extract_response_text(const std::string& body) {
+std::optional<std::string> extract_response_text(const std::string& body, const std::string& provider) {
+    if (provider == "openai" || provider == "openrouter" || provider == "anthropic") {
+        size_t choices = body.find("\"choices\"");
+        if (choices != std::string::npos) {
+            size_t content = body.find("\"content\"", choices);
+            if (content != std::string::npos) {
+                return extract_json_string_after(body, content, "\"content\"");
+            }
+        }
+    }
+
     size_t output_text = body.find("\"output_text\"");
     if (output_text != std::string::npos) {
         std::optional<std::string> text = extract_json_string_after(body, output_text, "\"text\"");
@@ -204,9 +217,15 @@ std::string request_payload(const ProviderRequest& request) {
     std::ostringstream out;
     out << "{";
     out << "\"model\":\"" << json_escape(request.model) << "\",";
-    out << "\"input\":\"" << json_escape(request.prompt) << "\",";
-    out << "\"reasoning\":{\"effort\":\"" << json_escape(request.reasoning_effort) << "\"},";
-    out << "\"text\":{\"verbosity\":\"" << json_escape(request.verbosity) << "\"}";
+
+    if (request.provider == "openai" || request.provider == "openrouter") {
+        out << "\"messages\":[{\"role\":\"user\",\"content\":\"" << json_escape(request.prompt) << "\"}]";
+    } else {
+        out << "\"input\":\"" << json_escape(request.prompt) << "\",";
+        out << "\"reasoning\":{\"effort\":\"" << json_escape(request.reasoning_effort) << "\"},";
+        out << "\"text\":{\"verbosity\":\"" << json_escape(request.verbosity) << "\"}";
+    }
+
     out << "}";
     return out.str();
 }
@@ -237,6 +256,13 @@ std::optional<std::string> generate_documentation_update(const ProviderRequest& 
         return std::nullopt;
     }
 
+    std::string endpoint = request.endpoint;
+    if (request.provider == "openrouter" && (endpoint.empty() || endpoint.find("openai.com") != std::string::npos)) {
+        endpoint = "https://openrouter.ai/api/v1/chat/completions";
+    } else if (request.provider == "openai" && (endpoint.empty() || endpoint.find("responses") != std::string::npos)) {
+        endpoint = "https://api.openai.com/v1/chat/completions";
+    }
+
     std::filesystem::path body_path = temp_file("request.json");
     std::filesystem::path config_path = temp_file("curl.cfg");
 
@@ -251,7 +277,7 @@ std::optional<std::string> generate_documentation_update(const ProviderRequest& 
             config << "show-error\n";
             config << "fail-with-body\n";
             config << "request = POST\n";
-            config << "url = \"" << request.endpoint << "\"\n";
+            config << "url = \"" << endpoint << "\"\n";
             config << "header = \"Content-Type: application/json\"\n";
             config << "header = \"Authorization: Bearer " << key << "\"\n";
             config << "data-binary = \"@" << body_path.generic_string() << "\"\n";
@@ -260,7 +286,7 @@ std::optional<std::string> generate_documentation_update(const ProviderRequest& 
         std::string response = run_capture("curl --config " + shell_quote(config_path));
         std::filesystem::remove(body_path);
         std::filesystem::remove(config_path);
-        std::optional<std::string> text = extract_response_text(response);
+        std::optional<std::string> text = extract_response_text(response, request.provider);
         if (text.has_value()) {
             return text;
         }

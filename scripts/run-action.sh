@@ -15,6 +15,15 @@ if [[ -n "${INPUT_OPENAI_API_KEY:-}" ]]; then
   export OPENAI_API_KEY="$INPUT_OPENAI_API_KEY"
 fi
 
+if [[ -n "${INPUT_OPENROUTER_API_KEY:-}" ]]; then
+  export OPENROUTER_API_KEY="$INPUT_OPENROUTER_API_KEY"
+  export ARCHIVUM_PROVIDER="openrouter"
+fi
+
+if [[ -n "${INPUT_MODEL:-}" ]]; then
+  export ARCHIVUM_MODEL="$INPUT_MODEL"
+fi
+
 export ARCHIVUM_WRITE_MODE="$mode"
 
 cmake -B "$build_dir" -S "$action_path" -DCMAKE_BUILD_TYPE=Release -DARCHIVUM_BUILD_TESTS=OFF

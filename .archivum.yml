@@ -4,7 +4,6 @@ symbols_dir: symbols
 manifest_file: archivum-manifest.json
 provider: auto
 endpoint: https://api.openai.com/v1/responses
-model: gpt-5.5
 api_key_env: OPENAI_API_KEY
 reasoning_effort: low
 verbosity: low

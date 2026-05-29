@@ -12,6 +12,12 @@ inputs:
   openai-api-key:
     description: API key for OpenAI-compatible documentation generation
     required: false
+  openrouter-api-key:
+    description: API key for OpenRouter documentation generation
+    required: false
+  model:
+    description: AI model to use for documentation generation
+    required: false
   github-token:
     description: Token used to push documentation branches and open pull requests
     required: false
@@ -58,6 +64,8 @@ runs:
       env:
         INPUT_CONFIG_PATH: ${{ inputs.config-path }}
         INPUT_OPENAI_API_KEY: ${{ inputs.openai-api-key }}
+        INPUT_OPENROUTER_API_KEY: ${{ inputs.openrouter-api-key }}
+        INPUT_MODEL: ${{ inputs.model }}
         INPUT_GITHUB_TOKEN: ${{ inputs.github-token }}
         INPUT_MODE: ${{ inputs.mode }}
         INPUT_AUTO_MERGE: ${{ inputs.auto-merge }}
