@@ -1,9 +1,16 @@
+---
+layout: default
+title: "Symbol: write_documentation"
+---
+
 # write_documentation
 
-- Type: function
-- Source: `src/docs.cpp:240-273`
-- Interface hash: `9884305512364725519`
-- Source hash: `11576587634290702527`
+| Metadata | Value |
+| :--- | :--- |
+| **Type** | Function |
+| **Location** | `src/docs.cpp:265-297` |
+| **Interface Hash** | `9884305512364725519` |
+| **Source Hash** | `8348223628830197773` |
 
 ## Signature
 
@@ -11,7 +18,7 @@
 DocumentationWriteResult write_documentation(const ArchivumConfig& config, const AnalysisReport& report, const std::string& generated_update, const std::filesystem::path& root)
 ```
 
-## References
+## Dependencies
 
 - `AnalysisReport`
 - `ArchivumConfig`
@@ -53,12 +60,11 @@ DocumentationWriteResult write_documentation(const ArchivumConfig& config, const
 - `write_if_changed`
 - `written_files`
 
-## Source
+## Implementation
 
 ```cpp
 DocumentationWriteResult write_documentation(const ArchivumConfig& config, const AnalysisReport& report,
-                                             const std::string& generated_update,
-                                             const std::filesystem::path& root) {
+                                             const std::string& generated_update, const std::filesystem::path& root) {
     DocumentationWriteResult result;
     std::filesystem::path docs_root = root / config.docs_dir;
     std::filesystem::path symbols_root = docs_root / config.symbols_dir;

@@ -1,193 +1,47 @@
+---
+layout: default
+title: "ArchivumDocs | Code Intelligence"
+---
+
 # ArchivumDocs
 
-## Current Update
+## System Status
 
-- Range: `e3064ed64f11` -> `5b1d9e56528c`
-- Source files indexed: 14
-- Changed files scanned: 12
-- Repository graph: 131 symbols, 325 edges
-- Mutated symbols: 76
-- Context symbols: 100
-- Write mode: `pull_request`
+| Statistic | Value |
+| :--- | :--- |
+| **Analysis Range** | `36c69a68` &rarr; `9cc0a05f` |
+| **Source Files** | 14 |
+| **Changed Files** | 4 |
+| **Graph Density** | 131 symbols, 324 edges |
+| **Impact Radius** | 7 mutated, 14 context |
 
-## Mutated Symbols
+## Changes & Impact
 
-- [DispatchSummary](symbols/include-archivum-api-hpp-DispatchSummary-1ed0f8fafb085122.md) `include/archivum/api.hpp:11-17`
-- [ProviderRequest](symbols/include-archivum-api-hpp-ProviderRequest-27ec956435e49d66.md) `include/archivum/api.hpp:19-28`
-- [operator=](symbols/include-archivum-git_utils-hpp-operator-605c95dca3e3da2d.md) `include/archivum/git_utils.hpp:34-34`
-- [Node](symbols/include-archivum-graph-hpp-Node-6aedf2954c5cabbc.md) `include/archivum/graph.hpp:15-28`
-- [DependencyGraph](symbols/include-archivum-graph-hpp-DependencyGraph-929ff8b4239dae13.md) `include/archivum/graph.hpp:35-35`
-- [present](symbols/src-api-cpp-present-f94e36293ffd0ba8.md) `src/api.cpp:16-16`
-- [provider_name](symbols/src-api-cpp-provider_name-8cd59e1ea405870e.md) `src/api.cpp:18-29`
-- [json_escape](symbols/src-api-cpp-json_escape-c1c59d539072aceb.md) `src/api.cpp:31-62`
-- [last_git_error](symbols/src-git_utils-cpp-last_git_error-621714075fb384d.md) `src/git_utils.cpp:13-19`
-- [oid_to_string](symbols/src-git_utils-cpp-oid_to_string-9ee07dc3a8312711.md) `src/git_utils.cpp:21-25`
-- [init_git_subsystem](symbols/src-git_utils-cpp-init_git_subsystem-f8f33030d36052f6.md) `src/git_utils.cpp:29-29`
-- [shutdown_git_subsystem](symbols/src-git_utils-cpp-shutdown_git_subsystem-c0a281cba73c5172.md) `src/git_utils.cpp:31-31`
-- [GitScanner::GitScanner](symbols/src-git_utils-cpp-GitScanner-GitScanner-bdf5ec967bc9266f.md) `src/git_utils.cpp:33-39`
-- [GitScanner::~GitScanner](symbols/src-git_utils-cpp-GitScanner-GitScanner-e5b7b096dc797693.md) `src/git_utils.cpp:41-45`
-- [GitScanner::lookup_commit](symbols/src-git_utils-cpp-GitScanner-lookup_commit-4850fd8f31fce8b5.md) `src/git_utils.cpp:47-61`
-- [GitScanner::calculate_diff](symbols/src-git_utils-cpp-GitScanner-calculate_diff-2ca5b52e1acb262b.md) `src/git_utils.cpp:63-144`
-- [GitScanner::resolve_reference](symbols/src-git_utils-cpp-GitScanner-resolve_reference-3fba606adcd59dd.md) `src/git_utils.cpp:146-162`
-- [GitScanner::parent_of](symbols/src-git_utils-cpp-GitScanner-parent_of-567630f0a7500c3b.md) `src/git_utils.cpp:164-179`
-- [symbol_key](symbols/src-graph-cpp-symbol_key-d739d0fa299f1451.md) `src/graph.cpp:10-18`
-- [DependencyGraph::register_node](symbols/src-graph-cpp-DependencyGraph-register_node-6966076afecfd172.md) `src/graph.cpp:22-22`
-- [DependencyGraph::add_dependency](symbols/src-graph-cpp-DependencyGraph-add_dependency-f5d715c14fa17f71.md) `src/graph.cpp:24-29`
-- [DependencyGraph::infer_dependencies](symbols/src-graph-cpp-DependencyGraph-infer_dependencies-de3346eb03d78d54.md) `src/graph.cpp:31-59`
-- [DependencyGraph::calculate_blast_radius](symbols/src-graph-cpp-DependencyGraph-calculate_blast_radius-b94cec03e193dd40.md) `src/graph.cpp:61-88`
-- [DependencyGraph::get_node](symbols/src-graph-cpp-DependencyGraph-get_node-467108bbdd52eb05.md) `src/graph.cpp:92-98`
-- [DependencyGraph::nodes](symbols/src-graph-cpp-DependencyGraph-nodes-98d046ee2a624eb9.md) `src/graph.cpp:100-116`
-- [DependencyGraph::downstream](symbols/src-graph-cpp-DependencyGraph-downstream-720b15ed1ff555e0.md) `src/graph.cpp:118-127`
-- [DependencyGraph::node_count](symbols/src-graph-cpp-DependencyGraph-node_count-37faf826bfe47edc.md) `src/graph.cpp:129-129`
-- [DependencyGraph::edge_count](symbols/src-graph-cpp-DependencyGraph-edge_count-1ec3ec88a06cc9f9.md) `src/graph.cpp:131-137`
-- [ExecutionRange](symbols/src-main-cpp-ExecutionRange-cd523c8c8cd0e1c3.md) `src/main.cpp:26-31`
-- [CliOptions](symbols/src-main-cpp-CliOptions-ac26a37479e57a5c.md) `src/main.cpp:33-36`
-- [~GitRuntime](symbols/src-main-cpp-GitRuntime-4e650aea64715d12.md) `src/main.cpp:41-41`
-- [GitRuntime](symbols/src-main-cpp-GitRuntime-ca94949e9cb07f44.md) `src/main.cpp:43-43`
-- [operator=](symbols/src-main-cpp-operator-3961af63434ccbd7.md) `src/main.cpp:44-44`
-- [is_source_file](symbols/src-main-cpp-is_source_file-55b3063e2e30d9d3.md) `src/main.cpp:47-54`
-- [ignored_directory](symbols/src-main-cpp-ignored_directory-34bc1af905bdd43e.md) `src/main.cpp:56-59`
-- [discover_source_files](symbols/src-main-cpp-discover_source_files-2877bdbd29666451.md) `src/main.cpp:61-84`
-- [full_repository_diffs](symbols/src-main-cpp-full_repository_diffs-d94378f7b7ac4b9.md) `src/main.cpp:86-98`
-- [parse_cli](symbols/src-main-cpp-parse_cli-edc58f7889b8742.md) `src/main.cpp:100-130`
-- [resolve_range](symbols/src-main-cpp-resolve_range-59f581b7c968cdf6.md) `src/main.cpp:132-157`
-- [overlaps](symbols/src-main-cpp-overlaps-8c80b54697885938.md) `src/main.cpp:159-166`
-- [type_name](symbols/src-main-cpp-type_name-f43d255e541b6096.md) `src/main.cpp:168-181`
-- [sorted_nodes](symbols/src-main-cpp-sorted_nodes-3c40411dcbc7e9a3.md) `src/main.cpp:183-204`
-- [print_nodes](symbols/src-main-cpp-print_nodes-ed7ec2d569c9c2a5.md) `src/main.cpp:206-219`
-- [cap_vector](symbols/src-main-cpp-cap_vector-fc23d06c1d6fc2b2.md) `src/main.cpp:222-226`
-- [provider_request](symbols/src-main-cpp-provider_request-5fc86b1c4c4704b.md) `src/main.cpp:228-239`
-- [run](symbols/src-main-cpp-run-6b5533aa0416b1b5.md) `src/main.cpp:241-334`
-- [stable_hash](symbols/src-parser-cpp-stable_hash-bac1e5516bb3af8a.md) `src/parser.cpp:20-27`
-- [text_for_node](symbols/src-parser-cpp-text_for_node-6d0e97d14089abbe.md) `src/parser.cpp:29-39`
-- [normalize_space](symbols/src-parser-cpp-normalize_space-cfd25b547c1f1e54.md) `src/parser.cpp:41-63`
-- [is_identifier_node](symbols/src-parser-cpp-is_identifier_node-6f527ca675bcac1d.md) `src/parser.cpp:65-70`
-- [simple_symbol](symbols/src-parser-cpp-simple_symbol-66b699159473cde1.md) `src/parser.cpp:72-89`
-- [first_named_descendant](symbols/src-parser-cpp-first_named_descendant-bf121cc9b82a74fc.md) `src/parser.cpp:91-120`
-- [structural_name](symbols/src-parser-cpp-structural_name-2068c9894bc3139.md) `src/parser.cpp:122-131`
-- [has_class_ancestor](symbols/src-parser-cpp-has_class_ancestor-2875cc89619c0c7f.md) `src/parser.cpp:133-143`
-- [interface_text](symbols/src-parser-cpp-interface_text-8bce8a2667c84681.md) `src/parser.cpp:145-164`
-- [collect_references](symbols/src-parser-cpp-collect_references-36c4f86d74dfa20f.md) `src/parser.cpp:166-179`
-- [ASTParser::ASTParser](symbols/src-parser-cpp-ASTParser-ASTParser-658f8f1d8ac4cef8.md) `src/parser.cpp:183-188`
-- [ASTParser::~ASTParser](symbols/src-parser-cpp-ASTParser-ASTParser-c5216ab191af5abc.md) `src/parser.cpp:190-194`
-- [ASTParser::generate_node_id](symbols/src-parser-cpp-ASTParser-generate_node_id-51853e208f082d39.md) `src/parser.cpp:196-199`
-- [ASTParser::parse_file](symbols/src-parser-cpp-ASTParser-parse_file-3a00561966f79bd3.md) `src/parser.cpp:201-234`
-- [ASTParser::extract_structural_nodes](symbols/src-parser-cpp-ASTParser-extract_structural_nodes-b90e6df760b55a6.md) `src/parser.cpp:236-305`
-- [ScopedTemp](symbols/tests-test_main-cpp-ScopedTemp-e7726f9bf318bb30.md) `tests/test_main.cpp:26-30`
-- [~ScopedTemp](symbols/tests-test_main-cpp-ScopedTemp-8d9d170183563ea6.md) `tests/test_main.cpp:32-37`
-- [path](symbols/tests-test_main-cpp-path-7c55d1556c585c45.md) `tests/test_main.cpp:39-39`
-- [require](symbols/tests-test_main-cpp-require-f7e7844e0b4aba59.md) `tests/test_main.cpp:45-49`
-- [write_file](symbols/tests-test_main-cpp-write_file-dfeac45df68bbc84.md) `tests/test_main.cpp:51-56`
-- [quote](symbols/tests-test_main-cpp-quote-e2a54783a9a7ef2.md) `tests/test_main.cpp:58-58`
-- [run_command](symbols/tests-test_main-cpp-run_command-87da30975a9ad6e1.md) `tests/test_main.cpp:60-63`
-- [make_node](symbols/tests-test_main-cpp-make_node-537bb11f94b16199.md) `tests/test_main.cpp:65-78`
-- [find_node](symbols/tests-test_main-cpp-find_node-916503013ac3b41e.md) `tests/test_main.cpp:80-83`
-- [parser_extracts_structural_metadata](symbols/tests-test_main-cpp-parser_extracts_structural_metadata-24dcb0b3148e2226.md) `tests/test_main.cpp:85-119`
-- [graph_infers_transitive_impact](symbols/tests-test_main-cpp-graph_infers_transitive_impact-fb6261684b70c163.md) `tests/test_main.cpp:121-131`
-- [graph_handles_cycles](symbols/tests-test_main-cpp-graph_handles_cycles-a12939dc430f1884.md) `tests/test_main.cpp:133-144`
-- [git_scanner_reports_changed_ranges](symbols/tests-test_main-cpp-git_scanner_reports_changed_ranges-f203769c2ca349df.md) `tests/test_main.cpp:146-186`
-- [config_loads_defaults_and_overrides](symbols/tests-test_main-cpp-config_loads_defaults_and_overrides-f685b66d9be0d461.md) `tests/test_main.cpp:188-204`
-- [documentation_writer_creates_index_symbols_and_manifest](symbols/tests-test_main-cpp-documentation_writer_creates_index_symbols_and_manifest-c098c92a00b483d.md) `tests/test_main.cpp:206-252`
+| Symbol | Type | Location |
+| :--- | :--- | :--- |
+| [type_name](symbols/src-docs-cpp-type_name-d89f4e4a91f51824.md) | Function | `src/docs.cpp:14` |
+| [sanitize](symbols/src-docs-cpp-sanitize-4ecf3f46b160a02d.md) | Function | `src/docs.cpp:29` |
+| [short_sha](symbols/src-docs-cpp-short_sha-9e75b1df22f76811.md) | Function | `src/docs.cpp:50` |
+| [relative_link](symbols/src-docs-cpp-relative_link-2d9d81467c16029b.md) | Function | `src/docs.cpp:52` |
+| [render_symbol_page](symbols/src-docs-cpp-render_symbol_page-c72a612980583d27.md) | Function | `src/docs.cpp:111` |
+| [render_index](symbols/src-docs-cpp-render_index-aa357dc0712fdf01.md) | Function | `src/docs.cpp:148` |
+| [build_documentation_prompt](symbols/src-docs-cpp-build_documentation_prompt-b52de606ca75310a.md) | Function | `src/docs.cpp:224` |
 
-## Context Symbols
+## Downstream Context
 
-- [DispatchSummary](symbols/include-archivum-api-hpp-DispatchSummary-1ed0f8fafb085122.md) `struct`
-- [ProviderRequest](symbols/include-archivum-api-hpp-ProviderRequest-27ec956435e49d66.md) `struct`
-- [AnalysisReport](symbols/include-archivum-docs-hpp-AnalysisReport-5b292f3ad780a47b.md) `struct`
-- [DocumentationWriteResult](symbols/include-archivum-docs-hpp-DocumentationWriteResult-feb7db4834b56863.md) `struct`
-- [operator=](symbols/include-archivum-git_utils-hpp-operator-605c95dca3e3da2d.md) `method`
-- [Node](symbols/include-archivum-graph-hpp-Node-6aedf2954c5cabbc.md) `struct`
-- [DependencyGraph](symbols/include-archivum-graph-hpp-DependencyGraph-929ff8b4239dae13.md) `method`
-- [operator=](symbols/include-archivum-parser-hpp-operator-d13abcf4ab27f382.md) `method`
-- [present](symbols/src-api-cpp-present-f94e36293ffd0ba8.md) `function`
-- [provider_name](symbols/src-api-cpp-provider_name-8cd59e1ea405870e.md) `function`
-- [json_escape](symbols/src-api-cpp-json_escape-c1c59d539072aceb.md) `function`
-- [extract_json_string_after](symbols/src-api-cpp-extract_json_string_after-bbcabdab849a0f5a.md) `function`
-- [extract_response_text](symbols/src-api-cpp-extract_response_text-e89d7080ac28a1d2.md) `function`
-- [temp_file](symbols/src-api-cpp-temp_file-5d0ec919bd16fe62.md) `function`
-- [shell_quote](symbols/src-api-cpp-shell_quote-b21f7ba9d9353ab2.md) `function`
-- [request_payload](symbols/src-api-cpp-request_payload-f71d4983b53d5063.md) `function`
-- [summarize_dispatch](symbols/src-api-cpp-summarize_dispatch-9d9a348da5ee1ef1.md) `function`
-- [generate_documentation_update](symbols/src-api-cpp-generate_documentation_update-594d5fb5dff27411.md) `function`
-- [load_config](symbols/src-config-cpp-load_config-3500ff147fef8d0e.md) `function`
-- [relative_link](symbols/src-docs-cpp-relative_link-2d9d81467c16029b.md) `function`
-- [symbol_filename](symbols/src-docs-cpp-symbol_filename-ac96f6fc75c982d2.md) `function`
-- [read_slice](symbols/src-docs-cpp-read_slice-9363414cbe0b21ff.md) `function`
-- [write_if_changed](symbols/src-docs-cpp-write_if_changed-837e195068cff23e.md) `function`
-- [render_symbol_page](symbols/src-docs-cpp-render_symbol_page-c72a612980583d27.md) `function`
-- [render_index](symbols/src-docs-cpp-render_index-aa357dc0712fdf01.md) `function`
-- [render_manifest](symbols/src-docs-cpp-render_manifest-1ac65ac82346c09e.md) `function`
-- [build_documentation_prompt](symbols/src-docs-cpp-build_documentation_prompt-b52de606ca75310a.md) `function`
-- [write_documentation](symbols/src-docs-cpp-write_documentation-4997a532a20ad5f0.md) `function`
-- [last_git_error](symbols/src-git_utils-cpp-last_git_error-621714075fb384d.md) `function`
-- [oid_to_string](symbols/src-git_utils-cpp-oid_to_string-9ee07dc3a8312711.md) `function`
-- [init_git_subsystem](symbols/src-git_utils-cpp-init_git_subsystem-f8f33030d36052f6.md) `function`
-- [shutdown_git_subsystem](symbols/src-git_utils-cpp-shutdown_git_subsystem-c0a281cba73c5172.md) `function`
-- [GitScanner::GitScanner](symbols/src-git_utils-cpp-GitScanner-GitScanner-bdf5ec967bc9266f.md) `function`
-- [GitScanner::~GitScanner](symbols/src-git_utils-cpp-GitScanner-GitScanner-e5b7b096dc797693.md) `function`
-- [GitScanner::lookup_commit](symbols/src-git_utils-cpp-GitScanner-lookup_commit-4850fd8f31fce8b5.md) `function`
-- [GitScanner::calculate_diff](symbols/src-git_utils-cpp-GitScanner-calculate_diff-2ca5b52e1acb262b.md) `function`
-- [GitScanner::resolve_reference](symbols/src-git_utils-cpp-GitScanner-resolve_reference-3fba606adcd59dd.md) `function`
-- [GitScanner::parent_of](symbols/src-git_utils-cpp-GitScanner-parent_of-567630f0a7500c3b.md) `function`
-- [symbol_key](symbols/src-graph-cpp-symbol_key-d739d0fa299f1451.md) `function`
-- [DependencyGraph::register_node](symbols/src-graph-cpp-DependencyGraph-register_node-6966076afecfd172.md) `function`
-- [DependencyGraph::add_dependency](symbols/src-graph-cpp-DependencyGraph-add_dependency-f5d715c14fa17f71.md) `function`
-- [DependencyGraph::infer_dependencies](symbols/src-graph-cpp-DependencyGraph-infer_dependencies-de3346eb03d78d54.md) `function`
-- [DependencyGraph::calculate_blast_radius](symbols/src-graph-cpp-DependencyGraph-calculate_blast_radius-b94cec03e193dd40.md) `function`
-- [DependencyGraph::contains](symbols/src-graph-cpp-DependencyGraph-contains-8e33c4944f80740d.md) `function`
-- [DependencyGraph::get_node](symbols/src-graph-cpp-DependencyGraph-get_node-467108bbdd52eb05.md) `function`
-- [DependencyGraph::nodes](symbols/src-graph-cpp-DependencyGraph-nodes-98d046ee2a624eb9.md) `function`
-- [DependencyGraph::downstream](symbols/src-graph-cpp-DependencyGraph-downstream-720b15ed1ff555e0.md) `function`
-- [DependencyGraph::node_count](symbols/src-graph-cpp-DependencyGraph-node_count-37faf826bfe47edc.md) `function`
-- [DependencyGraph::edge_count](symbols/src-graph-cpp-DependencyGraph-edge_count-1ec3ec88a06cc9f9.md) `function`
-- [ExecutionRange](symbols/src-main-cpp-ExecutionRange-cd523c8c8cd0e1c3.md) `struct`
-- [CliOptions](symbols/src-main-cpp-CliOptions-ac26a37479e57a5c.md) `struct`
-- [~GitRuntime](symbols/src-main-cpp-GitRuntime-4e650aea64715d12.md) `method`
-- [GitRuntime](symbols/src-main-cpp-GitRuntime-ca94949e9cb07f44.md) `method`
-- [operator=](symbols/src-main-cpp-operator-3961af63434ccbd7.md) `method`
-- [is_source_file](symbols/src-main-cpp-is_source_file-55b3063e2e30d9d3.md) `function`
-- [ignored_directory](symbols/src-main-cpp-ignored_directory-34bc1af905bdd43e.md) `function`
-- [discover_source_files](symbols/src-main-cpp-discover_source_files-2877bdbd29666451.md) `function`
-- [full_repository_diffs](symbols/src-main-cpp-full_repository_diffs-d94378f7b7ac4b9.md) `function`
-- [parse_cli](symbols/src-main-cpp-parse_cli-edc58f7889b8742.md) `function`
-- [resolve_range](symbols/src-main-cpp-resolve_range-59f581b7c968cdf6.md) `function`
-- [overlaps](symbols/src-main-cpp-overlaps-8c80b54697885938.md) `function`
-- [type_name](symbols/src-main-cpp-type_name-f43d255e541b6096.md) `function`
-- [sorted_nodes](symbols/src-main-cpp-sorted_nodes-3c40411dcbc7e9a3.md) `function`
-- [print_nodes](symbols/src-main-cpp-print_nodes-ed7ec2d569c9c2a5.md) `function`
-- [cap_vector](symbols/src-main-cpp-cap_vector-fc23d06c1d6fc2b2.md) `function`
-- [provider_request](symbols/src-main-cpp-provider_request-5fc86b1c4c4704b.md) `function`
-- [run](symbols/src-main-cpp-run-6b5533aa0416b1b5.md) `function`
-- [main](symbols/src-main-cpp-main-f216d8bb99c8e1ed.md) `function`
-- [stable_hash](symbols/src-parser-cpp-stable_hash-bac1e5516bb3af8a.md) `function`
-- [text_for_node](symbols/src-parser-cpp-text_for_node-6d0e97d14089abbe.md) `function`
-- [normalize_space](symbols/src-parser-cpp-normalize_space-cfd25b547c1f1e54.md) `function`
-- [is_identifier_node](symbols/src-parser-cpp-is_identifier_node-6f527ca675bcac1d.md) `function`
-- [simple_symbol](symbols/src-parser-cpp-simple_symbol-66b699159473cde1.md) `function`
-- [first_named_descendant](symbols/src-parser-cpp-first_named_descendant-bf121cc9b82a74fc.md) `function`
-- [structural_name](symbols/src-parser-cpp-structural_name-2068c9894bc3139.md) `function`
-- [has_class_ancestor](symbols/src-parser-cpp-has_class_ancestor-2875cc89619c0c7f.md) `function`
-- [interface_text](symbols/src-parser-cpp-interface_text-8bce8a2667c84681.md) `function`
-- [collect_references](symbols/src-parser-cpp-collect_references-36c4f86d74dfa20f.md) `function`
-- [ASTParser::ASTParser](symbols/src-parser-cpp-ASTParser-ASTParser-658f8f1d8ac4cef8.md) `function`
-- [ASTParser::~ASTParser](symbols/src-parser-cpp-ASTParser-ASTParser-c5216ab191af5abc.md) `function`
-- [ASTParser::generate_node_id](symbols/src-parser-cpp-ASTParser-generate_node_id-51853e208f082d39.md) `function`
-- [ASTParser::parse_file](symbols/src-parser-cpp-ASTParser-parse_file-3a00561966f79bd3.md) `function`
-- [ASTParser::extract_structural_nodes](symbols/src-parser-cpp-ASTParser-extract_structural_nodes-b90e6df760b55a6.md) `function`
-- [ScopedTemp](symbols/tests-test_main-cpp-ScopedTemp-e7726f9bf318bb30.md) `method`
-- [~ScopedTemp](symbols/tests-test_main-cpp-ScopedTemp-8d9d170183563ea6.md) `method`
-- [path](symbols/tests-test_main-cpp-path-7c55d1556c585c45.md) `method`
-- [require](symbols/tests-test_main-cpp-require-f7e7844e0b4aba59.md) `function`
-- [write_file](symbols/tests-test_main-cpp-write_file-dfeac45df68bbc84.md) `function`
-- [quote](symbols/tests-test_main-cpp-quote-e2a54783a9a7ef2.md) `function`
-- [run_command](symbols/tests-test_main-cpp-run_command-87da30975a9ad6e1.md) `function`
-- [make_node](symbols/tests-test_main-cpp-make_node-537bb11f94b16199.md) `function`
-- [find_node](symbols/tests-test_main-cpp-find_node-916503013ac3b41e.md) `function`
-- [parser_extracts_structural_metadata](symbols/tests-test_main-cpp-parser_extracts_structural_metadata-24dcb0b3148e2226.md) `function`
-- [graph_infers_transitive_impact](symbols/tests-test_main-cpp-graph_infers_transitive_impact-fb6261684b70c163.md) `function`
-- [graph_handles_cycles](symbols/tests-test_main-cpp-graph_handles_cycles-a12939dc430f1884.md) `function`
-- [git_scanner_reports_changed_ranges](symbols/tests-test_main-cpp-git_scanner_reports_changed_ranges-f203769c2ca349df.md) `function`
-- [config_loads_defaults_and_overrides](symbols/tests-test_main-cpp-config_loads_defaults_and_overrides-f685b66d9be0d461.md) `function`
-- [documentation_writer_creates_index_symbols_and_manifest](symbols/tests-test_main-cpp-documentation_writer_creates_index_symbols_and_manifest-c098c92a00b483d.md) `function`
-- [provider_skips_when_key_is_absent](symbols/tests-test_main-cpp-provider_skips_when_key_is_absent-2999a816b4e29c32.md) `function`
-- [main](symbols/tests-test_main-cpp-main-60d84673108ffa27.md) `function`
+| Symbol | Type | Relationship |
+| :--- | :--- | :--- |
+| [type_name](symbols/src-docs-cpp-type_name-d89f4e4a91f51824.md) | Function | Contextual dependency |
+| [sanitize](symbols/src-docs-cpp-sanitize-4ecf3f46b160a02d.md) | Function | Contextual dependency |
+| [short_sha](symbols/src-docs-cpp-short_sha-9e75b1df22f76811.md) | Function | Contextual dependency |
+| [relative_link](symbols/src-docs-cpp-relative_link-2d9d81467c16029b.md) | Function | Contextual dependency |
+| [symbol_filename](symbols/src-docs-cpp-symbol_filename-ac96f6fc75c982d2.md) | Function | Contextual dependency |
+| [render_symbol_page](symbols/src-docs-cpp-render_symbol_page-c72a612980583d27.md) | Function | Contextual dependency |
+| [render_index](symbols/src-docs-cpp-render_index-aa357dc0712fdf01.md) | Function | Contextual dependency |
+| [build_documentation_prompt](symbols/src-docs-cpp-build_documentation_prompt-b52de606ca75310a.md) | Function | Contextual dependency |
+| [write_documentation](symbols/src-docs-cpp-write_documentation-4997a532a20ad5f0.md) | Function | Contextual dependency |
+| [print_nodes](symbols/src-main-cpp-print_nodes-ed7ec2d569c9c2a5.md) | Function | Contextual dependency |
+| [run](symbols/src-main-cpp-run-6b5533aa0416b1b5.md) | Function | Contextual dependency |
+| [main](symbols/src-main-cpp-main-f216d8bb99c8e1ed.md) | Function | Contextual dependency |
+| [documentation_writer_creates_index_symbols_and_manifest](symbols/tests-test_main-cpp-documentation_writer_creates_index_symbols_and_manifest-c098c92a00b483d.md) | Function | Contextual dependency |
+| [main](symbols/tests-test_main-cpp-main-60d84673108ffa27.md) | Function | Contextual dependency |
