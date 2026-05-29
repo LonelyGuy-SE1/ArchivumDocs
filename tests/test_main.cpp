@@ -1,4 +1,7 @@
 #include <algorithm>
+#include <archivum/api.hpp>
+#include <archivum/config.hpp>
+#include <archivum/docs.hpp>
 #include <archivum/git_utils.hpp>
 #include <archivum/graph.hpp>
 #include <archivum/parser.hpp>
@@ -182,12 +185,92 @@ void git_scanner_reports_changed_ranges() {
     require(saw_source && saw_header, "expected diff paths missing");
 }
 
+void config_loads_defaults_and_overrides() {
+    ScopedTemp temp;
+    std::filesystem::path config_path = temp.path() / ".archivum.yml";
+    write_file(config_path,
+               "docs_dir: reference\n"
+               "model: gpt-test\n"
+               "write_mode: none\n"
+               "max_symbols: 7\n"
+               "fail_on_provider_error: true\n");
+
+    archivum::ArchivumConfig config = archivum::load_config(config_path);
+    require(config.docs_dir == "reference", "docs_dir override failed");
+    require(config.model == "gpt-test", "model override failed");
+    require(archivum::write_mode_name(config.write_mode) == "none", "write mode override failed");
+    require(config.max_symbols == 7, "max_symbols override failed");
+    require(config.fail_on_provider_error, "provider error override failed");
+}
+
+void documentation_writer_creates_index_symbols_and_manifest() {
+    ScopedTemp temp;
+    write_file(temp.path() / "sample.cpp",
+               "int provider() {\n"
+               "    return 42;\n"
+               "}\n"
+               "int consumer() {\n"
+               "    return provider();\n"
+               "}\n");
+
+    archivum::Node provider = make_node(1, "provider", {});
+    provider.file_path = "sample.cpp";
+    provider.signature = "int provider()";
+    provider.start_line = 1;
+    provider.end_line = 3;
+
+    archivum::Node consumer = make_node(2, "consumer", {"provider"});
+    consumer.file_path = "sample.cpp";
+    consumer.signature = "int consumer()";
+    consumer.start_line = 4;
+    consumer.end_line = 6;
+
+    archivum::ArchivumConfig config;
+    config.docs_dir = "docs";
+    config.write_mode = archivum::WriteMode::NONE;
+
+    archivum::AnalysisReport report;
+    report.base_sha = "base";
+    report.head_sha = "head";
+    report.source_file_count = 1;
+    report.changed_file_count = 1;
+    report.graph_node_count = 2;
+    report.graph_edge_count = 1;
+    report.mutated_nodes = {provider};
+    report.context_nodes = {provider, consumer};
+
+    archivum::DocumentationWriteResult first =
+        archivum::write_documentation(config, report, "Provider now returns the documented value.", temp.path());
+    archivum::DocumentationWriteResult second =
+        archivum::write_documentation(config, report, "Provider now returns the documented value.", temp.path());
+
+    require(first.changed, "documentation writer did not create files");
+    require(!second.changed, "documentation writer should be idempotent");
+    require(std::filesystem::exists(temp.path() / "docs" / "index.md"), "index was not created");
+    require(std::filesystem::exists(temp.path() / "docs" / "archivum-manifest.json"), "manifest was not created");
+    require(std::filesystem::exists(temp.path() / "docs" / "symbols"), "symbols folder was not created");
+}
+
+void provider_skips_when_key_is_absent() {
+    archivum::ProviderRequest request;
+    request.provider = "openai";
+    request.endpoint = "https://api.openai.com/v1/responses";
+    request.model = "gpt-test";
+    request.api_key_env = "ARCHIVUM_TEST_MISSING_KEY";
+    request.reasoning_effort = "low";
+    request.verbosity = "low";
+    request.prompt = "hello";
+    request.fail_on_error = false;
+
+    require(!archivum::generate_documentation_update(request).has_value(), "provider should skip without credentials");
+}
+
 void run_test(const std::string& name, const std::function<void()>& test) {
     test();
     std::cout << "[PASS] " << name << "\n";
 }
 
-}  // namespace
+}
 
 int main() {
     archivum::init_git_subsystem();
@@ -197,6 +280,10 @@ int main() {
         run_test("graph_infers_transitive_impact", graph_infers_transitive_impact);
         run_test("graph_handles_cycles", graph_handles_cycles);
         run_test("git_scanner_reports_changed_ranges", git_scanner_reports_changed_ranges);
+        run_test("config_loads_defaults_and_overrides", config_loads_defaults_and_overrides);
+        run_test("documentation_writer_creates_index_symbols_and_manifest",
+                 documentation_writer_creates_index_symbols_and_manifest);
+        run_test("provider_skips_when_key_is_absent", provider_skips_when_key_is_absent);
     } catch (const std::exception& error) {
         archivum::shutdown_git_subsystem();
         std::cerr << "[FAIL] " << error.what() << "\n";

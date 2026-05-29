@@ -50,6 +50,8 @@ add_library(archivum_core STATIC
     src/graph.cpp
     src/parser.cpp
     src/git_utils.cpp
+    src/config.cpp
+    src/docs.cpp
     src/api.cpp
     ${tree_sitter_SOURCE_DIR}/lib/src/lib.c
     ${tree_sitter_cpp_SOURCE_DIR}/src/parser.c
@@ -83,6 +85,12 @@ if (ARCHIVUM_BUILD_TESTS)
         archivum_cli_first_commit
         archivum_cli_rejects_bad_ref
         PROPERTIES WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    )
+    set_tests_properties(
+        archivum_cli_auto
+        archivum_cli_first_commit
+        archivum_cli_rejects_bad_ref
+        PROPERTIES ENVIRONMENT ARCHIVUM_UPDATE_DOCS=false
     )
     set_tests_properties(archivum_cli_rejects_bad_ref PROPERTIES WILL_FAIL TRUE)
 endif()

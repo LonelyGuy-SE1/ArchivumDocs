@@ -1,9 +1,12 @@
 #include <algorithm>
 #include <archivum/api.hpp>
+#include <archivum/config.hpp>
+#include <archivum/docs.hpp>
 #include <archivum/git_utils.hpp>
 #include <archivum/graph.hpp>
 #include <archivum/parser.hpp>
 #include <cctype>
+#include <cstdlib>
 #include <filesystem>
 #include <iostream>
 #include <limits>
@@ -24,6 +27,11 @@ struct ExecutionRange {
     std::string head_sha;
     std::string source;
     bool initial_scan;
+};
+
+struct CliOptions {
+    std::filesystem::path config_path = ".archivum.yml";
+    std::vector<std::string> coordinates;
 };
 
 class GitRuntime {
@@ -88,23 +96,55 @@ std::vector<archivum::FileDiff> full_repository_diffs(const std::vector<std::str
     return diffs;
 }
 
-ExecutionRange resolve_range(int argc, char* argv[], archivum::GitScanner& scanner) {
-    if (argc == 1) {
+CliOptions parse_cli(int argc, char* argv[]) {
+    CliOptions options;
+
+    for (int index = 1; index < argc; ++index) {
+        std::string arg = argv[index];
+        if (arg == "--help" || arg == "-h") {
+            std::cout << "Usage: archivum [--config path] [base_sha head_sha]\n";
+            std::cout << "       archivum [--config path] [head_ref]\n";
+            std::cout << "       archivum [--config path]\n";
+            std::exit(0);
+        }
+        if (arg == "--version") {
+            std::cout << "ArchivumDocs 1.0.0\n";
+            std::exit(0);
+        }
+        if (arg == "--config") {
+            if (index + 1 >= argc) {
+                throw std::runtime_error("[ArchivumDocs] FATAL: --config requires a path.");
+            }
+            options.config_path = argv[++index];
+            continue;
+        }
+        options.coordinates.push_back(arg);
+    }
+
+    if (options.coordinates.size() > 2) {
+        throw std::runtime_error("[ArchivumDocs] FATAL: Expected zero, one, or two Git coordinates.");
+    }
+
+    return options;
+}
+
+ExecutionRange resolve_range(const std::vector<std::string>& coordinates, archivum::GitScanner& scanner) {
+    if (coordinates.empty()) {
         std::string head = scanner.resolve_reference("HEAD");
         std::optional<std::string> parent = scanner.parent_of(head);
         return {parent.value_or(kInitialCommit), head, parent.has_value() ? "auto" : "initial", !parent.has_value()};
     }
 
-    if (argc == 2) {
-        std::string arg = argv[1];
+    if (coordinates.size() == 1) {
+        std::string arg = coordinates[0];
         std::string head = scanner.resolve_reference(arg);
         std::optional<std::string> parent = scanner.parent_of(head);
         return {parent.value_or(kInitialCommit), head, "head-ref", !parent.has_value()};
     }
 
-    if (argc == 3) {
-        std::string base = argv[1];
-        std::string head = scanner.resolve_reference(argv[2]);
+    if (coordinates.size() == 2) {
+        std::string base = coordinates[0];
+        std::string head = scanner.resolve_reference(coordinates[1]);
         bool initial = base == kInitialCommit;
         if (!initial) {
             base = scanner.resolve_reference(base);
@@ -177,28 +217,37 @@ void print_nodes(const std::string& title, const std::vector<archivum::Node>& no
     }
 }
 
-int run(int argc, char* argv[]) {
-    if (argc == 2) {
-        std::string arg = argv[1];
-        if (arg == "--help" || arg == "-h") {
-            std::cout << "Usage: archivum [base_sha head_sha]\n";
-            std::cout << "       archivum [head_ref]\n";
-            std::cout << "       archivum\n";
-            return 0;
-        }
-        if (arg == "--version") {
-            std::cout << "ArchivumDocs 1.0.0\n";
-            return 0;
-        }
+template <typename T>
+void cap_vector(std::vector<T>& values, size_t limit) {
+    if (values.size() > limit) {
+        values.resize(limit);
     }
+}
 
+archivum::ProviderRequest provider_request(const archivum::ArchivumConfig& config, const std::string& prompt) {
+    archivum::ProviderRequest request;
+    request.provider = config.provider == "auto" ? "openai" : config.provider;
+    request.endpoint = config.endpoint;
+    request.model = config.model;
+    request.api_key_env = config.api_key_env;
+    request.reasoning_effort = config.reasoning_effort;
+    request.verbosity = config.verbosity;
+    request.prompt = prompt;
+    request.fail_on_error = config.fail_on_provider_error;
+    return request;
+}
+
+int run(int argc, char* argv[]) {
+    CliOptions options = parse_cli(argc, argv);
+    archivum::ArchivumConfig config = archivum::load_config(options.config_path);
     GitRuntime runtime;
     archivum::GitScanner scanner(".");
-    ExecutionRange range = resolve_range(argc, argv, scanner);
+    ExecutionRange range = resolve_range(options.coordinates, scanner);
 
     std::cout << "[ArchivumDocs] Domain expansion initiated.\n";
     std::cout << "[ArchivumDocs] Range: " << range.base_sha << " -> " << range.head_sha << " (" << range.source
               << ")\n";
+    std::cout << "[ArchivumDocs] Config: " << options.config_path.generic_string() << "\n";
 
     std::vector<std::string> source_files = discover_source_files(".");
     std::vector<archivum::FileDiff> diffs = range.initial_scan ? full_repository_diffs(source_files)
@@ -243,6 +292,7 @@ int run(int argc, char* argv[]) {
 
     std::vector<archivum::Node> mutated_nodes = sorted_nodes(mutated, graph);
     std::vector<archivum::Node> impacted_nodes = sorted_nodes(impacted, graph);
+    cap_vector(impacted_nodes, config.max_symbols);
 
     print_nodes("Mutated symbols", mutated_nodes, 32);
     print_nodes("Context symbols", impacted_nodes, 32);
@@ -251,6 +301,32 @@ int run(int argc, char* argv[]) {
     std::cout << "[ArchivumDocs] Dispatch: provider=" << dispatch.provider
               << ", credentials=" << (dispatch.credentials_available ? "present" : "absent")
               << ", context_symbols=" << dispatch.context_symbols << "\n";
+
+    if (config.update_docs) {
+        archivum::AnalysisReport report;
+        report.base_sha = range.base_sha;
+        report.head_sha = range.head_sha;
+        report.range_source = range.source;
+        report.initial_scan = range.initial_scan;
+        report.source_file_count = source_files.size();
+        report.changed_file_count = diffs.size();
+        report.graph_node_count = graph.node_count();
+        report.graph_edge_count = graph.edge_count();
+        report.diffs = diffs;
+        report.mutated_nodes = mutated_nodes;
+        report.context_nodes = impacted_nodes;
+
+        std::string prompt = archivum::build_documentation_prompt(config, report, ".");
+        std::optional<std::string> generated =
+            archivum::generate_documentation_update(provider_request(config, prompt));
+        archivum::DocumentationWriteResult docs =
+            archivum::write_documentation(config, report, generated.value_or(""), ".");
+
+        std::cout << "[ArchivumDocs] Documentation: " << (docs.changed ? "updated" : "unchanged") << " in "
+                  << config.docs_dir << "\n";
+        std::cout << "[ArchivumDocs] Documentation files touched: " << docs.written_files.size() << "\n";
+    }
+
     std::cout << "[ArchivumDocs] Intersection complete.\n";
 
     return 0;

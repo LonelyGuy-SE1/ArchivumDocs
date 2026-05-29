@@ -1,0 +1,15 @@
+docs_dir: docs
+index_file: index.md
+symbols_dir: symbols
+manifest_file: archivum-manifest.json
+provider: auto
+endpoint: https://api.openai.com/v1/responses
+model: gpt-5.5
+api_key_env: OPENAI_API_KEY
+reasoning_effort: low
+verbosity: low
+write_mode: pull_request
+max_context_bytes: 180000
+max_symbols: 250
+fail_on_provider_error: false
+update_docs: true

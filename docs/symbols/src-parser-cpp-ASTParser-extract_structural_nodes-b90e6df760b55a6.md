@@ -1,0 +1,157 @@
+# ASTParser::extract_structural_nodes
+
+- Type: function
+- Source: `src/parser.cpp:236-305`
+- Interface hash: `10262369993124722198`
+- Source hash: `9251731990289411511`
+
+## Signature
+
+```cpp
+void ASTParser::extract_structural_nodes(TSNode root_node, std::vector<Node>& extracted_nodes, const std::string& filepath, const std::string& source_code)
+```
+
+## References
+
+- `ASTParser`
+- `CLASS`
+- `FUNCTION`
+- `METHOD`
+- `Node`
+- `NodeType`
+- `STRUCT`
+- `TSNode`
+- `TSPoint`
+- `TSTreeCursor`
+- `assign`
+- `begin`
+- `collect_references`
+- `current`
+- `current_node`
+- `cursor`
+- `empty`
+- `end`
+- `end_byte`
+- `end_line`
+- `end_point`
+- `erase`
+- `extracted_nodes`
+- `file_path`
+- `filepath`
+- `generate_node_id`
+- `has_class_ancestor`
+- `id`
+- `interface_hash`
+- `interface_text`
+- `name`
+- `push_back`
+- `reached_root`
+- `references`
+- `retracing`
+- `root_node`
+- `row`
+- `set`
+- `signature`
+- `simple_symbol`
+- `size`
+- `source_code`
+- `source_hash`
+- `source_slice`
+- `stable_hash`
+- `start_byte`
+- `start_line`
+- `start_point`
+- `std`
+- `string`
+- `structural_name`
+- `substr`
+- `to_string`
+- `ts_node_end_byte`
+- `ts_node_end_point`
+- `ts_node_start_byte`
+- `ts_node_start_point`
+- `ts_node_type`
+- `ts_tree_cursor_current_node`
+- `ts_tree_cursor_delete`
+- `ts_tree_cursor_goto_first_child`
+- `ts_tree_cursor_goto_next_sibling`
+- `ts_tree_cursor_goto_parent`
+- `ts_tree_cursor_new`
+- `type`
+- `vector`
+
+## Source
+
+```cpp
+void ASTParser::extract_structural_nodes(TSNode root_node, std::vector<Node>& extracted_nodes,
+                                         const std::string& filepath, const std::string& source_code) {
+    TSTreeCursor cursor = ts_tree_cursor_new(root_node);
+    bool reached_root = false;
+
+    while (!reached_root) {
+        TSNode current_node = ts_tree_cursor_current_node(&cursor);
+        std::string type = ts_node_type(current_node);
+
+        if (type == "function_definition" || type == "class_specifier" || type == "struct_specifier") {
+            Node current;
+            current.file_path = filepath;
+
+            TSPoint start_point = ts_node_start_point(current_node);
+            TSPoint end_point = ts_node_end_point(current_node);
+            current.start_line = start_point.row + 1;
+            current.end_line = end_point.row + 1;
+
+            if (type == "function_definition") {
+                current.type = has_class_ancestor(current_node) ? NodeType::METHOD : NodeType::FUNCTION;
+            } else if (type == "class_specifier") {
+                current.type = NodeType::CLASS;
+            } else {
+                current.type = NodeType::STRUCT;
+            }
+
+            current.name = structural_name(current_node, source_code);
+            if (current.name.empty()) {
+                current.name = "unnamed_" + type + "_" + std::to_string(current.start_line);
+            }
+
+            std::set<std::string> references;
+            collect_references(current_node, source_code, references);
+            references.erase(simple_symbol(current.name));
+
+            uint32_t start_byte = ts_node_start_byte(current_node);
+            uint32_t end_byte = ts_node_end_byte(current_node);
+            std::string source_slice;
+            if (start_byte <= end_byte && end_byte <= source_code.size()) {
+                source_slice = source_code.substr(start_byte, end_byte - start_byte);
+            }
+
+            current.signature = interface_text(current_node, source_code);
+            current.id = generate_node_id(filepath, current.name);
+            current.interface_hash = stable_hash(current.signature);
+            current.source_hash = stable_hash(source_slice);
+            current.references.assign(references.begin(), references.end());
+
+            extracted_nodes.push_back(current);
+        }
+
+        if (ts_tree_cursor_goto_first_child(&cursor))
+            continue;
+        if (ts_tree_cursor_goto_next_sibling(&cursor))
+            continue;
+
+        bool retracing = true;
+        while (retracing) {
+            if (!ts_tree_cursor_goto_parent(&cursor)) {
+                reached_root = true;
+                break;
+            }
+            if (ts_tree_cursor_goto_next_sibling(&cursor)) {
+                retracing = false;
+            }
+        }
+    }
+
+    ts_tree_cursor_delete(&cursor);
+}
+
+```
