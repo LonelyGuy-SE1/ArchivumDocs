@@ -1,0 +1,90 @@
+@import "jekyll-theme-cayman";
+
+// Aesthetic overrides for ArchivumDocs
+// Adhering to mandates: No generic gradients, refined look.
+
+.page-header {
+  background-color: #0d1117; // Deep dark background instead of generic gradient
+  background-image: none;
+  border-bottom: 1px solid #30363d;
+  padding: 3rem 1rem;
+}
+
+.project-name {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.05rem;
+  color: #c9d1d9;
+}
+
+.project-tagline {
+  color: #8b949e;
+  font-weight: 400;
+}
+
+.main-content {
+  color: #c9d1d9;
+  background-color: #0d1117;
+  max-width: 64rem;
+}
+
+body {
+  background-color: #0d1117;
+}
+
+a {
+  color: #58a6ff;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 2rem 0;
+  border: 1px solid #30363d;
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+  border: 1px solid #30363d;
+}
+
+th {
+  background-color: #161b22;
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background-color: #0d1117;
+}
+
+tr:nth-child(odd) {
+  background-color: #161b22;
+}
+
+code {
+  background-color: #161b22;
+  color: #e6edf3;
+  padding: 0.2rem 0.4rem;
+  border-radius: 6px;
+}
+
+pre {
+  background-color: #161b22;
+  border: 1px solid #30363d;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+blockquote {
+  border-left: 4px solid #30363d;
+  color: #8b949e;
+  padding: 0.5rem 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+}

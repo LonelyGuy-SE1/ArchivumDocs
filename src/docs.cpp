@@ -3,6 +3,7 @@
 #include <cctype>
 #include <filesystem>
 #include <fstream>
+#include <iomanip>
 #include <sstream>
 #include <unordered_set>
 
@@ -13,15 +14,15 @@ namespace {
 std::string type_name(NodeType type) {
     switch (type) {
         case NodeType::FUNCTION:
-            return "function";
+            return "Function";
         case NodeType::CLASS:
-            return "class";
+            return "Class";
         case NodeType::STRUCT:
-            return "struct";
+            return "Struct";
         case NodeType::METHOD:
-            return "method";
+            return "Method";
         default:
-            return "symbol";
+            return "Symbol";
     }
 }
 
@@ -46,7 +47,7 @@ std::string sanitize(std::string value) {
     return value.empty() ? "symbol" : value;
 }
 
-std::string short_sha(const std::string& sha) { return sha.size() > 12 ? sha.substr(0, 12) : sha; }
+std::string short_sha(const std::string& sha) { return sha.size() > 8 ? sha.substr(0, 8) : sha; }
 
 std::string relative_link(const std::filesystem::path& from, const std::filesystem::path& to) {
     return std::filesystem::relative(to, from.parent_path()).generic_string();
@@ -111,28 +112,33 @@ std::string render_symbol_page(const Node& node, const std::string& source) {
     std::ostringstream out;
     out << "---\n";
     out << "layout: default\n";
-    out << "title: " << node.name << "\n";
+    out << "title: \"Symbol: " << node.name << "\"\n";
     out << "---\n\n";
+
     out << "# " << node.name << "\n\n";
-    out << "- Type: " << type_name(node.type) << "\n";
-    out << "- Source: `" << node.file_path << ":" << node.start_line << "-" << node.end_line << "`\n";
-    out << "- Interface hash: `" << node.interface_hash << "`\n";
-    out << "- Source hash: `" << node.source_hash << "`\n";
+
+    out << "| Metadata | Value |\n";
+    out << "| :--- | :--- |\n";
+    out << "| **Type** | " << type_name(node.type) << " |\n";
+    out << "| **Location** | `" << node.file_path << ":" << node.start_line << "-" << node.end_line << "` |\n";
+    out << "| **Interface Hash** | `" << node.interface_hash << "` |\n";
+    out << "| **Source Hash** | `" << node.source_hash << "` |\n\n";
 
     if (!node.signature.empty()) {
-        out << "\n## Signature\n\n";
-        out << "```cpp\n" << node.signature << "\n```\n";
+        out << "## Signature\n\n";
+        out << "```cpp\n" << node.signature << "\n```\n\n";
     }
 
     if (!node.references.empty()) {
-        out << "\n## References\n\n";
+        out << "## Dependencies\n\n";
         for (const std::string& reference : node.references) {
             out << "- `" << reference << "`\n";
         }
+        out << "\n";
     }
 
     if (!source.empty()) {
-        out << "\n## Source\n\n";
+        out << "## Implementation\n\n";
         out << "```cpp\n" << source << "\n```\n";
     }
 
@@ -144,41 +150,54 @@ std::string render_index(const ArchivumConfig& config, const AnalysisReport& rep
     std::ostringstream out;
     out << "---\n";
     out << "layout: default\n";
-    out << "title: ArchivumDocs\n";
+    out << "title: \"ArchivumDocs | Code Intelligence\"\n";
     out << "---\n\n";
+
     out << "# ArchivumDocs\n\n";
-    out << "## Current Update\n\n";
-    out << "- Range: `" << short_sha(report.base_sha) << "` -> `" << short_sha(report.head_sha) << "`\n";
-    out << "- Source files indexed: " << report.source_file_count << "\n";
-    out << "- Changed files scanned: " << report.changed_file_count << "\n";
-    out << "- Repository graph: " << report.graph_node_count << " symbols, " << report.graph_edge_count << " edges\n";
-    out << "- Mutated symbols: " << report.mutated_nodes.size() << "\n";
-    out << "- Context symbols: " << report.context_nodes.size() << "\n";
-    out << "- Write mode: `" << write_mode_name(config.write_mode) << "`\n";
+
+    out << "## System Status\n\n";
+    out << "| Statistic | Value |\n";
+    out << "| :--- | :--- |\n";
+    out << "| **Analysis Range** | `" << short_sha(report.base_sha) << "` &rarr; `" << short_sha(report.head_sha)
+        << "` |\n";
+    out << "| **Source Files** | " << report.source_file_count << " |\n";
+    out << "| **Changed Files** | " << report.changed_file_count << " |\n";
+    out << "| **Graph Density** | " << report.graph_node_count << " symbols, " << report.graph_edge_count
+        << " edges |\n";
+    out << "| **Impact Radius** | " << report.mutated_nodes.size() << " mutated, " << report.context_nodes.size()
+        << " context |\n\n";
 
     if (!generated_update.empty()) {
-        out << "\n## AI Update\n\n" << generated_update << "\n";
+        out << "## AI Analysis\n\n";
+        out << "> " << generated_update << "\n\n";
     }
 
-    out << "\n## Mutated Symbols\n\n";
+    out << "## Changes & Impact\n\n";
     if (report.mutated_nodes.empty()) {
-        out << "No structural code changes were detected for this range.\n";
+        out << "*No structural changes detected in this range.*\n";
     } else {
+        out << "| Symbol | Type | Location |\n";
+        out << "| :--- | :--- | :--- |\n";
         for (const Node& node : report.mutated_nodes) {
             std::filesystem::path symbol_path = docs_root / config.symbols_dir / symbol_filename(node);
-            out << "- [" << node.name << "](" << relative_link(docs_root / config.index_file, symbol_path) << ") ";
-            out << "`" << node.file_path << ":" << node.start_line << "-" << node.end_line << "`\n";
+            out << "| [" << node.name << "](" << relative_link(docs_root / config.index_file, symbol_path) << ") | ";
+            out << type_name(node.type) << " | ";
+            out << "`" << node.file_path << ":" << node.start_line << "` |\n";
         }
+        out << "\n";
     }
 
-    out << "\n## Context Symbols\n\n";
+    out << "## Downstream Context\n\n";
     if (report.context_nodes.empty()) {
-        out << "No downstream documentation context was required.\n";
+        out << "*No downstream impacts identified.*\n";
     } else {
+        out << "| Symbol | Type | Relationship |\n";
+        out << "| :--- | :--- | :--- |\n";
         for (const Node& node : report.context_nodes) {
             std::filesystem::path symbol_path = docs_root / config.symbols_dir / symbol_filename(node);
-            out << "- [" << node.name << "](" << relative_link(docs_root / config.index_file, symbol_path) << ") ";
-            out << "`" << type_name(node.type) << "`\n";
+            out << "| [" << node.name << "](" << relative_link(docs_root / config.index_file, symbol_path) << ") | ";
+            out << type_name(node.type) << " | ";
+            out << "Contextual dependency |\n";
         }
     }
 
@@ -205,9 +224,10 @@ std::string render_manifest(const AnalysisReport& report) {
 std::string build_documentation_prompt(const ArchivumConfig& config, const AnalysisReport& report,
                                        const std::filesystem::path& root) {
     std::ostringstream prompt;
-    prompt << "You are ArchivumDocs, a documentation maintainer. Write a concise Markdown update for the docs page. ";
-    prompt << "Focus on changed public behavior, symbol responsibilities, and downstream documentation impact. ";
-    prompt << "Do not include code fences unless they clarify an API signature.\n\n";
+    prompt << "You are ArchivumDocs, a documentation maintainer for an elegant and high-integrity C++ codebase. ";
+    prompt << "Write a sophisticated and professional Markdown summary of the changes in this range. ";
+    prompt << "Focus on architectural implications, changes in API contracts, and how downstream components might be affected. ";
+    prompt << "Maintain a refined, technical tone. Do not use code fences for the summary text itself.\n\n";
     prompt << "Range: " << report.base_sha << " -> " << report.head_sha << "\n";
     prompt << "Mutated symbols: " << report.mutated_nodes.size() << "\n";
     prompt << "Context symbols: " << report.context_nodes.size() << "\n\n";
@@ -224,20 +244,19 @@ std::string build_documentation_prompt(const ArchivumConfig& config, const Analy
         remaining -= consumed;
         ++emitted;
 
-        prompt << "## " << node.name << "\n";
-        prompt << "Type: " << type_name(node.type) << "\n";
+        prompt << "### " << node.name << " (" << type_name(node.type) << ")\n";
         prompt << "Location: " << node.file_path << ":" << node.start_line << "-" << node.end_line << "\n";
         if (!node.signature.empty()) {
             prompt << "Signature: " << node.signature << "\n";
         }
         if (!source.empty()) {
-            prompt << "Source:\n" << source << "\n";
+            prompt << "Source Snippet:\n" << source << "\n";
         }
         prompt << "\n";
     }
 
     if (report.context_nodes.size() > emitted) {
-        prompt << "Context truncated after " << emitted << " symbols.\n";
+        prompt << "Note: Context truncated after " << emitted << " symbols for efficiency.\n";
     }
 
     return prompt.str();
