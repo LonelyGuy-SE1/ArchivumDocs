@@ -109,6 +109,10 @@ bool write_if_changed(const std::filesystem::path& path, const std::string& cont
 
 std::string render_symbol_page(const Node& node, const std::string& source) {
     std::ostringstream out;
+    out << "---\n";
+    out << "layout: default\n";
+    out << "title: " << node.name << "\n";
+    out << "---\n\n";
     out << "# " << node.name << "\n\n";
     out << "- Type: " << type_name(node.type) << "\n";
     out << "- Source: `" << node.file_path << ":" << node.start_line << "-" << node.end_line << "`\n";
@@ -138,6 +142,10 @@ std::string render_symbol_page(const Node& node, const std::string& source) {
 std::string render_index(const ArchivumConfig& config, const AnalysisReport& report,
                          const std::string& generated_update, const std::filesystem::path& docs_root) {
     std::ostringstream out;
+    out << "---\n";
+    out << "layout: default\n";
+    out << "title: ArchivumDocs\n";
+    out << "---\n\n";
     out << "# ArchivumDocs\n\n";
     out << "## Current Update\n\n";
     out << "- Range: `" << short_sha(report.base_sha) << "` -> `" << short_sha(report.head_sha) << "`\n";

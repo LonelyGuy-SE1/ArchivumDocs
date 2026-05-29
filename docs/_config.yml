@@ -1,0 +1,8 @@
+title: ArchivumDocs
+description: AST-aware documentation for your C++ projects.
+theme: jekyll-theme-cayman
+
+# GitHub Pages settings
+repository: ${{ github.repository }}
+baseurl: "" # set this if your site is served from a subpath
+url: "" # the base hostname & protocol for your site

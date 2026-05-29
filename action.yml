@@ -1,77 +1,77 @@
-name: ArchivumDocs
-description: AST-aware documentation updates for pull requests and merges
-author: Methuselah
+name: "ArchivumDocs"
+description: "AST-aware documentation updates for pull requests and merges"
+author: "Methuselah"
 branding:
-  icon: book-open
-  color: blue
+  icon: "book-open"
+  color: "blue"
 inputs:
   config-path:
-    description: Path to the ArchivumDocs configuration file
+    description: "Path to the ArchivumDocs configuration file"
     required: false
-    default: .archivum.yml
+    default: ".archivum.yml"
   openai-api-key:
-    description: API key for OpenAI-compatible documentation generation
+    description: "API key for OpenAI-compatible documentation generation"
     required: false
   openrouter-api-key:
-    description: API key for OpenRouter documentation generation
+    description: "API key for OpenRouter documentation generation"
     required: false
   model:
-    description: AI model to use for documentation generation
+    description: "AI model to use for documentation generation"
     required: false
   github-token:
-    description: Token used to push documentation branches and open pull requests
+    description: "Token used to push documentation branches and open pull requests"
     required: false
-    default: ${{ github.token }}
+    default: "${{ github.token }}"
   mode:
-    description: Documentation write policy: pull_request, auto_merge, direct, or none
+    description: "Documentation write policy: pull_request, auto_merge, direct, or none"
     required: false
-    default: pull_request
+    default: "pull_request"
   auto-merge:
-    description: Enable GitHub auto-merge for the documentation pull request
+    description: "Enable GitHub auto-merge for the documentation pull request"
     required: false
     default: "false"
   base-sha:
-    description: Base commit for incremental analysis
+    description: "Base commit for incremental analysis"
     required: false
   head-sha:
-    description: Head commit for incremental analysis
+    description: "Head commit for incremental analysis"
     required: false
-    default: ${{ github.sha }}
+    default: "${{ github.sha }}"
   branch-prefix:
-    description: Prefix for documentation update branches
+    description: "Prefix for documentation update branches"
     required: false
-    default: archivum/docs
+    default: "archivum/docs"
   commit-message:
-    description: Commit message for generated documentation changes
+    description: "Commit message for generated documentation changes"
     required: false
-    default: docs: update ArchivumDocs
+    default: "docs: update ArchivumDocs"
   pr-title:
-    description: Pull request title for generated documentation changes
+    description: "Pull request title for generated documentation changes"
     required: false
-    default: docs: update ArchivumDocs
+    default: "docs: update ArchivumDocs"
 outputs:
   docs-changed:
-    description: Whether ArchivumDocs changed documentation files
-    value: ${{ steps.run.outputs.docs_changed }}
+    description: "Whether ArchivumDocs changed documentation files"
+    value: "${{ steps.run.outputs.docs_changed }}"
   pull-request-url:
-    description: Pull request URL when mode is pull_request
-    value: ${{ steps.run.outputs.pull_request_url }}
+    description: "Pull request URL when mode is pull_request"
+    value: "${{ steps.run.outputs.pull_request_url }}"
 runs:
-  using: composite
+  using: "composite"
   steps:
     - id: run
       shell: bash
       env:
-        INPUT_CONFIG_PATH: ${{ inputs.config-path }}
-        INPUT_OPENAI_API_KEY: ${{ inputs.openai-api-key }}
-        INPUT_OPENROUTER_API_KEY: ${{ inputs.openrouter-api-key }}
-        INPUT_MODEL: ${{ inputs.model }}
-        INPUT_GITHUB_TOKEN: ${{ inputs.github-token }}
-        INPUT_MODE: ${{ inputs.mode }}
-        INPUT_AUTO_MERGE: ${{ inputs.auto-merge }}
-        INPUT_BASE_SHA: ${{ inputs.base-sha }}
-        INPUT_HEAD_SHA: ${{ inputs.head-sha }}
-        INPUT_BRANCH_PREFIX: ${{ inputs.branch-prefix }}
-        INPUT_COMMIT_MESSAGE: ${{ inputs.commit-message }}
-        INPUT_PR_TITLE: ${{ inputs.pr-title }}
+        INPUT_CONFIG_PATH: "${{ inputs.config-path }}"
+        INPUT_OPENAI_API_KEY: "${{ inputs.openai-api-key }}"
+        INPUT_OPENROUTER_API_KEY: "${{ inputs.openrouter-api-key }}"
+        INPUT_MODEL: "${{ inputs.model }}"
+        INPUT_GITHUB_TOKEN: "${{ inputs.github-token }}"
+        INPUT_MODE: "${{ inputs.mode }}"
+        INPUT_AUTO_MERGE: "${{ inputs.auto-merge }}"
+        INPUT_BASE_SHA: "${{ inputs.base-sha }}"
+        INPUT_HEAD_SHA: "${{ inputs.head-sha }}"
+        INPUT_BRANCH_PREFIX: "${{ inputs.branch-prefix }}"
+        INPUT_COMMIT_MESSAGE: "${{ inputs.commit-message }}"
+        INPUT_PR_TITLE: "${{ inputs.pr-title }}"
       run: "$GITHUB_ACTION_PATH/scripts/run-action.sh"
