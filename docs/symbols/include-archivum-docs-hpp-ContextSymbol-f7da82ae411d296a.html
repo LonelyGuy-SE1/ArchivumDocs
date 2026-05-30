@@ -1,0 +1,59 @@
+---
+title: "ContextSymbol | API Reference"
+---
+
+# ContextSymbol
+
+> Struct defined in `include/archivum/docs.hpp`
+
+Use this page to understand how `ContextSymbol` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Struct |
+| **Source File** | `include/archivum/docs.hpp` |
+| **Source Range** | Lines 31 to 37 |
+| **Interface Hash** | `2601107082650881347` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+struct ContextSymbol
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `NodeType`
+- `UNKNOWN`
+- `end_line`
+- `file_path`
+- `name`
+- `start_line`
+- `std`
+- `string`
+- `type`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+struct ContextSymbol {
+    std::string name;
+    NodeType type = NodeType::UNKNOWN;
+    std::string file_path;
+    uint32_t start_line = 0;
+    uint32_t end_line = 0;
+};
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

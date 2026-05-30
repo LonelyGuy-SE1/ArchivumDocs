@@ -1,0 +1,65 @@
+---
+title: "type_name | API Reference"
+---
+
+# type_name
+
+> Function defined in `src/docs.cpp`
+
+Use this page to understand how `type_name` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/docs.cpp` |
+| **Source Range** | Lines 15 to 28 |
+| **Interface Hash** | `4001346402825370292` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string type_name(NodeType type)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `CLASS`
+- `FUNCTION`
+- `METHOD`
+- `NodeType`
+- `STRUCT`
+- `std`
+- `string`
+- `type`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string type_name(NodeType type) {
+    switch (type) {
+        case NodeType::FUNCTION:
+            return "Function";
+        case NodeType::CLASS:
+            return "Class";
+        case NodeType::STRUCT:
+            return "Struct";
+        case NodeType::METHOD:
+            return "Method";
+        default:
+            return "Symbol";
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

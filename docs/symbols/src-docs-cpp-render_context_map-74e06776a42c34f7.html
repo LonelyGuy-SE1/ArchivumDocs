@@ -1,0 +1,105 @@
+---
+title: "render_context_map | API Reference"
+---
+
+# render_context_map
+
+> Function defined in `src/docs.cpp`
+
+Use this page to understand how `render_context_map` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/docs.cpp` |
+| **Source Range** | Lines 438 to 475 |
+| **Interface Hash** | `375771407419038713` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string render_context_map(const ContextMap& map)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `ContextFile`
+- `ContextMap`
+- `ContextSymbol`
+- `edge_count`
+- `end_line`
+- `file`
+- `file_path`
+- `hotspot_files`
+- `i`
+- `map`
+- `mutated_count`
+- `name`
+- `ostringstream`
+- `out`
+- `size`
+- `start_line`
+- `std`
+- `str`
+- `string`
+- `symbol`
+- `symbol_count`
+- `top_symbols`
+- `type`
+- `type_name_sentence`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string render_context_map(const ContextMap& map) {
+    std::ostringstream out;
+    out << "{\n";
+    out << "  \"schema\": \"archivum-context-map-v1\",\n";
+    out << "  \"symbol_count\": " << map.symbol_count << ",\n";
+    out << "  \"edge_count\": " << map.edge_count << ",\n";
+    out << "  \"top_symbols\": [\n";
+    for (size_t i = 0; i < map.top_symbols.size(); ++i) {
+        const ContextSymbol& symbol = map.top_symbols[i];
+        out << "    {\n";
+        out << "      \"name\": \"" << symbol.name << "\",\n";
+        out << "      \"type\": \"" << type_name_sentence(symbol.type) << "\",\n";
+        out << "      \"location\": \"" << symbol.file_path << ":" << symbol.start_line << "-" << symbol.end_line
+            << "\"\n";
+        out << "    }";
+        if (i + 1 < map.top_symbols.size()) {
+            out << ",";
+        }
+        out << "\n";
+    }
+    out << "  ],\n";
+    out << "  \"hotspot_files\": [\n";
+    for (size_t i = 0; i < map.hotspot_files.size(); ++i) {
+        const ContextFile& file = map.hotspot_files[i];
+        out << "    {\n";
+        out << "      \"path\": \"" << file.file_path << "\",\n";
+        out << "      \"symbol_count\": " << file.symbol_count << ",\n";
+        out << "      \"mutated_count\": " << file.mutated_count << "\n";
+        out << "    }";
+        if (i + 1 < map.hotspot_files.size()) {
+            out << ",";
+        }
+        out << "\n";
+    }
+    out << "  ]\n";
+    out << "}\n";
+    return out.str();
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

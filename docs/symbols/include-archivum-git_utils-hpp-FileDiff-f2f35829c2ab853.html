@@ -1,0 +1,53 @@
+---
+title: "FileDiff | API Reference"
+---
+
+# FileDiff
+
+> Struct defined in `include/archivum/git_utils.hpp`
+
+Use this page to understand how `FileDiff` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Struct |
+| **Source File** | `include/archivum/git_utils.hpp` |
+| **Source Range** | Lines 19 to 22 |
+| **Interface Hash** | `14394582939393547861` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+struct FileDiff
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `ModifiedRange`
+- `file_path`
+- `modified_lines`
+- `std`
+- `string`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+struct FileDiff {
+    std::string file_path;
+    std::vector<ModifiedRange> modified_lines;
+};
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

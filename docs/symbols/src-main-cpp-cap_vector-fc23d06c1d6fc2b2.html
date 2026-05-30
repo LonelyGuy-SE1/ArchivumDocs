@@ -1,0 +1,55 @@
+---
+title: "cap_vector | API Reference"
+---
+
+# cap_vector
+
+> Function defined in `src/main.cpp`
+
+Use this page to understand how `cap_vector` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/main.cpp` |
+| **Source Range** | Lines 223 to 227 |
+| **Interface Hash** | `10991254964017375799` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+void cap_vector(std::vector<T>& values, size_t limit)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `T`
+- `limit`
+- `resize`
+- `size`
+- `std`
+- `values`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+void cap_vector(std::vector<T>& values, size_t limit) {
+    if (values.size() > limit) {
+        values.resize(limit);
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

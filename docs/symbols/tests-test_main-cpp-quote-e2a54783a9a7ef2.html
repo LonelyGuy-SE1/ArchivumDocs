@@ -1,0 +1,48 @@
+---
+title: "quote | API Reference"
+---
+
+# quote
+
+> Function defined in `tests/test_main.cpp`
+
+Use this page to understand how `quote` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `tests/test_main.cpp` |
+| **Source Range** | Lines 58 to 58 |
+| **Interface Hash** | `18006776849801541055` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string quote(const std::filesystem::path& path)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `filesystem`
+- `path`
+- `std`
+- `string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string quote(const std::filesystem::path& path) { return "\"" + path.string() + "\""; }
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

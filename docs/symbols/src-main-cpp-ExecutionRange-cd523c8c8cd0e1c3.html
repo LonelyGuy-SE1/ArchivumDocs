@@ -1,0 +1,55 @@
+---
+title: "ExecutionRange | API Reference"
+---
+
+# ExecutionRange
+
+> Struct defined in `src/main.cpp`
+
+Use this page to understand how `ExecutionRange` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Struct |
+| **Source File** | `src/main.cpp` |
+| **Source Range** | Lines 26 to 31 |
+| **Interface Hash** | `8244194309201230723` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+struct ExecutionRange
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `base_sha`
+- `head_sha`
+- `initial_scan`
+- `source`
+- `std`
+- `string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+struct ExecutionRange {
+    std::string base_sha;
+    std::string head_sha;
+    std::string source;
+    bool initial_scan;
+};
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

@@ -1,0 +1,91 @@
+---
+title: "resolve_range | API Reference"
+---
+
+# resolve_range
+
+> Function defined in `src/main.cpp`
+
+Use this page to understand how `resolve_range` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/main.cpp` |
+| **Source Range** | Lines 133 to 158 |
+| **Interface Hash** | `18408041468797764122` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+ExecutionRange resolve_range(const std::vector<std::string>& coordinates, archivum::GitScanner& scanner)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `ExecutionRange`
+- `GitScanner`
+- `archivum`
+- `arg`
+- `base`
+- `coordinates`
+- `empty`
+- `has_value`
+- `head`
+- `initial`
+- `kInitialCommit`
+- `optional`
+- `parent`
+- `parent_of`
+- `resolve_reference`
+- `runtime_error`
+- `scanner`
+- `size`
+- `std`
+- `string`
+- `value_or`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+ExecutionRange resolve_range(const std::vector<std::string>& coordinates, archivum::GitScanner& scanner) {
+    if (coordinates.empty()) {
+        std::string head = scanner.resolve_reference("HEAD");
+        std::optional<std::string> parent = scanner.parent_of(head);
+        return {parent.value_or(kInitialCommit), head, parent.has_value() ? "auto" : "initial", !parent.has_value()};
+    }
+
+    if (coordinates.size() == 1) {
+        std::string arg = coordinates[0];
+        std::string head = scanner.resolve_reference(arg);
+        std::optional<std::string> parent = scanner.parent_of(head);
+        return {parent.value_or(kInitialCommit), head, "head-ref", !parent.has_value()};
+    }
+
+    if (coordinates.size() == 2) {
+        std::string base = coordinates[0];
+        std::string head = scanner.resolve_reference(coordinates[1]);
+        bool initial = base == kInitialCommit;
+        if (!initial) {
+            base = scanner.resolve_reference(base);
+        }
+        return {base, head, "explicit", initial};
+    }
+
+    throw std::runtime_error("[ArchivumDocs] FATAL: Expected zero, one, or two Git coordinates.");
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

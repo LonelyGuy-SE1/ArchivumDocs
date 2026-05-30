@@ -1,0 +1,47 @@
+---
+title: "DependencyGraph::node_count | API Reference"
+---
+
+# DependencyGraph::node_count
+
+> Function defined in `src/graph.cpp`
+
+Use this page to understand how `DependencyGraph::node_count` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/graph.cpp` |
+| **Source Range** | Lines 129 to 129 |
+| **Interface Hash** | `17773914781795580924` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+size_t DependencyGraph::node_count() const
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `DependencyGraph`
+- `registry`
+- `size`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+size_t DependencyGraph::node_count() const { return registry.size(); }
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

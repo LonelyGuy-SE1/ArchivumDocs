@@ -1,0 +1,72 @@
+---
+title: "request_payload | API Reference"
+---
+
+# request_payload
+
+> Function defined in `src/api.cpp`
+
+Use this page to understand how `request_payload` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/api.cpp` |
+| **Source Range** | Lines 216 to 231 |
+| **Interface Hash** | `17069801396756064696` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string request_payload(const ProviderRequest& request)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `ProviderRequest`
+- `json_escape`
+- `model`
+- `ostringstream`
+- `out`
+- `prompt`
+- `provider`
+- `reasoning_effort`
+- `request`
+- `std`
+- `str`
+- `string`
+- `verbosity`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string request_payload(const ProviderRequest& request) {
+    std::ostringstream out;
+    out << "{";
+    out << "\"model\":\"" << json_escape(request.model) << "\",";
+
+    if (request.provider == "openai" || request.provider == "openrouter") {
+        out << "\"messages\":[{\"role\":\"user\",\"content\":\"" << json_escape(request.prompt) << "\"}]";
+    } else {
+        out << "\"input\":\"" << json_escape(request.prompt) << "\",";
+        out << "\"reasoning\":{\"effort\":\"" << json_escape(request.reasoning_effort) << "\"},";
+        out << "\"text\":{\"verbosity\":\"" << json_escape(request.verbosity) << "\"}";
+    }
+
+    out << "}";
+    return out.str();
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

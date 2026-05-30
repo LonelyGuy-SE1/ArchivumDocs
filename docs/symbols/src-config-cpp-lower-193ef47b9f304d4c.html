@@ -1,0 +1,57 @@
+---
+title: "lower | API Reference"
+---
+
+# lower
+
+> Function defined in `src/config.cpp`
+
+Use this page to understand how `lower` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/config.cpp` |
+| **Source Range** | Lines 23 to 27 |
+| **Interface Hash** | `8143430427998414498` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string lower(std::string value)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `begin`
+- `c`
+- `end`
+- `static_cast`
+- `std`
+- `string`
+- `tolower`
+- `transform`
+- `value`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string lower(std::string value) {
+    std::transform(value.begin(), value.end(), value.begin(),
+                   [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+    return value;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

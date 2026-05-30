@@ -1,0 +1,89 @@
+---
+title: "parse_cli | API Reference"
+---
+
+# parse_cli
+
+> Function defined in `src/main.cpp`
+
+Use this page to understand how `parse_cli` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/main.cpp` |
+| **Source Range** | Lines 101 to 131 |
+| **Interface Hash** | `3872946081530822530` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+CliOptions parse_cli(int argc, char* argv[])
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `CliOptions`
+- `arg`
+- `argc`
+- `argv`
+- `config_path`
+- `coordinates`
+- `cout`
+- `exit`
+- `index`
+- `options`
+- `push_back`
+- `runtime_error`
+- `size`
+- `std`
+- `string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+CliOptions parse_cli(int argc, char* argv[]) {
+    CliOptions options;
+
+    for (int index = 1; index < argc; ++index) {
+        std::string arg = argv[index];
+        if (arg == "--help" || arg == "-h") {
+            std::cout << "Usage: archivum [--config path] [base_sha head_sha]\n";
+            std::cout << "       archivum [--config path] [head_ref]\n";
+            std::cout << "       archivum [--config path]\n";
+            std::exit(0);
+        }
+        if (arg == "--version") {
+            std::cout << "ArchivumDocs 1.0.0\n";
+            std::exit(0);
+        }
+        if (arg == "--config") {
+            if (index + 1 >= argc) {
+                throw std::runtime_error("[ArchivumDocs] FATAL: --config requires a path.");
+            }
+            options.config_path = argv[++index];
+            continue;
+        }
+        options.coordinates.push_back(arg);
+    }
+
+    if (options.coordinates.size() > 2) {
+        throw std::runtime_error("[ArchivumDocs] FATAL: Expected zero, one, or two Git coordinates.");
+    }
+
+    return options;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

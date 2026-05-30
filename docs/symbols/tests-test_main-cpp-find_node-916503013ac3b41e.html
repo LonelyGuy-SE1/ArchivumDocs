@@ -1,0 +1,59 @@
+---
+title: "find_node | API Reference"
+---
+
+# find_node
+
+> Function defined in `tests/test_main.cpp`
+
+Use this page to understand how `find_node` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `tests/test_main.cpp` |
+| **Source Range** | Lines 80 to 83 |
+| **Interface Hash** | `15596686308944566493` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+const archivum::Node* find_node(const std::vector<archivum::Node>& nodes, const std::string& name)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `Node`
+- `archivum`
+- `begin`
+- `end`
+- `find_if`
+- `it`
+- `name`
+- `node`
+- `nodes`
+- `std`
+- `string`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+const archivum::Node* find_node(const std::vector<archivum::Node>& nodes, const std::string& name) {
+    auto it = std::find_if(nodes.begin(), nodes.end(), [&](const archivum::Node& node) { return node.name == name; });
+    return it == nodes.end() ? nullptr : &*it;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

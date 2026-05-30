@@ -1,0 +1,70 @@
+---
+title: "provider_skips_when_key_is_absent | API Reference"
+---
+
+# provider_skips_when_key_is_absent
+
+> Function defined in `tests/test_main.cpp`
+
+Use this page to understand how `provider_skips_when_key_is_absent` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `tests/test_main.cpp` |
+| **Source Range** | Lines 298 to 310 |
+| **Interface Hash** | `5554277694160525600` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+void provider_skips_when_key_is_absent()
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `ProviderRequest`
+- `api_key_env`
+- `archivum`
+- `endpoint`
+- `fail_on_error`
+- `generate_documentation_update`
+- `has_value`
+- `model`
+- `prompt`
+- `provider`
+- `reasoning_effort`
+- `request`
+- `require`
+- `verbosity`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+void provider_skips_when_key_is_absent() {
+    archivum::ProviderRequest request;
+    request.provider = "openai";
+    request.endpoint = "https://api.openai.com/v1/responses";
+    request.model = "gpt-test";
+    request.api_key_env = "ARCHIVUM_TEST_MISSING_KEY";
+    request.reasoning_effort = "low";
+    request.verbosity = "low";
+    request.prompt = "hello";
+    request.fail_on_error = false;
+
+    require(!archivum::generate_documentation_update(request).has_value(), "provider should skip without credentials");
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

@@ -1,0 +1,74 @@
+---
+title: "write_context_map | API Reference"
+---
+
+# write_context_map
+
+> Function defined in `src/docs.cpp`
+
+Use this page to understand how `write_context_map` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/docs.cpp` |
+| **Source Range** | Lines 641 to 652 |
+| **Interface Hash** | `7543605723537740325` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+bool write_context_map(const ArchivumConfig& config, const ContextMap& map, const std::filesystem::path& root, DocumentationWriteResult& result)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `ArchivumConfig`
+- `ContextMap`
+- `DocumentationWriteResult`
+- `changed`
+- `config`
+- `context_map_file`
+- `context_path`
+- `docs_dir`
+- `docs_root`
+- `filesystem`
+- `map`
+- `path`
+- `push_back`
+- `render_context_map`
+- `result`
+- `root`
+- `std`
+- `write_if_changed`
+- `written_files`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+bool write_context_map(const ArchivumConfig& config, const ContextMap& map, const std::filesystem::path& root,
+                       DocumentationWriteResult& result) {
+    std::filesystem::path docs_root = root / config.docs_dir;
+    std::filesystem::path context_path = docs_root / config.context_map_file;
+    if (write_if_changed(context_path, render_context_map(map))) {
+        result.changed = true;
+        result.written_files.push_back(context_path);
+        return true;
+    }
+
+    return false;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

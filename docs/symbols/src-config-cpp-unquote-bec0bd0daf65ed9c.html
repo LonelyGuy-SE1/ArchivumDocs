@@ -1,0 +1,59 @@
+---
+title: "unquote | API Reference"
+---
+
+# unquote
+
+> Function defined in `src/config.cpp`
+
+Use this page to understand how `unquote` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/config.cpp` |
+| **Source Range** | Lines 29 to 36 |
+| **Interface Hash** | `4566692066304292878` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string unquote(std::string value)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `back`
+- `front`
+- `size`
+- `std`
+- `string`
+- `substr`
+- `trim`
+- `value`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string unquote(std::string value) {
+    value = trim(value);
+    if (value.size() >= 2 &&
+        ((value.front() == '"' && value.back() == '"') || (value.front() == '\'' && value.back() == '\''))) {
+        return value.substr(1, value.size() - 2);
+    }
+    return value;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

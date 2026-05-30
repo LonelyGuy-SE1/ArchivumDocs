@@ -1,0 +1,59 @@
+---
+title: "~ScopedTemp | API Reference"
+---
+
+# ~ScopedTemp
+
+> Method defined in `tests/test_main.cpp`
+
+Use this page to understand how `~ScopedTemp` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Method |
+| **Source File** | `tests/test_main.cpp` |
+| **Source Range** | Lines 32 to 37 |
+| **Interface Hash** | `14990219456870877200` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+~ScopedTemp()
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `ScopedTemp`
+- `error_code`
+- `filename`
+- `filesystem`
+- `ignored`
+- `path_`
+- `remove_all`
+- `starts_with`
+- `std`
+- `string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+    ~ScopedTemp() {
+        std::error_code ignored;
+        if (path_.filename().string().starts_with("archivum_tests_")) {
+            std::filesystem::remove_all(path_, ignored);
+        }
+    }
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

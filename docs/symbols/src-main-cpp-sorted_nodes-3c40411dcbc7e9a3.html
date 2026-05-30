@@ -1,0 +1,89 @@
+---
+title: "sorted_nodes | API Reference"
+---
+
+# sorted_nodes
+
+> Function defined in `src/main.cpp`
+
+Use this page to understand how `sorted_nodes` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/main.cpp` |
+| **Source Range** | Lines 184 to 205 |
+| **Interface Hash** | `3751818328144918680` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::vector<archivum::Node> sorted_nodes(const std::unordered_set<archivum::NodeId>& ids, const archivum::DependencyGraph& graph)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `DependencyGraph`
+- `Node`
+- `NodeId`
+- `archivum`
+- `begin`
+- `contains`
+- `end`
+- `file_path`
+- `get_node`
+- `graph`
+- `id`
+- `ids`
+- `left`
+- `name`
+- `nodes`
+- `push_back`
+- `reserve`
+- `right`
+- `size`
+- `sort`
+- `start_line`
+- `std`
+- `unordered_set`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::vector<archivum::Node> sorted_nodes(const std::unordered_set<archivum::NodeId>& ids,
+                                         const archivum::DependencyGraph& graph) {
+    std::vector<archivum::Node> nodes;
+    nodes.reserve(ids.size());
+    for (archivum::NodeId id : ids) {
+        if (graph.contains(id)) {
+            nodes.push_back(graph.get_node(id));
+        }
+    }
+
+    std::sort(nodes.begin(), nodes.end(), [](const archivum::Node& left, const archivum::Node& right) {
+        if (left.file_path != right.file_path) {
+            return left.file_path < right.file_path;
+        }
+        if (left.start_line != right.start_line) {
+            return left.start_line < right.start_line;
+        }
+        return left.name < right.name;
+    });
+
+    return nodes;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

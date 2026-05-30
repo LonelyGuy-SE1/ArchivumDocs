@@ -1,0 +1,88 @@
+---
+title: "ArchivumConfig | API Reference"
+---
+
+# ArchivumConfig
+
+> Struct defined in `include/archivum/config.hpp`
+
+Use this page to understand how `ArchivumConfig` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Struct |
+| **Source File** | `include/archivum/config.hpp` |
+| **Source Range** | Lines 12 to 32 |
+| **Interface Hash** | `2745155480970111611` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+struct ArchivumConfig
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `PULL_REQUEST`
+- `WriteMode`
+- `api_key_env`
+- `context_map_file`
+- `docs_dir`
+- `endpoint`
+- `fail_on_provider_error`
+- `ignore_dirs`
+- `index_file`
+- `manifest_file`
+- `max_context_bytes`
+- `max_symbols`
+- `model`
+- `project_name`
+- `project_tagline`
+- `provider`
+- `reasoning_effort`
+- `std`
+- `string`
+- `symbols_dir`
+- `update_docs`
+- `vector`
+- `verbosity`
+- `write_mode`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+struct ArchivumConfig {
+    std::string project_name;
+    std::string project_tagline;
+    std::string docs_dir = "docs";
+    std::string index_file = "index.md";
+    std::string symbols_dir = "symbols";
+    std::string manifest_file = "archivum-manifest.json";
+    std::string context_map_file = "archivum-context-map.json";
+    std::string provider = "auto";
+    std::string endpoint = "https://api.openai.com/v1/responses";
+    std::string model = "gpt-5.5";
+    std::string api_key_env = "OPENAI_API_KEY";
+    std::string reasoning_effort = "low";
+    std::string verbosity = "low";
+    WriteMode write_mode = WriteMode::PULL_REQUEST;
+    size_t max_context_bytes = 180000;
+    size_t max_symbols = 250;
+    bool fail_on_provider_error = false;
+    bool update_docs = true;
+    std::vector<std::string> ignore_dirs = {".git", ".github", ".vscode", "build", "docs"};
+};
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

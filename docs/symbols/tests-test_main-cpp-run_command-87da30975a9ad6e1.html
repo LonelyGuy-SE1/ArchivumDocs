@@ -1,0 +1,54 @@
+---
+title: "run_command | API Reference"
+---
+
+# run_command
+
+> Function defined in `tests/test_main.cpp`
+
+Use this page to understand how `run_command` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `tests/test_main.cpp` |
+| **Source Range** | Lines 60 to 63 |
+| **Interface Hash** | `5972373344981117565` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+void run_command(const std::string& command)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `c_str`
+- `code`
+- `command`
+- `require`
+- `std`
+- `string`
+- `system`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+void run_command(const std::string& command) {
+    int code = std::system(command.c_str());
+    require(code == 0, "command failed: " + command);
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

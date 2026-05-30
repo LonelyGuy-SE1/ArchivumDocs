@@ -1,0 +1,59 @@
+---
+title: "GitScanner::GitScanner | API Reference"
+---
+
+# GitScanner::GitScanner
+
+> Function defined in `src/git_utils.cpp`
+
+Use this page to understand how `GitScanner::GitScanner` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/git_utils.cpp` |
+| **Source Range** | Lines 33 to 39 |
+| **Interface Hash** | `13882695378004821769` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+GitScanner::GitScanner(const std::string& repo_path)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `c_str`
+- `error`
+- `git_repository_open`
+- `last_git_error`
+- `repo`
+- `repo_path`
+- `runtime_error`
+- `std`
+- `string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+GitScanner::GitScanner(const std::string& repo_path) {
+    repo = nullptr;
+    int error = git_repository_open(&repo, repo_path.c_str());
+    if (error < 0) {
+        throw std::runtime_error(last_git_error("Failed to open Git repository at " + repo_path));
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

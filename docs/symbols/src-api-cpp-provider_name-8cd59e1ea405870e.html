@@ -1,0 +1,62 @@
+---
+title: "provider_name | API Reference"
+---
+
+# provider_name
+
+> Function defined in `src/api.cpp`
+
+Use this page to understand how `provider_name` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/api.cpp` |
+| **Source Range** | Lines 17 to 31 |
+| **Interface Hash** | `15812512912004546997` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string provider_name()
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `getenv`
+- `present`
+- `std`
+- `string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string provider_name() {
+    if (present(std::getenv("ARCHIVUM_LLM_ENDPOINT"))) {
+        return "custom";
+    }
+    if (present(std::getenv("OPENROUTER_API_KEY"))) {
+        return "openrouter";
+    }
+    if (present(std::getenv("OPENAI_API_KEY"))) {
+        return "openai";
+    }
+    if (present(std::getenv("ANTHROPIC_API_KEY"))) {
+        return "anthropic";
+    }
+    return "shadow";
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

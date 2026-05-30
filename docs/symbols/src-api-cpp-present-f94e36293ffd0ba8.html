@@ -1,0 +1,45 @@
+---
+title: "present | API Reference"
+---
+
+# present
+
+> Function defined in `src/api.cpp`
+
+Use this page to understand how `present` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/api.cpp` |
+| **Source Range** | Lines 15 to 15 |
+| **Interface Hash** | `6147354491670422613` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+bool present(const char* value)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `value`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+bool present(const char* value) { return value != nullptr && value[0] != '\0'; }
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

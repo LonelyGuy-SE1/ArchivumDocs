@@ -1,0 +1,50 @@
+---
+title: "DependencyGraph::contains | API Reference"
+---
+
+# DependencyGraph::contains
+
+> Function defined in `src/graph.cpp`
+
+Use this page to understand how `DependencyGraph::contains` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/graph.cpp` |
+| **Source Range** | Lines 90 to 90 |
+| **Interface Hash** | `4555315540614517243` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+bool DependencyGraph::contains(NodeId id) const
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `DependencyGraph`
+- `NodeId`
+- `end`
+- `find`
+- `id`
+- `registry`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+bool DependencyGraph::contains(NodeId id) const { return registry.find(id) != registry.end(); }
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

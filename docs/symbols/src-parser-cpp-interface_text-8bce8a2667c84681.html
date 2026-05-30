@@ -1,0 +1,82 @@
+---
+title: "interface_text | API Reference"
+---
+
+# interface_text
+
+> Function defined in `src/parser.cpp`
+
+Use this page to understand how `interface_text` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/parser.cpp` |
+| **Source Range** | Lines 145 to 164 |
+| **Interface Hash** | `12612800021564858312` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string interface_text(TSNode node, const std::string& source_code)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `TSNode`
+- `body`
+- `brace`
+- `end`
+- `find`
+- `node`
+- `normalize_space`
+- `npos`
+- `size`
+- `source_code`
+- `start`
+- `static_cast`
+- `std`
+- `string`
+- `substr`
+- `ts_node_child_by_field_name`
+- `ts_node_end_byte`
+- `ts_node_is_null`
+- `ts_node_start_byte`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string interface_text(TSNode node, const std::string& source_code) {
+    uint32_t start = ts_node_start_byte(node);
+    uint32_t end = ts_node_end_byte(node);
+
+    TSNode body = ts_node_child_by_field_name(node, "body", 4);
+    if (!ts_node_is_null(body)) {
+        end = ts_node_start_byte(body);
+    } else {
+        size_t brace = source_code.find('{', start);
+        if (brace != std::string::npos && brace < end) {
+            end = static_cast<uint32_t>(brace);
+        }
+    }
+
+    if (start > end || end > source_code.size()) {
+        return {};
+    }
+
+    return normalize_space(source_code.substr(start, end - start));
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

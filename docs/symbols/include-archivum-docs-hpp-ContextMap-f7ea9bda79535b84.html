@@ -1,0 +1,57 @@
+---
+title: "ContextMap | API Reference"
+---
+
+# ContextMap
+
+> Struct defined in `include/archivum/docs.hpp`
+
+Use this page to understand how `ContextMap` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Struct |
+| **Source File** | `include/archivum/docs.hpp` |
+| **Source Range** | Lines 45 to 50 |
+| **Interface Hash** | `1733268601115684867` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+struct ContextMap
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `ContextFile`
+- `ContextSymbol`
+- `edge_count`
+- `hotspot_files`
+- `std`
+- `symbol_count`
+- `top_symbols`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+struct ContextMap {
+    size_t symbol_count = 0;
+    size_t edge_count = 0;
+    std::vector<ContextSymbol> top_symbols;
+    std::vector<ContextFile> hotspot_files;
+};
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

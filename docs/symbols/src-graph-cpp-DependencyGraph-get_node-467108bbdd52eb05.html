@@ -1,0 +1,61 @@
+---
+title: "DependencyGraph::get_node | API Reference"
+---
+
+# DependencyGraph::get_node
+
+> Function defined in `src/graph.cpp`
+
+Use this page to understand how `DependencyGraph::get_node` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/graph.cpp` |
+| **Source Range** | Lines 92 to 98 |
+| **Interface Hash** | `3897427822453049738` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+const Node& DependencyGraph::get_node(NodeId id) const
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `DependencyGraph`
+- `Node`
+- `NodeId`
+- `end`
+- `find`
+- `id`
+- `it`
+- `registry`
+- `runtime_error`
+- `second`
+- `std`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+const Node& DependencyGraph::get_node(NodeId id) const {
+    auto it = registry.find(id);
+    if (it != registry.end()) {
+        return it->second;
+    }
+    throw std::runtime_error("[ArchivumDocs] FATAL: Attempted to access unregistered Node ID.");
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

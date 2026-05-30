@@ -1,0 +1,65 @@
+---
+title: "shell_quote | API Reference"
+---
+
+# shell_quote
+
+> Function defined in `src/api.cpp`
+
+Use this page to understand how `shell_quote` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/api.cpp` |
+| **Source Range** | Lines 173 to 186 |
+| **Interface Hash** | `2196442106142709904` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string shell_quote(const std::filesystem::path& path)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `c`
+- `filesystem`
+- `path`
+- `push_back`
+- `quoted`
+- `std`
+- `string`
+- `value`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string shell_quote(const std::filesystem::path& path) {
+    std::string value = path.string();
+    std::string quoted = "\"";
+    for (char c : value) {
+        if (c == '"' || c == '\\') {
+            quoted.push_back('\\');
+            quoted.push_back(c);
+        } else {
+            quoted.push_back(c);
+        }
+    }
+    quoted.push_back('"');
+    return quoted;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

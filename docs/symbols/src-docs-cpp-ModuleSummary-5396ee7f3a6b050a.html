@@ -1,0 +1,53 @@
+---
+title: "ModuleSummary | API Reference"
+---
+
+# ModuleSummary
+
+> Struct defined in `src/docs.cpp`
+
+Use this page to understand how `ModuleSummary` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Struct |
+| **Source File** | `src/docs.cpp` |
+| **Source Range** | Lines 301 to 305 |
+| **Interface Hash** | `5150521190125088256` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+struct ModuleSummary
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `mutated_count`
+- `name`
+- `std`
+- `string`
+- `symbol_count`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+    struct ModuleSummary {
+        std::string name;
+        size_t symbol_count = 0;
+        size_t mutated_count = 0;
+    };
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

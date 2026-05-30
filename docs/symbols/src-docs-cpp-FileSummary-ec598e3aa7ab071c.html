@@ -1,0 +1,53 @@
+---
+title: "FileSummary | API Reference"
+---
+
+# FileSummary
+
+> Struct defined in `src/docs.cpp`
+
+Use this page to understand how `FileSummary` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Struct |
+| **Source File** | `src/docs.cpp` |
+| **Source Range** | Lines 246 to 250 |
+| **Interface Hash** | `5891246750318711986` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+struct FileSummary
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `mutated_count`
+- `path`
+- `std`
+- `string`
+- `symbol_count`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+    struct FileSummary {
+        std::string path;
+        size_t symbol_count = 0;
+        size_t mutated_count = 0;
+    };
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

@@ -1,0 +1,135 @@
+---
+title: "apply_pair | API Reference"
+---
+
+# apply_pair
+
+> Function defined in `src/config.cpp`
+
+Use this page to understand how `apply_pair` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/config.cpp` |
+| **Source Range** | Lines 68 to 119 |
+| **Interface Hash** | `15333630402677765027` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+void apply_pair(ArchivumConfig& config, std::string key, const std::string& value)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `ArchivumConfig`
+- `api_key_env`
+- `clear`
+- `config`
+- `context_map_file`
+- `docs_dir`
+- `empty`
+- `endpoint`
+- `fail_on_provider_error`
+- `getline`
+- `ignore_dirs`
+- `index_file`
+- `item`
+- `key`
+- `lower`
+- `manifest_file`
+- `max_context_bytes`
+- `max_symbols`
+- `model`
+- `parse_bool`
+- `parse_size`
+- `parse_write_mode`
+- `parsed`
+- `project_name`
+- `project_tagline`
+- `provider`
+- `push_back`
+- `reasoning_effort`
+- `std`
+- `string`
+- `stringstream`
+- `symbols_dir`
+- `trim`
+- `trimmed`
+- `unquote`
+- `update_docs`
+- `value`
+- `values`
+- `verbosity`
+- `write_mode`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+void apply_pair(ArchivumConfig& config, std::string key, const std::string& value) {
+    key = lower(trim(key));
+    std::string parsed = unquote(value);
+
+    if (key == "project_name" || key == "project.name") {
+        config.project_name = parsed;
+    } else if (key == "project_tagline" || key == "project.tagline") {
+        config.project_tagline = parsed;
+    } else if (key == "docs_dir" || key == "docs.dir") {
+        config.docs_dir = parsed;
+    } else if (key == "index_file" || key == "docs.index_file") {
+        config.index_file = parsed;
+    } else if (key == "symbols_dir" || key == "docs.symbols_dir") {
+        config.symbols_dir = parsed;
+    } else if (key == "manifest_file" || key == "docs.manifest_file") {
+        config.manifest_file = parsed;
+    } else if (key == "context_map_file" || key == "docs.context_map_file") {
+        config.context_map_file = parsed;
+    } else if (key == "provider" || key == "ai.provider") {
+        config.provider = lower(parsed);
+    } else if (key == "endpoint" || key == "ai.endpoint") {
+        config.endpoint = parsed;
+    } else if (key == "model" || key == "ai.model") {
+        config.model = parsed;
+    } else if (key == "api_key_env" || key == "ai.api_key_env") {
+        config.api_key_env = parsed;
+    } else if (key == "reasoning_effort" || key == "ai.reasoning_effort") {
+        config.reasoning_effort = lower(parsed);
+    } else if (key == "verbosity" || key == "ai.verbosity") {
+        config.verbosity = lower(parsed);
+    } else if (key == "write_mode" || key == "mode") {
+        config.write_mode = parse_write_mode(parsed);
+    } else if (key == "max_context_bytes" || key == "limits.max_context_bytes") {
+        config.max_context_bytes = parse_size(key, parsed);
+    } else if (key == "max_symbols" || key == "limits.max_symbols") {
+        config.max_symbols = parse_size(key, parsed);
+    } else if (key == "fail_on_provider_error" || key == "ai.fail_on_error") {
+        config.fail_on_provider_error = parse_bool(parsed);
+    } else if (key == "update_docs" || key == "docs.update") {
+        config.update_docs = parse_bool(parsed);
+    } else if (key == "ignore_dirs" || key == "scan.ignore_dirs") {
+        config.ignore_dirs.clear();
+        std::stringstream values(parsed);
+        std::string item;
+        while (std::getline(values, item, ',')) {
+            std::string trimmed = trim(item);
+            if (!trimmed.empty()) {
+                config.ignore_dirs.push_back(trimmed);
+            }
+        }
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

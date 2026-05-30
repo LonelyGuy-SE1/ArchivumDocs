@@ -1,0 +1,60 @@
+---
+title: "temp_file | API Reference"
+---
+
+# temp_file
+
+> Function defined in `src/api.cpp`
+
+Use this page to understand how `temp_file` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/api.cpp` |
+| **Source Range** | Lines 168 to 171 |
+| **Interface Hash** | `12214752897706943444` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::filesystem::path temp_file(const std::string& name)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `chrono`
+- `count`
+- `filesystem`
+- `name`
+- `now`
+- `path`
+- `stamp`
+- `std`
+- `steady_clock`
+- `string`
+- `temp_directory_path`
+- `time_since_epoch`
+- `to_string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::filesystem::path temp_file(const std::string& name) {
+    auto stamp = std::chrono::steady_clock::now().time_since_epoch().count();
+    return std::filesystem::temp_directory_path() / ("archivum-" + name + "-" + std::to_string(stamp));
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

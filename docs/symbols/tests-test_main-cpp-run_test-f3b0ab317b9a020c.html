@@ -1,0 +1,53 @@
+---
+title: "run_test | API Reference"
+---
+
+# run_test
+
+> Function defined in `tests/test_main.cpp`
+
+Use this page to understand how `run_test` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `tests/test_main.cpp` |
+| **Source Range** | Lines 312 to 315 |
+| **Interface Hash** | `16133556231082306989` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+void run_test(const std::string& name, const std::function<void()>& test)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `cout`
+- `function`
+- `name`
+- `std`
+- `string`
+- `test`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+void run_test(const std::string& name, const std::function<void()>& test) {
+    test();
+    std::cout << "[PASS] " << name << "\n";
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

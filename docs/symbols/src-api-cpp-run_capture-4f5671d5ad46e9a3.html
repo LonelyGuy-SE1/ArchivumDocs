@@ -1,0 +1,90 @@
+---
+title: "run_capture | API Reference"
+---
+
+# run_capture
+
+> Function defined in `src/api.cpp`
+
+Use this page to understand how `run_capture` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/api.cpp` |
+| **Source Range** | Lines 188 to 214 |
+| **Interface Hash** | `8605257546412462562` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string run_capture(const std::string& command)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `FILE`
+- `_WIN32`
+- `_pclose`
+- `_popen`
+- `array`
+- `buffer`
+- `c_str`
+- `code`
+- `command`
+- `data`
+- `fgets`
+- `output`
+- `pclose`
+- `pipe`
+- `popen`
+- `runtime_error`
+- `size`
+- `static_cast`
+- `std`
+- `string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string run_capture(const std::string& command) {
+#ifdef _WIN32
+    FILE* pipe = _popen(command.c_str(), "r");
+#else
+    FILE* pipe = popen(command.c_str(), "r");
+#endif
+    if (pipe == nullptr) {
+        throw std::runtime_error("[ArchivumDocs] FATAL: Failed to start provider transport.");
+    }
+
+    std::array<char, 4096> buffer{};
+    std::string output;
+    while (fgets(buffer.data(), static_cast<int>(buffer.size()), pipe) != nullptr) {
+        output += buffer.data();
+    }
+
+#ifdef _WIN32
+    int code = _pclose(pipe);
+#else
+    int code = pclose(pipe);
+#endif
+    if (code != 0) {
+        throw std::runtime_error("[ArchivumDocs] FATAL: Provider transport exited with a non-zero status.");
+    }
+
+    return output;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

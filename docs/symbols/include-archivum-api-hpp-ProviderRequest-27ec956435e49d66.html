@@ -1,0 +1,63 @@
+---
+title: "ProviderRequest | API Reference"
+---
+
+# ProviderRequest
+
+> Struct defined in `include/archivum/api.hpp`
+
+Use this page to understand how `ProviderRequest` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Struct |
+| **Source File** | `include/archivum/api.hpp` |
+| **Source Range** | Lines 19 to 28 |
+| **Interface Hash** | `14310645714837441786` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+struct ProviderRequest
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `api_key_env`
+- `endpoint`
+- `fail_on_error`
+- `model`
+- `prompt`
+- `provider`
+- `reasoning_effort`
+- `std`
+- `string`
+- `verbosity`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+struct ProviderRequest {
+    std::string provider;
+    std::string endpoint;
+    std::string model;
+    std::string api_key_env;
+    std::string reasoning_effort;
+    std::string verbosity;
+    std::string prompt;
+    bool fail_on_error;
+};
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

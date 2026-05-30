@@ -1,0 +1,73 @@
+---
+title: "full_repository_diffs | API Reference"
+---
+
+# full_repository_diffs
+
+> Function defined in `src/main.cpp`
+
+Use this page to understand how `full_repository_diffs` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/main.cpp` |
+| **Source Range** | Lines 87 to 99 |
+| **Interface Hash** | `2066604460308760143` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::vector<archivum::FileDiff> full_repository_diffs(const std::vector<std::string>& files)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `FileDiff`
+- `archivum`
+- `diff`
+- `diffs`
+- `file`
+- `file_path`
+- `files`
+- `max`
+- `modified_lines`
+- `move`
+- `numeric_limits`
+- `push_back`
+- `reserve`
+- `size`
+- `std`
+- `string`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::vector<archivum::FileDiff> full_repository_diffs(const std::vector<std::string>& files) {
+    std::vector<archivum::FileDiff> diffs;
+    diffs.reserve(files.size());
+
+    for (const std::string& file : files) {
+        archivum::FileDiff diff;
+        diff.file_path = file;
+        diff.modified_lines.push_back({1, std::numeric_limits<uint32_t>::max()});
+        diffs.push_back(std::move(diff));
+    }
+
+    return diffs;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

@@ -1,0 +1,121 @@
+---
+title: "context_map_writer_is_idempotent | API Reference"
+---
+
+# context_map_writer_is_idempotent
+
+> Function defined in `tests/test_main.cpp`
+
+Use this page to understand how `context_map_writer_is_idempotent` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `tests/test_main.cpp` |
+| **Source Range** | Lines 206 to 248 |
+| **Interface Hash** | `4489813755075122879` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+void context_map_writer_is_idempotent()
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `ArchivumConfig`
+- `ContextMap`
+- `DependencyGraph`
+- `DocumentationWriteResult`
+- `Node`
+- `ScopedTemp`
+- `archivum`
+- `build_context_map`
+- `config`
+- `consumer`
+- `docs_dir`
+- `empty`
+- `end_line`
+- `exists`
+- `file_path`
+- `filesystem`
+- `graph`
+- `hotspot_files`
+- `infer_dependencies`
+- `make_node`
+- `map`
+- `path`
+- `provider`
+- `register_node`
+- `require`
+- `result`
+- `second`
+- `signature`
+- `start_line`
+- `std`
+- `temp`
+- `top_symbols`
+- `write_context_map`
+- `write_file`
+- `wrote_first`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+void context_map_writer_is_idempotent() {
+    ScopedTemp temp;
+    write_file(temp.path() / "sample.cpp",
+               "int provider() {\n"
+               "    return 42;\n"
+               "}\n"
+               "int consumer() {\n"
+               "    return provider();\n"
+               "}\n");
+
+    archivum::Node provider = make_node(1, "provider", {});
+    provider.file_path = "sample.cpp";
+    provider.signature = "int provider()";
+    provider.start_line = 1;
+    provider.end_line = 3;
+
+    archivum::Node consumer = make_node(2, "consumer", {"provider"});
+    consumer.file_path = "sample.cpp";
+    consumer.signature = "int consumer()";
+    consumer.start_line = 4;
+    consumer.end_line = 6;
+
+    archivum::DependencyGraph graph;
+    graph.register_node(provider);
+    graph.register_node(consumer);
+    graph.infer_dependencies();
+
+    archivum::ContextMap map = archivum::build_context_map(graph, {provider}, {provider, consumer});
+
+    archivum::ArchivumConfig config;
+    config.docs_dir = "docs";
+
+    archivum::DocumentationWriteResult result;
+    bool wrote_first = archivum::write_context_map(config, map, temp.path(), result);
+    require(wrote_first, "context map was not written");
+    require(!map.top_symbols.empty(), "context map did not include symbols");
+    require(!map.hotspot_files.empty(), "context map did not include hotspot files");
+
+    archivum::DocumentationWriteResult second;
+    require(!archivum::write_context_map(config, map, temp.path(), second), "context map should be unchanged");
+    require(std::filesystem::exists(temp.path() / "docs" / "archivum-context-map.json"),
+            "context map file missing");
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

@@ -1,0 +1,57 @@
+---
+title: "last_git_error | API Reference"
+---
+
+# last_git_error
+
+> Function defined in `src/git_utils.cpp`
+
+Use this page to understand how `last_git_error` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/git_utils.cpp` |
+| **Source Range** | Lines 13 to 19 |
+| **Interface Hash** | `12728385349285301783` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string last_git_error(const std::string& action)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `action`
+- `error`
+- `git_error`
+- `git_error_last`
+- `message`
+- `std`
+- `string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string last_git_error(const std::string& action) {
+    const git_error* error = git_error_last();
+    if (error != nullptr && error->message != nullptr) {
+        return "[ArchivumDocs] FATAL: " + action + ": " + error->message;
+    }
+    return "[ArchivumDocs] FATAL: " + action + ".";
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

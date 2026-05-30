@@ -1,0 +1,79 @@
+---
+title: "DependencyGraph::nodes | API Reference"
+---
+
+# DependencyGraph::nodes
+
+> Function defined in `src/graph.cpp`
+
+Use this page to understand how `DependencyGraph::nodes` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/graph.cpp` |
+| **Source Range** | Lines 100 to 116 |
+| **Interface Hash** | `18393230026508382801` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::vector<Node> DependencyGraph::nodes() const
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `DependencyGraph`
+- `Node`
+- `begin`
+- `end`
+- `file_path`
+- `id`
+- `left`
+- `name`
+- `node`
+- `push_back`
+- `registry`
+- `reserve`
+- `right`
+- `size`
+- `sort`
+- `start_line`
+- `std`
+- `values`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::vector<Node> DependencyGraph::nodes() const {
+    std::vector<Node> values;
+    values.reserve(registry.size());
+    for (const auto& [id, node] : registry) {
+        values.push_back(node);
+    }
+    std::sort(values.begin(), values.end(), [](const Node& left, const Node& right) {
+        if (left.file_path != right.file_path) {
+            return left.file_path < right.file_path;
+        }
+        if (left.start_line != right.start_line) {
+            return left.start_line < right.start_line;
+        }
+        return left.name < right.name;
+    });
+    return values;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

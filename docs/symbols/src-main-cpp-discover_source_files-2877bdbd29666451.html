@@ -1,0 +1,94 @@
+---
+title: "discover_source_files | API Reference"
+---
+
+# discover_source_files
+
+> Function defined in `src/main.cpp`
+
+Use this page to understand how `discover_source_files` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/main.cpp` |
+| **Source Range** | Lines 61 to 85 |
+| **Interface Hash** | `3605255265365928381` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::vector<std::string> discover_source_files(const std::filesystem::path& root, const std::unordered_set<std::string>& ignore_dirs)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `begin`
+- `directory_entry`
+- `directory_options`
+- `disable_recursion_pending`
+- `end`
+- `entry`
+- `files`
+- `filesystem`
+- `generic_string`
+- `ignore_dirs`
+- `ignored_directory`
+- `is_directory`
+- `is_regular_file`
+- `is_source_file`
+- `it`
+- `path`
+- `push_back`
+- `recursive_directory_iterator`
+- `relative`
+- `root`
+- `skip_permission_denied`
+- `sort`
+- `std`
+- `string`
+- `unordered_set`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::vector<std::string> discover_source_files(const std::filesystem::path& root,
+                                               const std::unordered_set<std::string>& ignore_dirs) {
+    std::vector<std::string> files;
+    std::filesystem::recursive_directory_iterator it(root, std::filesystem::directory_options::skip_permission_denied);
+    std::filesystem::recursive_directory_iterator end;
+
+    for (; it != end; ++it) {
+        const std::filesystem::directory_entry& entry = *it;
+        if (entry.is_directory()) {
+            if (ignored_directory(entry.path(), ignore_dirs)) {
+                it.disable_recursion_pending();
+            }
+            continue;
+        }
+
+        if (!entry.is_regular_file() || !is_source_file(entry.path())) {
+            continue;
+        }
+
+        files.push_back(std::filesystem::relative(entry.path(), root).generic_string());
+    }
+
+    std::sort(files.begin(), files.end());
+    return files;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

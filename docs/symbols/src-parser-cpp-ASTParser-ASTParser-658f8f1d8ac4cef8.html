@@ -1,0 +1,55 @@
+---
+title: "ASTParser::ASTParser | API Reference"
+---
+
+# ASTParser::ASTParser
+
+> Function defined in `src/parser.cpp`
+
+Use this page to understand how `ASTParser::ASTParser` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/parser.cpp` |
+| **Source Range** | Lines 183 to 188 |
+| **Interface Hash** | `15055179494770780192` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+ASTParser::ASTParser()
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `parser`
+- `runtime_error`
+- `std`
+- `tree_sitter_cpp`
+- `ts_parser_new`
+- `ts_parser_set_language`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+ASTParser::ASTParser() {
+    parser = ts_parser_new();
+    if (parser == nullptr || !ts_parser_set_language(parser, tree_sitter_cpp())) {
+        throw std::runtime_error("[ArchivumDocs] FATAL: Failed to initialize the C++ parser.");
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

@@ -1,0 +1,62 @@
+---
+title: "is_source_file | API Reference"
+---
+
+# is_source_file
+
+> Function defined in `src/main.cpp`
+
+Use this page to understand how `is_source_file` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/main.cpp` |
+| **Source Range** | Lines 47 to 54 |
+| **Interface Hash** | `9179527729873657494` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+bool is_source_file(const std::filesystem::path& path)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `begin`
+- `c`
+- `end`
+- `extension`
+- `filesystem`
+- `path`
+- `static_cast`
+- `std`
+- `string`
+- `tolower`
+- `transform`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+bool is_source_file(const std::filesystem::path& path) {
+    std::string extension = path.extension().string();
+    std::transform(extension.begin(), extension.end(), extension.begin(),
+                   [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+
+    return extension == ".c" || extension == ".cc" || extension == ".cpp" || extension == ".cxx" || extension == ".h" ||
+           extension == ".hh" || extension == ".hpp" || extension == ".hxx" || extension == ".ipp";
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

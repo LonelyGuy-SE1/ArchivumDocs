@@ -1,0 +1,62 @@
+---
+title: "symbol_key | API Reference"
+---
+
+# symbol_key
+
+> Function defined in `src/graph.cpp`
+
+Use this page to understand how `symbol_key` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/graph.cpp` |
+| **Source Range** | Lines 10 to 18 |
+| **Interface Hash** | `11729513786155181400` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string symbol_key(const std::string& value)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `find`
+- `npos`
+- `rfind`
+- `scope`
+- `std`
+- `string`
+- `substr`
+- `template_start`
+- `trimmed`
+- `value`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string symbol_key(const std::string& value) {
+    size_t template_start = value.find('<');
+    std::string trimmed = value.substr(0, template_start);
+    size_t scope = trimmed.rfind("::");
+    if (scope != std::string::npos) {
+        return trimmed.substr(scope + 2);
+    }
+    return trimmed;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

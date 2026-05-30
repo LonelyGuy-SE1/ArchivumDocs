@@ -1,0 +1,58 @@
+---
+title: "DependencyGraph::add_dependency | API Reference"
+---
+
+# DependencyGraph::add_dependency
+
+> Function defined in `src/graph.cpp`
+
+Use this page to understand how `DependencyGraph::add_dependency` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/graph.cpp` |
+| **Source Range** | Lines 24 to 29 |
+| **Interface Hash** | `11673616971255384769` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+void DependencyGraph::add_dependency(NodeId provider, NodeId consumer)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `DependencyGraph`
+- `NodeId`
+- `consumer`
+- `downstream_edges`
+- `end`
+- `find`
+- `insert`
+- `provider`
+- `registry`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+void DependencyGraph::add_dependency(NodeId provider, NodeId consumer) {
+    if (provider != consumer && registry.find(provider) != registry.end() &&
+        registry.find(consumer) != registry.end()) {
+        downstream_edges[provider].insert(consumer);
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

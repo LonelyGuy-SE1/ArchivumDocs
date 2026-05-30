@@ -1,0 +1,65 @@
+---
+title: "type_name_sentence | API Reference"
+---
+
+# type_name_sentence
+
+> Function defined in `src/docs.cpp`
+
+Use this page to understand how `type_name_sentence` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/docs.cpp` |
+| **Source Range** | Lines 30 to 43 |
+| **Interface Hash** | `2977087406445228462` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string type_name_sentence(NodeType type)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `CLASS`
+- `FUNCTION`
+- `METHOD`
+- `NodeType`
+- `STRUCT`
+- `std`
+- `string`
+- `type`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string type_name_sentence(NodeType type) {
+    switch (type) {
+        case NodeType::FUNCTION:
+            return "function";
+        case NodeType::CLASS:
+            return "class";
+        case NodeType::STRUCT:
+            return "struct";
+        case NodeType::METHOD:
+            return "method";
+        default:
+            return "symbol";
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

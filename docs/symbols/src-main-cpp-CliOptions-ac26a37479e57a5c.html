@@ -1,0 +1,54 @@
+---
+title: "CliOptions | API Reference"
+---
+
+# CliOptions
+
+> Struct defined in `src/main.cpp`
+
+Use this page to understand how `CliOptions` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Struct |
+| **Source File** | `src/main.cpp` |
+| **Source Range** | Lines 33 to 36 |
+| **Interface Hash** | `9830707902177973788` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+struct CliOptions
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `config_path`
+- `coordinates`
+- `filesystem`
+- `path`
+- `std`
+- `string`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+struct CliOptions {
+    std::filesystem::path config_path = ".archivum.yml";
+    std::vector<std::string> coordinates;
+};
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

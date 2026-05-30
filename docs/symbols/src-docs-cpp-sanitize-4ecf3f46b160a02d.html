@@ -1,0 +1,80 @@
+---
+title: "sanitize | API Reference"
+---
+
+# sanitize
+
+> Function defined in `src/docs.cpp`
+
+Use this page to understand how `sanitize` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/docs.cpp` |
+| **Source Range** | Lines 45 to 64 |
+| **Interface Hash** | `11062865004325912250` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string sanitize(std::string value)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `back`
+- `begin`
+- `c`
+- `empty`
+- `end`
+- `erase`
+- `front`
+- `isalnum`
+- `keep`
+- `left`
+- `pop_back`
+- `right`
+- `static_cast`
+- `std`
+- `string`
+- `unique`
+- `value`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string sanitize(std::string value) {
+    for (char& c : value) {
+        bool keep = std::isalnum(static_cast<unsigned char>(c)) || c == '-' || c == '_';
+        if (!keep) {
+            c = '-';
+        }
+    }
+
+    value.erase(
+        std::unique(value.begin(), value.end(), [](char left, char right) { return left == '-' && right == '-'; }),
+        value.end());
+
+    while (!value.empty() && value.front() == '-') {
+        value.erase(value.begin());
+    }
+    while (!value.empty() && value.back() == '-') {
+        value.pop_back();
+    }
+    return value.empty() ? "symbol" : value;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

@@ -1,0 +1,52 @@
+---
+title: "is_identifier_node | API Reference"
+---
+
+# is_identifier_node
+
+> Function defined in `src/parser.cpp`
+
+Use this page to understand how `is_identifier_node` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/parser.cpp` |
+| **Source Range** | Lines 65 to 70 |
+| **Interface Hash** | `5341187788475723923` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+bool is_identifier_node(std::string_view type)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `std`
+- `string_view`
+- `type`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+bool is_identifier_node(std::string_view type) {
+    return type == "identifier" || type == "field_identifier" || type == "type_identifier" ||
+           type == "namespace_identifier" || type == "qualified_identifier" || type == "scoped_identifier" ||
+           type == "destructor_name" || type == "operator_name" || type == "template_type" ||
+           type == "template_function";
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

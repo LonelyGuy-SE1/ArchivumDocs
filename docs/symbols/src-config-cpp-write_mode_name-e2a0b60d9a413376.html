@@ -1,0 +1,64 @@
+---
+title: "write_mode_name | API Reference"
+---
+
+# write_mode_name
+
+> Function defined in `src/config.cpp`
+
+Use this page to understand how `write_mode_name` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/config.cpp` |
+| **Source Range** | Lines 190 to 202 |
+| **Interface Hash** | `2791978864087936750` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string write_mode_name(WriteMode mode)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `AUTO_MERGE`
+- `DIRECT`
+- `NONE`
+- `PULL_REQUEST`
+- `WriteMode`
+- `mode`
+- `std`
+- `string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string write_mode_name(WriteMode mode) {
+    switch (mode) {
+        case WriteMode::PULL_REQUEST:
+            return "pull_request";
+        case WriteMode::AUTO_MERGE:
+            return "auto_merge";
+        case WriteMode::DIRECT:
+            return "direct";
+        case WriteMode::NONE:
+            return "none";
+    }
+    return "none";
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

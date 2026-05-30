@@ -1,0 +1,66 @@
+---
+title: "type_name | API Reference"
+---
+
+# type_name
+
+> Function defined in `src/main.cpp`
+
+Use this page to understand how `type_name` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/main.cpp` |
+| **Source Range** | Lines 169 to 182 |
+| **Interface Hash** | `6466935875337316873` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string type_name(archivum::NodeType type)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `CLASS`
+- `FUNCTION`
+- `METHOD`
+- `NodeType`
+- `STRUCT`
+- `archivum`
+- `std`
+- `string`
+- `type`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string type_name(archivum::NodeType type) {
+    switch (type) {
+        case archivum::NodeType::FUNCTION:
+            return "function";
+        case archivum::NodeType::CLASS:
+            return "class";
+        case archivum::NodeType::STRUCT:
+            return "struct";
+        case archivum::NodeType::METHOD:
+            return "method";
+        default:
+            return "symbol";
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

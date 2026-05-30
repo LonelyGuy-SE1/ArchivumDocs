@@ -1,0 +1,73 @@
+---
+title: "render_manifest | API Reference"
+---
+
+# render_manifest
+
+> Function defined in `src/docs.cpp`
+
+Use this page to understand how `render_manifest` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/docs.cpp` |
+| **Source Range** | Lines 423 to 436 |
+| **Interface Hash** | `13304531271069190795` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string render_manifest(const AnalysisReport& report)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `AnalysisReport`
+- `base_sha`
+- `changed_file_count`
+- `context_nodes`
+- `graph_edge_count`
+- `graph_node_count`
+- `head_sha`
+- `mutated_nodes`
+- `ostringstream`
+- `out`
+- `report`
+- `size`
+- `source_file_count`
+- `std`
+- `str`
+- `string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string render_manifest(const AnalysisReport& report) {
+    std::ostringstream out;
+    out << "{\n";
+    out << "  \"base_sha\": \"" << report.base_sha << "\",\n";
+    out << "  \"head_sha\": \"" << report.head_sha << "\",\n";
+    out << "  \"source_files\": " << report.source_file_count << ",\n";
+    out << "  \"changed_files\": " << report.changed_file_count << ",\n";
+    out << "  \"graph_nodes\": " << report.graph_node_count << ",\n";
+    out << "  \"graph_edges\": " << report.graph_edge_count << ",\n";
+    out << "  \"mutated_symbols\": " << report.mutated_nodes.size() << ",\n";
+    out << "  \"context_symbols\": " << report.context_nodes.size() << "\n";
+    out << "}\n";
+    return out.str();
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

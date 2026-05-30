@@ -1,0 +1,118 @@
+---
+title: "apply_env | API Reference"
+---
+
+# apply_env
+
+> Function defined in `src/config.cpp`
+
+Use this page to understand how `apply_env` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/config.cpp` |
+| **Source Range** | Lines 121 to 157 |
+| **Interface Hash** | `13630368286186229529` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+void apply_env(ArchivumConfig& config)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `ArchivumConfig`
+- `api_key_env`
+- `c_str`
+- `clear`
+- `config`
+- `docs_dir`
+- `empty`
+- `endpoint`
+- `fail_on_provider_error`
+- `function`
+- `getenv`
+- `getline`
+- `handler`
+- `handlers`
+- `ignore_dirs`
+- `item`
+- `lower`
+- `max_context_bytes`
+- `max_symbols`
+- `model`
+- `name`
+- `parse_bool`
+- `parse_size`
+- `parse_write_mode`
+- `project_name`
+- `project_tagline`
+- `provider`
+- `push_back`
+- `std`
+- `string`
+- `stringstream`
+- `trim`
+- `trimmed`
+- `unordered_map`
+- `update_docs`
+- `value`
+- `values`
+- `write_mode`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+void apply_env(ArchivumConfig& config) {
+    const std::unordered_map<std::string, std::function<void(const std::string&)>> handlers = {
+        {"ARCHIVUM_PROJECT_NAME", [&](const std::string& value) { config.project_name = value; }},
+        {"ARCHIVUM_PROJECT_TAGLINE", [&](const std::string& value) { config.project_tagline = value; }},
+        {"ARCHIVUM_DOCS_DIR", [&](const std::string& value) { config.docs_dir = value; }},
+        {"ARCHIVUM_PROVIDER", [&](const std::string& value) { config.provider = lower(value); }},
+        {"ARCHIVUM_LLM_ENDPOINT", [&](const std::string& value) { config.endpoint = value; }},
+        {"ARCHIVUM_MODEL", [&](const std::string& value) { config.model = value; }},
+        {"ARCHIVUM_API_KEY_ENV", [&](const std::string& value) { config.api_key_env = value; }},
+        {"ARCHIVUM_WRITE_MODE", [&](const std::string& value) { config.write_mode = parse_write_mode(value); }},
+        {"ARCHIVUM_MAX_CONTEXT_BYTES",
+         [&](const std::string& value) { config.max_context_bytes = parse_size("ARCHIVUM_MAX_CONTEXT_BYTES", value); }},
+        {"ARCHIVUM_MAX_SYMBOLS",
+         [&](const std::string& value) { config.max_symbols = parse_size("ARCHIVUM_MAX_SYMBOLS", value); }},
+        {"ARCHIVUM_UPDATE_DOCS", [&](const std::string& value) { config.update_docs = parse_bool(value); }},
+        {"ARCHIVUM_FAIL_ON_PROVIDER_ERROR",
+         [&](const std::string& value) { config.fail_on_provider_error = parse_bool(value); }},
+        {"ARCHIVUM_IGNORE_DIRS",
+         [&](const std::string& value) {
+             config.ignore_dirs.clear();
+             std::stringstream values(value);
+             std::string item;
+             while (std::getline(values, item, ',')) {
+                 std::string trimmed = trim(item);
+                 if (!trimmed.empty()) {
+                     config.ignore_dirs.push_back(trimmed);
+                 }
+             }
+         }}};
+
+    for (const auto& [name, handler] : handlers) {
+        const char* value = std::getenv(name.c_str());
+        if (value != nullptr && value[0] != '\0') {
+            handler(value);
+        }
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

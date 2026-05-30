@@ -1,0 +1,67 @@
+---
+title: "DependencyGraph::downstream | API Reference"
+---
+
+# DependencyGraph::downstream
+
+> Function defined in `src/graph.cpp`
+
+Use this page to understand how `DependencyGraph::downstream` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/graph.cpp` |
+| **Source Range** | Lines 118 to 127 |
+| **Interface Hash** | `5923069891756264639` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::vector<NodeId> DependencyGraph::downstream(NodeId id) const
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `DependencyGraph`
+- `NodeId`
+- `assign`
+- `begin`
+- `downstream_edges`
+- `end`
+- `find`
+- `id`
+- `it`
+- `second`
+- `sort`
+- `std`
+- `values`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::vector<NodeId> DependencyGraph::downstream(NodeId id) const {
+    std::vector<NodeId> values;
+    auto it = downstream_edges.find(id);
+    if (it == downstream_edges.end()) {
+        return values;
+    }
+    values.assign(it->second.begin(), it->second.end());
+    std::sort(values.begin(), values.end());
+    return values;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

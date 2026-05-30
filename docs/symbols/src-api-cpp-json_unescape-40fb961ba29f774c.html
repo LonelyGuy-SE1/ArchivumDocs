@@ -1,0 +1,88 @@
+---
+title: "json_unescape | API Reference"
+---
+
+# json_unescape
+
+> Function defined in `src/api.cpp`
+
+Use this page to understand how `json_unescape` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/api.cpp` |
+| **Source Range** | Lines 66 to 100 |
+| **Interface Hash** | `17891419350370912969` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string json_unescape(const std::string& value)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `c`
+- `escaped`
+- `i`
+- `out`
+- `push_back`
+- `reserve`
+- `size`
+- `std`
+- `string`
+- `value`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string json_unescape(const std::string& value) {
+    std::string out;
+    out.reserve(value.size());
+
+    for (size_t i = 0; i < value.size(); ++i) {
+        char c = value[i];
+        if (c != '\\' || i + 1 >= value.size()) {
+            out.push_back(c);
+            continue;
+        }
+
+        char escaped = value[++i];
+        switch (escaped) {
+            case 'n':
+                out.push_back('\n');
+                break;
+            case 'r':
+                out.push_back('\r');
+                break;
+            case 't':
+                out.push_back('\t');
+                break;
+            case '"':
+            case '\\':
+            case '/':
+                out.push_back(escaped);
+                break;
+            default:
+                out.push_back(escaped);
+                break;
+        }
+    }
+
+    return out;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.
