@@ -28,11 +28,38 @@ struct DocumentationWriteResult {
     std::vector<std::filesystem::path> written_files;
 };
 
+struct ContextSymbol {
+    std::string name;
+    NodeType type = NodeType::UNKNOWN;
+    std::string file_path;
+    uint32_t start_line = 0;
+    uint32_t end_line = 0;
+};
+
+struct ContextFile {
+    std::string file_path;
+    size_t symbol_count = 0;
+    size_t mutated_count = 0;
+};
+
+struct ContextMap {
+    size_t symbol_count = 0;
+    size_t edge_count = 0;
+    std::vector<ContextSymbol> top_symbols;
+    std::vector<ContextFile> hotspot_files;
+};
+
 std::string build_documentation_prompt(const ArchivumConfig& config, const AnalysisReport& report,
                                        const std::filesystem::path& root,
                                        const std::string& existing_docs);
 
 DocumentationWriteResult write_documentation(const ArchivumConfig& config, const AnalysisReport& report,
                                              const std::string& generated_update, const std::filesystem::path& root);
+
+ContextMap build_context_map(const DependencyGraph& graph, const std::vector<Node>& mutated,
+                             const std::vector<Node>& context);
+
+bool write_context_map(const ArchivumConfig& config, const ContextMap& map, const std::filesystem::path& root,
+                       DocumentationWriteResult& result);
 
 }  // namespace archivum

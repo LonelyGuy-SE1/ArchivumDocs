@@ -53,12 +53,13 @@ bool is_source_file(const std::filesystem::path& path) {
            extension == ".hh" || extension == ".hpp" || extension == ".hxx" || extension == ".ipp";
 }
 
-bool ignored_directory(const std::filesystem::path& path) {
+bool ignored_directory(const std::filesystem::path& path, const std::unordered_set<std::string>& ignore_dirs) {
     std::string name = path.filename().string();
-    return name == ".git" || name == ".github" || name == ".vscode" || name == "build" || name == "docs";
+    return ignore_dirs.find(name) != ignore_dirs.end();
 }
 
-std::vector<std::string> discover_source_files(const std::filesystem::path& root) {
+std::vector<std::string> discover_source_files(const std::filesystem::path& root,
+                                               const std::unordered_set<std::string>& ignore_dirs) {
     std::vector<std::string> files;
     std::filesystem::recursive_directory_iterator it(root, std::filesystem::directory_options::skip_permission_denied);
     std::filesystem::recursive_directory_iterator end;
@@ -66,7 +67,7 @@ std::vector<std::string> discover_source_files(const std::filesystem::path& root
     for (; it != end; ++it) {
         const std::filesystem::directory_entry& entry = *it;
         if (entry.is_directory()) {
-            if (ignored_directory(entry.path())) {
+            if (ignored_directory(entry.path(), ignore_dirs)) {
                 it.disable_recursion_pending();
             }
             continue;
@@ -241,16 +242,28 @@ archivum::ProviderRequest provider_request(const archivum::ArchivumConfig& confi
 int run(int argc, char* argv[]) {
     CliOptions options = parse_cli(argc, argv);
     archivum::ArchivumConfig config = archivum::load_config(options.config_path);
+    std::filesystem::path docs_root = std::filesystem::path(".") / config.docs_dir;
+    std::filesystem::path index_path = docs_root / config.index_file;
+    std::filesystem::path manifest_path = docs_root / config.manifest_file;
+    bool docs_ready = std::filesystem::exists(index_path) && std::filesystem::exists(manifest_path);
     GitRuntime runtime;
     archivum::GitScanner scanner(".");
     ExecutionRange range = resolve_range(options.coordinates, scanner);
+
+    std::unordered_set<std::string> ignore_dirs(config.ignore_dirs.begin(), config.ignore_dirs.end());
+
+    if (config.update_docs && !docs_ready) {
+        range.initial_scan = true;
+        range.base_sha = kInitialCommit;
+        range.source = "docs-missing";
+    }
 
     std::cout << "[ArchivumDocs] Domain expansion initiated.\n";
     std::cout << "[ArchivumDocs] Range: " << range.base_sha << " -> " << range.head_sha << " (" << range.source
               << ")\n";
     std::cout << "[ArchivumDocs] Config: " << options.config_path.generic_string() << "\n";
 
-    std::vector<std::string> source_files = discover_source_files(".");
+    std::vector<std::string> source_files = discover_source_files(".", ignore_dirs);
     std::vector<archivum::FileDiff> diffs = range.initial_scan ? full_repository_diffs(source_files)
                                                                : scanner.calculate_diff(range.base_sha, range.head_sha);
 
@@ -301,9 +314,16 @@ int run(int argc, char* argv[]) {
     archivum::DispatchSummary dispatch = archivum::summarize_dispatch(graph, mutated, impacted);
     std::cout << "[ArchivumDocs] Dispatch: provider=" << dispatch.provider
               << ", credentials=" << (dispatch.credentials_available ? "present" : "absent")
-              << ", context_symbols=" << dispatch.context_symbols << "\n";
+              << ", context_symbols=" << dispatch.context_symbols;
+    if (dispatch.provider == "auto" && !dispatch.credentials_available) {
+        std::cout << " (auto-select fell back to local output)";
+    }
+    std::cout << "\n";
 
-    if (config.update_docs) {
+    bool should_update_docs = config.update_docs &&
+                              (range.initial_scan || !docs_ready || !mutated_nodes.empty() || !impacted_nodes.empty());
+
+    if (should_update_docs) {
         archivum::AnalysisReport report;
         report.base_sha = range.base_sha;
         report.head_sha = range.head_sha;
@@ -318,7 +338,6 @@ int run(int argc, char* argv[]) {
         report.context_nodes = impacted_nodes;
 
         std::string existing_docs;
-        std::filesystem::path index_path = std::filesystem::path(".") / config.docs_dir / config.index_file;
         if (std::filesystem::exists(index_path)) {
             std::ifstream index_file(index_path);
             if (index_file.is_open()) {
@@ -333,10 +352,16 @@ int run(int argc, char* argv[]) {
             archivum::generate_documentation_update(provider_request(config, prompt));
         archivum::DocumentationWriteResult docs =
             archivum::write_documentation(config, report, generated.value_or(""), ".");
+        archivum::ContextMap context_map = archivum::build_context_map(graph, mutated_nodes, impacted_nodes);
+        archivum::write_context_map(config, context_map, ".", docs);
 
         std::cout << "[ArchivumDocs] Documentation: " << (docs.changed ? "updated" : "unchanged") << " in "
                   << config.docs_dir << "\n";
         std::cout << "[ArchivumDocs] Documentation files touched: " << docs.written_files.size() << "\n";
+    } else if (!config.update_docs) {
+        std::cout << "[ArchivumDocs] Documentation updates disabled.\n";
+    } else {
+        std::cout << "[ArchivumDocs] Documentation up to date; no changes required.\n";
     }
 
     std::cout << "[ArchivumDocs] Intersection complete.\n";

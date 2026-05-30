@@ -24,6 +24,14 @@ if [[ -n "${INPUT_MODEL:-}" ]]; then
   export ARCHIVUM_MODEL="$INPUT_MODEL"
 fi
 
+if [[ -n "${INPUT_PROJECT_NAME:-}" ]]; then
+  export ARCHIVUM_PROJECT_NAME="$INPUT_PROJECT_NAME"
+fi
+
+if [[ -n "${INPUT_PROJECT_TAGLINE:-}" ]]; then
+  export ARCHIVUM_PROJECT_TAGLINE="$INPUT_PROJECT_TAGLINE"
+fi
+
 export ARCHIVUM_WRITE_MODE="$mode"
 
 cmake -B "$build_dir" -S "$action_path" -DCMAKE_BUILD_TYPE=Release -DARCHIVUM_BUILD_TESTS=OFF

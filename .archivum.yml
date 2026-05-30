@@ -2,6 +2,7 @@ docs_dir: docs
 index_file: index.md
 symbols_dir: symbols
 manifest_file: archivum-manifest.json
+context_map_file: archivum-context-map.json
 provider: auto
 endpoint: https://api.openai.com/v1/responses
 api_key_env: OPENAI_API_KEY
@@ -12,3 +13,6 @@ max_context_bytes: 180000
 max_symbols: 250
 fail_on_provider_error: false
 update_docs: true
+project_name: ArchivumDocs
+project_tagline: AST-driven documentation that tracks code impact.
+ignore_dirs: .git,.github,.vscode,build,docs

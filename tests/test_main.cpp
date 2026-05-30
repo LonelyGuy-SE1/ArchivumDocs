@@ -203,6 +203,50 @@ void config_loads_defaults_and_overrides() {
     require(config.fail_on_provider_error, "provider error override failed");
 }
 
+void context_map_writer_is_idempotent() {
+    ScopedTemp temp;
+    write_file(temp.path() / "sample.cpp",
+               "int provider() {\n"
+               "    return 42;\n"
+               "}\n"
+               "int consumer() {\n"
+               "    return provider();\n"
+               "}\n");
+
+    archivum::Node provider = make_node(1, "provider", {});
+    provider.file_path = "sample.cpp";
+    provider.signature = "int provider()";
+    provider.start_line = 1;
+    provider.end_line = 3;
+
+    archivum::Node consumer = make_node(2, "consumer", {"provider"});
+    consumer.file_path = "sample.cpp";
+    consumer.signature = "int consumer()";
+    consumer.start_line = 4;
+    consumer.end_line = 6;
+
+    archivum::DependencyGraph graph;
+    graph.register_node(provider);
+    graph.register_node(consumer);
+    graph.infer_dependencies();
+
+    archivum::ContextMap map = archivum::build_context_map(graph, {provider}, {provider, consumer});
+
+    archivum::ArchivumConfig config;
+    config.docs_dir = "docs";
+
+    archivum::DocumentationWriteResult result;
+    bool wrote_first = archivum::write_context_map(config, map, temp.path(), result);
+    require(wrote_first, "context map was not written");
+    require(!map.top_symbols.empty(), "context map did not include symbols");
+    require(!map.hotspot_files.empty(), "context map did not include hotspot files");
+
+    archivum::DocumentationWriteResult second;
+    require(!archivum::write_context_map(config, map, temp.path(), second), "context map should be unchanged");
+    require(std::filesystem::exists(temp.path() / "docs" / "archivum-context-map.json"),
+            "context map file missing");
+}
+
 void documentation_writer_creates_index_symbols_and_manifest() {
     ScopedTemp temp;
     write_file(temp.path() / "sample.cpp",
@@ -281,6 +325,7 @@ int main() {
         run_test("graph_handles_cycles", graph_handles_cycles);
         run_test("git_scanner_reports_changed_ranges", git_scanner_reports_changed_ranges);
         run_test("config_loads_defaults_and_overrides", config_loads_defaults_and_overrides);
+        run_test("context_map_writer_is_idempotent", context_map_writer_is_idempotent);
         run_test("documentation_writer_creates_index_symbols_and_manifest",
                  documentation_writer_creates_index_symbols_and_manifest);
         run_test("provider_skips_when_key_is_absent", provider_skips_when_key_is_absent);

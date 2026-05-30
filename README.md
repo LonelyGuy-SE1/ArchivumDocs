@@ -9,10 +9,13 @@ The default workflow is safe for production repositories: generated documentatio
 ## What It Does
 
 - Creates `docs/` automatically when it does not exist.
+- Performs a full documentation scan when docs are missing, then incremental updates on later runs.
+- Skips documentation writes when no relevant symbols changed.
 - Updates `docs/index.md`, `docs/symbols/`, and `docs/archivum-manifest.json`.
 - Uses deterministic local documentation when no AI key is configured.
 - Uses an OpenAI-compatible Responses endpoint when credentials are present.
 - Limits context by affected symbols and byte budget so large repositories do not send full source trees to the model.
+- Writes `docs/archivum-context-map.json` for a persistent repo overview.
 - Publishes as a composite GitHub Action through the root `action.yml`.
 
 ## Quick Start
@@ -42,6 +45,8 @@ jobs:
       - uses: LonelyGuy-SE1/ArchivumDocs@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          project-name: ArchivumDocs
+          project-tagline: AST-driven documentation that tracks code impact.
 ```
 
 Add `.archivum.yml` when you want to change defaults:
@@ -51,19 +56,26 @@ docs_dir: docs
 provider: auto
 endpoint: https://api.openai.com/v1/responses
 model: gpt-5.5
+project_name: ArchivumDocs
+project_tagline: AST-driven documentation that tracks code impact.
 write_mode: pull_request
 max_context_bytes: 180000
 max_symbols: 250
+context_map_file: archivum-context-map.json
+ignore_dirs: .git,.github,.vscode,build,docs
 ```
 
 ## Configuration
 
 | Key | Default | Purpose |
 | --- | --- | --- |
+| `project_name` | empty | Optional project name shown in documentation output. |
+| `project_tagline` | empty | Optional tagline displayed under the main title. |
 | `docs_dir` | `docs` | Documentation output directory. |
 | `index_file` | `index.md` | Generated documentation landing page. |
 | `symbols_dir` | `symbols` | Folder for generated symbol pages. |
 | `manifest_file` | `archivum-manifest.json` | Machine-readable run summary. |
+| `context_map_file` | `archivum-context-map.json` | Persistent context map for the repo. |
 | `provider` | `auto` | `auto`, `openai`, `custom`, `shadow`, or `none`. |
 | `endpoint` | `https://api.openai.com/v1/responses` | OpenAI-compatible Responses endpoint. |
 | `model` | `gpt-5.5` | Model used for the final documentation update. |
@@ -73,6 +85,7 @@ max_symbols: 250
 | `max_symbols` | `250` | Maximum downstream symbols documented in one run. |
 | `fail_on_provider_error` | `false` | Fail the run when the AI endpoint fails instead of using deterministic docs. |
 | `update_docs` | `true` | Disable file writes while keeping analysis enabled. |
+| `ignore_dirs` | `.git,.github,.vscode,build,docs` | Comma-separated directories to skip during scanning. |
 
 Environment variables with the `ARCHIVUM_` prefix can override the same settings in CI.
 
@@ -82,6 +95,7 @@ Environment variables with the `ARCHIVUM_` prefix can override the same settings
 | --- | --- | --- |
 | `config-path` | `.archivum.yml` | Config file path. |
 | `openai-api-key` | empty | Provider key, usually `${{ secrets.OPENAI_API_KEY }}`. |
+| `openrouter-api-key` | empty | Provider key for OpenRouter. |
 | `github-token` | `${{ github.token }}` | Token for branches and pull requests. |
 | `mode` | `pull_request` | `pull_request`, `auto_merge`, `direct`, or `none`. |
 | `auto-merge` | `false` | Enables GitHub auto-merge for generated docs PRs. |
@@ -90,6 +104,8 @@ Environment variables with the `ARCHIVUM_` prefix can override the same settings
 | `branch-prefix` | `archivum/docs` | Branch prefix for generated docs PRs. |
 | `commit-message` | `docs: update ArchivumDocs` | Commit message. |
 | `pr-title` | `docs: update ArchivumDocs` | Pull request title. |
+| `project-name` | empty | Project name shown in documentation output. |
+| `project-tagline` | empty | Project tagline shown under the title. |
 
 ## Local Development
 

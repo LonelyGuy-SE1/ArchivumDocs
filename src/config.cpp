@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <functional>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
@@ -68,7 +69,11 @@ void apply_pair(ArchivumConfig& config, std::string key, const std::string& valu
     key = lower(trim(key));
     std::string parsed = unquote(value);
 
-    if (key == "docs_dir" || key == "docs.dir") {
+    if (key == "project_name" || key == "project.name") {
+        config.project_name = parsed;
+    } else if (key == "project_tagline" || key == "project.tagline") {
+        config.project_tagline = parsed;
+    } else if (key == "docs_dir" || key == "docs.dir") {
         config.docs_dir = parsed;
     } else if (key == "index_file" || key == "docs.index_file") {
         config.index_file = parsed;
@@ -76,6 +81,8 @@ void apply_pair(ArchivumConfig& config, std::string key, const std::string& valu
         config.symbols_dir = parsed;
     } else if (key == "manifest_file" || key == "docs.manifest_file") {
         config.manifest_file = parsed;
+    } else if (key == "context_map_file" || key == "docs.context_map_file") {
+        config.context_map_file = parsed;
     } else if (key == "provider" || key == "ai.provider") {
         config.provider = lower(parsed);
     } else if (key == "endpoint" || key == "ai.endpoint") {
@@ -98,11 +105,23 @@ void apply_pair(ArchivumConfig& config, std::string key, const std::string& valu
         config.fail_on_provider_error = parse_bool(parsed);
     } else if (key == "update_docs" || key == "docs.update") {
         config.update_docs = parse_bool(parsed);
+    } else if (key == "ignore_dirs" || key == "scan.ignore_dirs") {
+        config.ignore_dirs.clear();
+        std::stringstream values(parsed);
+        std::string item;
+        while (std::getline(values, item, ',')) {
+            std::string trimmed = trim(item);
+            if (!trimmed.empty()) {
+                config.ignore_dirs.push_back(trimmed);
+            }
+        }
     }
 }
 
 void apply_env(ArchivumConfig& config) {
     const std::unordered_map<std::string, std::function<void(const std::string&)>> handlers = {
+        {"ARCHIVUM_PROJECT_NAME", [&](const std::string& value) { config.project_name = value; }},
+        {"ARCHIVUM_PROJECT_TAGLINE", [&](const std::string& value) { config.project_tagline = value; }},
         {"ARCHIVUM_DOCS_DIR", [&](const std::string& value) { config.docs_dir = value; }},
         {"ARCHIVUM_PROVIDER", [&](const std::string& value) { config.provider = lower(value); }},
         {"ARCHIVUM_LLM_ENDPOINT", [&](const std::string& value) { config.endpoint = value; }},
@@ -115,7 +134,19 @@ void apply_env(ArchivumConfig& config) {
          [&](const std::string& value) { config.max_symbols = parse_size("ARCHIVUM_MAX_SYMBOLS", value); }},
         {"ARCHIVUM_UPDATE_DOCS", [&](const std::string& value) { config.update_docs = parse_bool(value); }},
         {"ARCHIVUM_FAIL_ON_PROVIDER_ERROR",
-         [&](const std::string& value) { config.fail_on_provider_error = parse_bool(value); }}};
+         [&](const std::string& value) { config.fail_on_provider_error = parse_bool(value); }},
+        {"ARCHIVUM_IGNORE_DIRS",
+         [&](const std::string& value) {
+             config.ignore_dirs.clear();
+             std::stringstream values(value);
+             std::string item;
+             while (std::getline(values, item, ',')) {
+                 std::string trimmed = trim(item);
+                 if (!trimmed.empty()) {
+                     config.ignore_dirs.push_back(trimmed);
+                 }
+             }
+         }}};
 
     for (const auto& [name, handler] : handlers) {
         const char* value = std::getenv(name.c_str());
