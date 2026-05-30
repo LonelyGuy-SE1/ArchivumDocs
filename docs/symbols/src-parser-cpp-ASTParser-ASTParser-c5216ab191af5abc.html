@@ -1,0 +1,51 @@
+---
+title: "ASTParser::~ASTParser | API Reference"
+---
+
+# ASTParser::~ASTParser
+
+> Function defined in `src/parser.cpp`
+
+Use this page to understand how `ASTParser::~ASTParser` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/parser.cpp` |
+| **Source Range** | Lines 190 to 194 |
+| **Interface Hash** | `6573548537475521654` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+ASTParser::~ASTParser()
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `ASTParser`
+- `parser`
+- `ts_parser_delete`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+ASTParser::~ASTParser() {
+    if (parser != nullptr) {
+        ts_parser_delete(parser);
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

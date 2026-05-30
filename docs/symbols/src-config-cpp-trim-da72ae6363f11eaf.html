@@ -1,0 +1,62 @@
+---
+title: "trim | API Reference"
+---
+
+# trim
+
+> Function defined in `src/config.cpp`
+
+Use this page to understand how `trim` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/config.cpp` |
+| **Source Range** | Lines 16 to 21 |
+| **Interface Hash** | `6030074173070174103` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string trim(std::string value)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `base`
+- `begin`
+- `c`
+- `end`
+- `erase`
+- `find_if`
+- `isspace`
+- `keep`
+- `rbegin`
+- `rend`
+- `std`
+- `string`
+- `value`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string trim(std::string value) {
+    auto keep = [](unsigned char c) { return !std::isspace(c); };
+    value.erase(value.begin(), std::find_if(value.begin(), value.end(), keep));
+    value.erase(std::find_if(value.rbegin(), value.rend(), keep).base(), value.end());
+    return value;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

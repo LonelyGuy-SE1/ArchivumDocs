@@ -1,0 +1,57 @@
+---
+title: "DispatchSummary | API Reference"
+---
+
+# DispatchSummary
+
+> Struct defined in `include/archivum/api.hpp`
+
+Use this page to understand how `DispatchSummary` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Struct |
+| **Source File** | `include/archivum/api.hpp` |
+| **Source Range** | Lines 11 to 17 |
+| **Interface Hash** | `234153944208463214` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+struct DispatchSummary
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `context_symbols`
+- `credentials_available`
+- `downstream_symbols`
+- `mutated_symbols`
+- `provider`
+- `std`
+- `string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+struct DispatchSummary {
+    std::string provider;
+    bool credentials_available;
+    size_t mutated_symbols;
+    size_t downstream_symbols;
+    size_t context_symbols;
+};
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

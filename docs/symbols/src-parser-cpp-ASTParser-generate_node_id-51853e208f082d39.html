@@ -1,0 +1,54 @@
+---
+title: "ASTParser::generate_node_id | API Reference"
+---
+
+# ASTParser::generate_node_id
+
+> Function defined in `src/parser.cpp`
+
+Use this page to understand how `ASTParser::generate_node_id` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/parser.cpp` |
+| **Source Range** | Lines 196 to 199 |
+| **Interface Hash** | `18169083682321222398` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+uint64_t ASTParser::generate_node_id(const std::string& filepath, const std::string& symbol_name) const
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `ASTParser`
+- `composite_key`
+- `filepath`
+- `stable_hash`
+- `std`
+- `string`
+- `symbol_name`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+uint64_t ASTParser::generate_node_id(const std::string& filepath, const std::string& symbol_name) const {
+    std::string composite_key = filepath + "::" + symbol_name;
+    return stable_hash(composite_key);
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

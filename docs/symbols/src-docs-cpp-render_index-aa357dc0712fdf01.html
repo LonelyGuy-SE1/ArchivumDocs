@@ -1,0 +1,369 @@
+---
+title: "render_index | API Reference"
+---
+
+# render_index
+
+> Function defined in `src/docs.cpp`
+
+Use this page to understand how `render_index` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/docs.cpp` |
+| **Source Range** | Lines 178 to 421 |
+| **Interface Hash** | `17290089167313208972` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string render_index(const ArchivumConfig& config, const AnalysisReport& report, const std::string& generated_update, const std::filesystem::path& docs_root)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `AnalysisReport`
+- `ArchivumConfig`
+- `FileSummary`
+- `ModuleSummary`
+- `Node`
+- `NodeId`
+- `_`
+- `base_sha`
+- `begin`
+- `changed_file_count`
+- `config`
+- `context_map_file`
+- `context_nodes`
+- `context_path`
+- `counted`
+- `docs_root`
+- `empty`
+- `end`
+- `entry`
+- `file_map`
+- `file_path`
+- `files`
+- `filesystem`
+- `find`
+- `generated_update`
+- `graph_edge_count`
+- `graph_node_count`
+- `head_sha`
+- `i`
+- `id`
+- `index_file`
+- `insert`
+- `key_symbols`
+- `left`
+- `limit`
+- `manifest_file`
+- `manifest_path`
+- `min`
+- `module`
+- `module_counted`
+- `module_map`
+- `module_name_for`
+- `modules`
+- `mutated_count`
+- `mutated_ids`
+- `mutated_nodes`
+- `name`
+- `node`
+- `npos`
+- `ostringstream`
+- `out`
+- `path`
+- `project_name`
+- `project_tagline`
+- `push_back`
+- `relative_link`
+- `report`
+- `reserve`
+- `right`
+- `second`
+- `seen`
+- `short_sha`
+- `size`
+- `slash`
+- `sort`
+- `source_file_count`
+- `start_line`
+- `std`
+- `str`
+- `string`
+- `substr`
+- `summary`
+- `symbol_count`
+- `symbol_filename`
+- `symbol_path`
+- `symbols_dir`
+- `title`
+- `type`
+- `type_name`
+- `unordered_map`
+- `unordered_set`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string render_index(const ArchivumConfig& config, const AnalysisReport& report,
+                         const std::string& generated_update, const std::filesystem::path& docs_root) {
+    std::ostringstream out;
+    out << "---\n";
+    std::string title = config.project_name.empty() ? "ArchivumDocs" : config.project_name;
+    out << "title: \"" << title << " | Code Intelligence\"\n";
+    out << "---\n\n";
+
+    out << "# " << title << "\n\n";
+    if (!config.project_tagline.empty()) {
+        out << "> " << config.project_tagline << "\n\n";
+    }
+
+    out << "## Overview\n\n";
+    out << "" << title << " maps code changes to documentation updates by analyzing symbols, dependency edges, and affected\n";
+    out << "call sites. The tables below highlight what changed in this range and which parts of the codebase are\n";
+    out << "impacted, so you can focus your review quickly.\n\n";
+
+    out << "## How To Read This Page\n\n";
+    out << "- **Changes & Impact** lists symbols directly touched by the diff.\n";
+    out << "- **Downstream Context** lists dependencies that may be affected even if they were not edited.\n";
+    out << "- **System Status** summarizes repository scale and the analysis range.\n\n";
+
+    out << "## Getting Oriented\n\n";
+    std::unordered_set<NodeId> mutated_ids;
+    mutated_ids.reserve(report.mutated_nodes.size());
+    for (const Node& node : report.mutated_nodes) {
+        mutated_ids.insert(node.id);
+    }
+
+    std::vector<Node> key_symbols;
+    key_symbols.reserve(12);
+    std::unordered_set<NodeId> seen;
+    for (const Node& node : report.mutated_nodes) {
+        if (key_symbols.size() >= 12) {
+            break;
+        }
+        if (seen.insert(node.id).second) {
+            key_symbols.push_back(node);
+        }
+    }
+    for (const Node& node : report.context_nodes) {
+        if (key_symbols.size() >= 12) {
+            break;
+        }
+        if (seen.insert(node.id).second) {
+            key_symbols.push_back(node);
+        }
+    }
+
+    if (key_symbols.empty()) {
+        out << "No symbols were captured for this range.\n\n";
+    } else {
+        out << "| Symbol | Type | Status | Location |\n";
+        out << "| :--- | :--- | :--- | :--- |\n";
+        for (const Node& node : key_symbols) {
+            std::filesystem::path symbol_path = docs_root / config.symbols_dir / symbol_filename(node);
+            out << "| [" << node.name << "](" << relative_link(docs_root / config.index_file, symbol_path) << ") | ";
+            out << type_name(node.type) << " | ";
+            out << (mutated_ids.find(node.id) != mutated_ids.end() ? "Changed" : "Downstream") << " | ";
+            out << "`" << node.file_path << ":" << node.start_line << "` |\n";
+        }
+        out << "\n";
+    }
+
+    out << "## Repository Map\n\n";
+    out << "Start here to understand the highest-activity files in this analysis window.\n\n";
+
+    struct FileSummary {
+        std::string path;
+        size_t symbol_count = 0;
+        size_t mutated_count = 0;
+    };
+
+    std::unordered_map<std::string, FileSummary> file_map;
+    std::unordered_set<NodeId> counted;
+    for (const Node& node : report.context_nodes) {
+        FileSummary& entry = file_map[node.file_path];
+        entry.path = node.file_path;
+        if (counted.insert(node.id).second) {
+            ++entry.symbol_count;
+        }
+    }
+    for (const Node& node : report.mutated_nodes) {
+        FileSummary& entry = file_map[node.file_path];
+        entry.path = node.file_path;
+        ++entry.mutated_count;
+        if (counted.insert(node.id).second) {
+            ++entry.symbol_count;
+        }
+    }
+
+    if (file_map.empty()) {
+        out << "No files were captured for this range.\n\n";
+    } else {
+        std::vector<FileSummary> files;
+        files.reserve(file_map.size());
+        for (const auto& [_, summary] : file_map) {
+            files.push_back(summary);
+        }
+        std::sort(files.begin(), files.end(), [](const FileSummary& left, const FileSummary& right) {
+            if (left.mutated_count != right.mutated_count) {
+                return left.mutated_count > right.mutated_count;
+            }
+            if (left.symbol_count != right.symbol_count) {
+                return left.symbol_count > right.symbol_count;
+            }
+            return left.path < right.path;
+        });
+
+        out << "| File | Symbols | Changed Symbols |\n";
+        out << "| :--- | ---: | ---: |\n";
+        size_t limit = std::min<size_t>(8, files.size());
+        for (size_t i = 0; i < limit; ++i) {
+            const FileSummary& entry = files[i];
+            out << "| `" << entry.path << "` | " << entry.symbol_count << " | " << entry.mutated_count << " |\n";
+        }
+        out << "\n";
+    }
+
+    out << "## Module Guide\n\n";
+    out << "High-level grouping by top-level directory.\n\n";
+
+    struct ModuleSummary {
+        std::string name;
+        size_t symbol_count = 0;
+        size_t mutated_count = 0;
+    };
+
+    std::unordered_map<std::string, ModuleSummary> module_map;
+    std::unordered_set<NodeId> module_counted;
+
+    auto module_name_for = [](const std::string& path) {
+        size_t slash = path.find('/');
+        if (slash == std::string::npos) {
+            return std::string("root");
+        }
+        return path.substr(0, slash);
+    };
+
+    for (const Node& node : report.context_nodes) {
+        std::string module = module_name_for(node.file_path);
+        ModuleSummary& entry = module_map[module];
+        entry.name = module;
+        if (module_counted.insert(node.id).second) {
+            ++entry.symbol_count;
+        }
+    }
+    for (const Node& node : report.mutated_nodes) {
+        std::string module = module_name_for(node.file_path);
+        ModuleSummary& entry = module_map[module];
+        entry.name = module;
+        ++entry.mutated_count;
+        if (module_counted.insert(node.id).second) {
+            ++entry.symbol_count;
+        }
+    }
+
+    if (module_map.empty()) {
+        out << "No modules were captured for this range.\n\n";
+    } else {
+        std::vector<ModuleSummary> modules;
+        modules.reserve(module_map.size());
+        for (const auto& [_, summary] : module_map) {
+            modules.push_back(summary);
+        }
+        std::sort(modules.begin(), modules.end(), [](const ModuleSummary& left, const ModuleSummary& right) {
+            if (left.mutated_count != right.mutated_count) {
+                return left.mutated_count > right.mutated_count;
+            }
+            if (left.symbol_count != right.symbol_count) {
+                return left.symbol_count > right.symbol_count;
+            }
+            return left.name < right.name;
+        });
+
+        out << "| Module | Symbols | Changed Symbols |\n";
+        out << "| :--- | ---: | ---: |\n";
+        size_t limit = std::min<size_t>(6, modules.size());
+        for (size_t i = 0; i < limit; ++i) {
+            const ModuleSummary& entry = modules[i];
+            out << "| `" << entry.name << "` | " << entry.symbol_count << " | " << entry.mutated_count << " |\n";
+        }
+        out << "\n";
+    }
+
+    out << "## System Status\n\n";
+    out << "| Statistic | Value |\n";
+    out << "| :--- | :--- |\n";
+    out << "| **Analysis Range** | `" << short_sha(report.base_sha) << "` -> `" << short_sha(report.head_sha)
+        << "` |\n";
+    out << "| **Source Files** | " << report.source_file_count << " |\n";
+    out << "| **Changed Files** | " << report.changed_file_count << " |\n";
+    out << "| **Graph Density** | " << report.graph_node_count << " symbols, " << report.graph_edge_count
+        << " edges |\n";
+    out << "| **Impact Radius** | " << report.mutated_nodes.size() << " mutated, " << report.context_nodes.size()
+        << " context |\n\n";
+
+    if (!generated_update.empty()) {
+        out << "## AI Analysis\n\n";
+        out << generated_update << "\n\n";
+    }
+
+    out << "## Documentation Artifacts\n\n";
+    std::filesystem::path manifest_path = docs_root / config.manifest_file;
+    std::filesystem::path context_path = docs_root / config.context_map_file;
+    out << "- [" << config.manifest_file << "](" << relative_link(docs_root / config.index_file, manifest_path)
+        << ") for machine-readable run metadata.\n";
+    out << "- [" << config.context_map_file << "](" << relative_link(docs_root / config.index_file, context_path)
+        << ") for a stable summary of key symbols and hotspots.\n\n";
+
+    out << "## Changes & Impact\n\n";
+    out << "These symbols were modified in the current diff range.\n\n";
+    if (report.mutated_nodes.empty()) {
+        out << "No structural changes detected in this range.\n";
+    } else {
+        out << "| Symbol | Type | Location |\n";
+        out << "| :--- | :--- | :--- |\n";
+        for (const Node& node : report.mutated_nodes) {
+            std::filesystem::path symbol_path = docs_root / config.symbols_dir / symbol_filename(node);
+            out << "| [" << node.name << "](" << relative_link(docs_root / config.index_file, symbol_path) << ") | ";
+            out << type_name(node.type) << " | ";
+            out << "`" << node.file_path << ":" << node.start_line << "` |\n";
+        }
+        out << "\n";
+    }
+
+    out << "## Downstream Context\n\n";
+    out << "These dependencies may be affected by the changes above.\n\n";
+    if (report.context_nodes.empty()) {
+        out << "No downstream impacts identified.\n";
+    } else {
+        out << "| Symbol | Type | Relationship |\n";
+        out << "| :--- | :--- | :--- |\n";
+        for (const Node& node : report.context_nodes) {
+            std::filesystem::path symbol_path = docs_root / config.symbols_dir / symbol_filename(node);
+            out << "| [" << node.name << "](" << relative_link(docs_root / config.index_file, symbol_path) << ") | ";
+            out << type_name(node.type) << " | ";
+            out << "Downstream dependency |\n";
+        }
+    }
+
+    return out.str();
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

@@ -1,0 +1,76 @@
+---
+title: "write_if_changed | API Reference"
+---
+
+# write_if_changed
+
+> Function defined in `src/docs.cpp`
+
+Use this page to understand how `write_if_changed` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/docs.cpp` |
+| **Source Range** | Lines 111 to 125 |
+| **Interface Hash** | `7952235644962819281` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+bool write_if_changed(const std::filesystem::path& path, const std::string& content)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `binary`
+- `buffer`
+- `content`
+- `create_directories`
+- `existing`
+- `filesystem`
+- `ifstream`
+- `ios`
+- `is_open`
+- `ofstream`
+- `ostringstream`
+- `out`
+- `parent_path`
+- `path`
+- `rdbuf`
+- `std`
+- `str`
+- `string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+bool write_if_changed(const std::filesystem::path& path, const std::string& content) {
+    std::ifstream existing(path, std::ios::binary);
+    if (existing.is_open()) {
+        std::ostringstream buffer;
+        buffer << existing.rdbuf();
+        if (buffer.str() == content) {
+            return false;
+        }
+    }
+
+    std::filesystem::create_directories(path.parent_path());
+    std::ofstream out(path, std::ios::binary);
+    out << content;
+    return true;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

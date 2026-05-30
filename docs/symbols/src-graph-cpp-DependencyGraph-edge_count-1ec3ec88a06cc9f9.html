@@ -1,0 +1,56 @@
+---
+title: "DependencyGraph::edge_count | API Reference"
+---
+
+# DependencyGraph::edge_count
+
+> Function defined in `src/graph.cpp`
+
+Use this page to understand how `DependencyGraph::edge_count` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/graph.cpp` |
+| **Source Range** | Lines 131 to 137 |
+| **Interface Hash** | `13390147643126773137` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+size_t DependencyGraph::edge_count() const
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `DependencyGraph`
+- `downstream_edges`
+- `edges`
+- `id`
+- `size`
+- `total`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+size_t DependencyGraph::edge_count() const {
+    size_t total = 0;
+    for (const auto& [id, edges] : downstream_edges) {
+        total += edges.size();
+    }
+    return total;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

@@ -1,0 +1,51 @@
+---
+title: "GitScanner::~GitScanner | API Reference"
+---
+
+# GitScanner::~GitScanner
+
+> Function defined in `src/git_utils.cpp`
+
+Use this page to understand how `GitScanner::~GitScanner` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/git_utils.cpp` |
+| **Source Range** | Lines 41 to 45 |
+| **Interface Hash** | `1974449236653926330` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+GitScanner::~GitScanner()
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `GitScanner`
+- `git_repository_free`
+- `repo`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+GitScanner::~GitScanner() {
+    if (repo != nullptr) {
+        git_repository_free(repo);
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

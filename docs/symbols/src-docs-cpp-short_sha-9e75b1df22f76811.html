@@ -1,0 +1,49 @@
+---
+title: "short_sha | API Reference"
+---
+
+# short_sha
+
+> Function defined in `src/docs.cpp`
+
+Use this page to understand how `short_sha` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/docs.cpp` |
+| **Source Range** | Lines 66 to 66 |
+| **Interface Hash** | `2243655815905749264` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string short_sha(const std::string& sha)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `sha`
+- `size`
+- `std`
+- `string`
+- `substr`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string short_sha(const std::string& sha) { return sha.size() > 8 ? sha.substr(0, 8) : sha; }
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

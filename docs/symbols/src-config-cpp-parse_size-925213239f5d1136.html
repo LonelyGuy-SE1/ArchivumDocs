@@ -1,0 +1,59 @@
+---
+title: "parse_size | API Reference"
+---
+
+# parse_size
+
+> Function defined in `src/config.cpp`
+
+Use this page to understand how `parse_size` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/config.cpp` |
+| **Source Range** | Lines 43 to 49 |
+| **Interface Hash** | `17976383712514918745` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+size_t parse_size(const std::string& key, const std::string& value)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `exception`
+- `key`
+- `runtime_error`
+- `static_cast`
+- `std`
+- `stoull`
+- `string`
+- `trim`
+- `value`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+size_t parse_size(const std::string& key, const std::string& value) {
+    try {
+        return static_cast<size_t>(std::stoull(trim(value)));
+    } catch (const std::exception&) {
+        throw std::runtime_error("[ArchivumDocs] FATAL: Invalid numeric config value for " + key);
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

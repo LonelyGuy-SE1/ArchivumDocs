@@ -1,0 +1,109 @@
+{
+  "schema": "archivum-context-map-v1",
+  "symbol_count": 148,
+  "edge_count": 431,
+  "top_symbols": [
+    {
+      "name": "DispatchSummary",
+      "type": "struct",
+      "location": "include/archivum/api.hpp:11-17"
+    },
+    {
+      "name": "ProviderRequest",
+      "type": "struct",
+      "location": "include/archivum/api.hpp:19-28"
+    },
+    {
+      "name": "ArchivumConfig",
+      "type": "struct",
+      "location": "include/archivum/config.hpp:12-32"
+    },
+    {
+      "name": "AnalysisReport",
+      "type": "struct",
+      "location": "include/archivum/docs.hpp:12-24"
+    },
+    {
+      "name": "source_file_count",
+      "type": "method",
+      "location": "include/archivum/docs.hpp:17-17"
+    },
+    {
+      "name": "changed_file_count",
+      "type": "method",
+      "location": "include/archivum/docs.hpp:18-18"
+    },
+    {
+      "name": "graph_node_count",
+      "type": "method",
+      "location": "include/archivum/docs.hpp:19-19"
+    },
+    {
+      "name": "graph_edge_count",
+      "type": "method",
+      "location": "include/archivum/docs.hpp:20-20"
+    },
+    {
+      "name": "DocumentationWriteResult",
+      "type": "struct",
+      "location": "include/archivum/docs.hpp:26-29"
+    },
+    {
+      "name": "ContextSymbol",
+      "type": "struct",
+      "location": "include/archivum/docs.hpp:31-37"
+    },
+    {
+      "name": "start_line",
+      "type": "method",
+      "location": "include/archivum/docs.hpp:35-35"
+    },
+    {
+      "name": "end_line",
+      "type": "method",
+      "location": "include/archivum/docs.hpp:36-36"
+    }
+  ],
+  "hotspot_files": [
+    {
+      "path": "src/docs.cpp",
+      "symbol_count": 40,
+      "mutated_count": 20
+    },
+    {
+      "path": "src/main.cpp",
+      "symbol_count": 38,
+      "mutated_count": 19
+    },
+    {
+      "path": "tests/test_main.cpp",
+      "symbol_count": 38,
+      "mutated_count": 19
+    },
+    {
+      "path": "src/parser.cpp",
+      "symbol_count": 30,
+      "mutated_count": 15
+    },
+    {
+      "path": "include/archivum/docs.hpp",
+      "symbol_count": 28,
+      "mutated_count": 14
+    },
+    {
+      "path": "src/api.cpp",
+      "symbol_count": 24,
+      "mutated_count": 12
+    },
+    {
+      "path": "src/graph.cpp",
+      "symbol_count": 22,
+      "mutated_count": 11
+    },
+    {
+      "path": "src/config.cpp",
+      "symbol_count": 20,
+      "mutated_count": 10
+    }
+  ]
+}

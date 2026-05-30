@@ -1,0 +1,53 @@
+---
+title: "parse_bool | API Reference"
+---
+
+# parse_bool
+
+> Function defined in `src/config.cpp`
+
+Use this page to understand how `parse_bool` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/config.cpp` |
+| **Source Range** | Lines 38 to 41 |
+| **Interface Hash** | `4965037400221978670` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+bool parse_bool(const std::string& value)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `lower`
+- `normalized`
+- `std`
+- `string`
+- `trim`
+- `value`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+bool parse_bool(const std::string& value) {
+    std::string normalized = lower(trim(value));
+    return normalized == "true" || normalized == "yes" || normalized == "1" || normalized == "on";
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

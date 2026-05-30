@@ -1,0 +1,47 @@
+---
+title: "~GitRuntime | API Reference"
+---
+
+# ~GitRuntime
+
+> Method defined in `src/main.cpp`
+
+Use this page to understand how `~GitRuntime` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Method |
+| **Source File** | `src/main.cpp` |
+| **Source Range** | Lines 41 to 41 |
+| **Interface Hash** | `9127019589102076646` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+~GitRuntime()
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `GitRuntime`
+- `archivum`
+- `shutdown_git_subsystem`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+    ~GitRuntime() { archivum::shutdown_git_subsystem(); }
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

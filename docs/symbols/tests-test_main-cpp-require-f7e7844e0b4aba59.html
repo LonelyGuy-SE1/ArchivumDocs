@@ -1,0 +1,53 @@
+---
+title: "require | API Reference"
+---
+
+# require
+
+> Function defined in `tests/test_main.cpp`
+
+Use this page to understand how `require` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `tests/test_main.cpp` |
+| **Source Range** | Lines 45 to 49 |
+| **Interface Hash** | `3731120416469675852` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+void require(bool condition, const std::string& message)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `condition`
+- `message`
+- `runtime_error`
+- `std`
+- `string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+void require(bool condition, const std::string& message) {
+    if (!condition) {
+        throw std::runtime_error(message);
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

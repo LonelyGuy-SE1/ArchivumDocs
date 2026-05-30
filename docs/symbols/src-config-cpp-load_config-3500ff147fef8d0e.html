@@ -1,0 +1,93 @@
+---
+title: "load_config | API Reference"
+---
+
+# load_config
+
+> Function defined in `src/config.cpp`
+
+Use this page to understand how `load_config` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/config.cpp` |
+| **Source Range** | Lines 161 to 188 |
+| **Interface Hash** | `10955362048418545893` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+ArchivumConfig load_config(const std::filesystem::path& path)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `ArchivumConfig`
+- `apply_env`
+- `apply_pair`
+- `cleaned`
+- `config`
+- `delimiter`
+- `empty`
+- `equals`
+- `file`
+- `filesystem`
+- `find`
+- `front`
+- `getline`
+- `ifstream`
+- `is_open`
+- `line`
+- `npos`
+- `path`
+- `std`
+- `string`
+- `substr`
+- `trim`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+ArchivumConfig load_config(const std::filesystem::path& path) {
+    ArchivumConfig config;
+    std::ifstream file(path);
+
+    if (file.is_open()) {
+        std::string line;
+        while (std::getline(file, line)) {
+            std::string cleaned = trim(line);
+            if (cleaned.empty() || cleaned.front() == '#') {
+                continue;
+            }
+
+            size_t delimiter = cleaned.find(':');
+            size_t equals = cleaned.find('=');
+            if (delimiter == std::string::npos || (equals != std::string::npos && equals < delimiter)) {
+                delimiter = equals;
+            }
+            if (delimiter == std::string::npos) {
+                continue;
+            }
+
+            apply_pair(config, cleaned.substr(0, delimiter), cleaned.substr(delimiter + 1));
+        }
+    }
+
+    apply_env(config);
+    return config;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

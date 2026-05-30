@@ -1,0 +1,65 @@
+---
+title: "structural_name | API Reference"
+---
+
+# structural_name
+
+> Function defined in `src/parser.cpp`
+
+Use this page to understand how `structural_name` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/parser.cpp` |
+| **Source Range** | Lines 122 to 131 |
+| **Interface Hash** | `4091368069231774474` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string structural_name(TSNode node, const std::string& source_code)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `TSNode`
+- `declarator`
+- `first_named_descendant`
+- `name`
+- `node`
+- `source_code`
+- `std`
+- `string`
+- `text_for_node`
+- `ts_node_child_by_field_name`
+- `ts_node_type`
+- `type`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string structural_name(TSNode node, const std::string& source_code) {
+    std::string type = ts_node_type(node);
+    if (type == "class_specifier" || type == "struct_specifier") {
+        TSNode name = ts_node_child_by_field_name(node, "name", 4);
+        return text_for_node(name, source_code);
+    }
+
+    TSNode declarator = ts_node_child_by_field_name(node, "declarator", 10);
+    return first_named_descendant(declarator, source_code);
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

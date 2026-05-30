@@ -1,0 +1,63 @@
+---
+title: "has_class_ancestor | API Reference"
+---
+
+# has_class_ancestor
+
+> Function defined in `src/parser.cpp`
+
+Use this page to understand how `has_class_ancestor` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/parser.cpp` |
+| **Source Range** | Lines 133 to 143 |
+| **Interface Hash** | `11663133056075175604` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+bool has_class_ancestor(TSNode node)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `TSNode`
+- `node`
+- `parent`
+- `std`
+- `string`
+- `ts_node_is_null`
+- `ts_node_parent`
+- `ts_node_type`
+- `type`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+bool has_class_ancestor(TSNode node) {
+    TSNode parent = ts_node_parent(node);
+    while (!ts_node_is_null(parent)) {
+        std::string type = ts_node_type(parent);
+        if (type == "class_specifier" || type == "struct_specifier") {
+            return true;
+        }
+        parent = ts_node_parent(parent);
+    }
+    return false;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

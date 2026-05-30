@@ -1,0 +1,76 @@
+---
+title: "collect_references | API Reference"
+---
+
+# collect_references
+
+> Function defined in `src/parser.cpp`
+
+Use this page to understand how `collect_references` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/parser.cpp` |
+| **Source Range** | Lines 166 to 179 |
+| **Interface Hash** | `3126444816466565265` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+void collect_references(TSNode node, const std::string& source_code, std::set<std::string>& references)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `TSNode`
+- `child_count`
+- `empty`
+- `index`
+- `insert`
+- `is_identifier_node`
+- `node`
+- `references`
+- `set`
+- `simple_symbol`
+- `source_code`
+- `std`
+- `string`
+- `text_for_node`
+- `ts_node_named_child`
+- `ts_node_named_child_count`
+- `ts_node_type`
+- `type`
+- `value`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+void collect_references(TSNode node, const std::string& source_code, std::set<std::string>& references) {
+    std::string type = ts_node_type(node);
+    if (is_identifier_node(type)) {
+        std::string value = simple_symbol(text_for_node(node, source_code));
+        if (!value.empty()) {
+            references.insert(value);
+        }
+    }
+
+    uint32_t child_count = ts_node_named_child_count(node);
+    for (uint32_t index = 0; index < child_count; ++index) {
+        collect_references(ts_node_named_child(node, index), source_code, references);
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

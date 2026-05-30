@@ -1,0 +1,49 @@
+---
+title: "DependencyGraph::register_node | API Reference"
+---
+
+# DependencyGraph::register_node
+
+> Function defined in `src/graph.cpp`
+
+Use this page to understand how `DependencyGraph::register_node` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/graph.cpp` |
+| **Source Range** | Lines 22 to 22 |
+| **Interface Hash** | `302948202092422968` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+void DependencyGraph::register_node(const Node& node)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `DependencyGraph`
+- `Node`
+- `id`
+- `node`
+- `registry`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+void DependencyGraph::register_node(const Node& node) { registry[node.id] = node; }
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

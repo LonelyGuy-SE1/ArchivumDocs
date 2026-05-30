@@ -1,0 +1,78 @@
+---
+title: "make_node | API Reference"
+---
+
+# make_node
+
+> Function defined in `tests/test_main.cpp`
+
+Use this page to understand how `make_node` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `tests/test_main.cpp` |
+| **Source Range** | Lines 65 to 78 |
+| **Interface Hash** | `3921473017631630789` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+archivum::Node make_node(archivum::NodeId id, const std::string& name, std::vector<std::string> references)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `FUNCTION`
+- `Node`
+- `NodeId`
+- `NodeType`
+- `archivum`
+- `end_line`
+- `file_path`
+- `id`
+- `interface_hash`
+- `move`
+- `name`
+- `node`
+- `references`
+- `signature`
+- `source_hash`
+- `start_line`
+- `static_cast`
+- `std`
+- `string`
+- `type`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+archivum::Node make_node(archivum::NodeId id, const std::string& name, std::vector<std::string> references) {
+    archivum::Node node;
+    node.id = id;
+    node.name = name;
+    node.file_path = "unit.cpp";
+    node.signature = name;
+    node.references = std::move(references);
+    node.start_line = static_cast<uint32_t>(id);
+    node.end_line = static_cast<uint32_t>(id);
+    node.type = archivum::NodeType::FUNCTION;
+    node.interface_hash = id * 17;
+    node.source_hash = id * 19;
+    return node;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

@@ -1,0 +1,47 @@
+---
+title: "path | API Reference"
+---
+
+# path
+
+> Method defined in `tests/test_main.cpp`
+
+Use this page to understand how `path` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Method |
+| **Source File** | `tests/test_main.cpp` |
+| **Source Range** | Lines 39 to 39 |
+| **Interface Hash** | `8972044024053706276` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+const std::filesystem::path& path() const
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `filesystem`
+- `path_`
+- `std`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+    const std::filesystem::path& path() const { return path_; }
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

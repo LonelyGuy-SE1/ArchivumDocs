@@ -1,0 +1,10 @@
+{
+  "base_sha": "FIRST_COMMIT",
+  "head_sha": "afa2622780b0716dd3066370b403697f754f0d08",
+  "source_files": 14,
+  "changed_files": 14,
+  "graph_nodes": 148,
+  "graph_edges": 431,
+  "mutated_symbols": 148,
+  "context_symbols": 148
+}

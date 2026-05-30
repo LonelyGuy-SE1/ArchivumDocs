@@ -1,0 +1,53 @@
+---
+title: "ContextFile | API Reference"
+---
+
+# ContextFile
+
+> Struct defined in `include/archivum/docs.hpp`
+
+Use this page to understand how `ContextFile` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Struct |
+| **Source File** | `include/archivum/docs.hpp` |
+| **Source Range** | Lines 39 to 43 |
+| **Interface Hash** | `7704683490512423629` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+struct ContextFile
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `file_path`
+- `mutated_count`
+- `std`
+- `string`
+- `symbol_count`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+struct ContextFile {
+    std::string file_path;
+    size_t symbol_count = 0;
+    size_t mutated_count = 0;
+};
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

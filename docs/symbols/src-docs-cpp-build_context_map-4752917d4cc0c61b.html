@@ -1,0 +1,146 @@
+---
+title: "build_context_map | API Reference"
+---
+
+# build_context_map
+
+> Function defined in `src/docs.cpp`
+
+Use this page to understand how `build_context_map` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/docs.cpp` |
+| **Source Range** | Lines 579 to 639 |
+| **Interface Hash** | `8316223111583411593` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+ContextMap build_context_map(const DependencyGraph& graph, const std::vector<Node>& mutated, const std::vector<Node>& context)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `ContextFile`
+- `ContextMap`
+- `DependencyGraph`
+- `Node`
+- `NodeId`
+- `_`
+- `begin`
+- `context`
+- `edge_count`
+- `end`
+- `end_line`
+- `entry`
+- `file_counts`
+- `file_path`
+- `files`
+- `graph`
+- `hotspot_files`
+- `id`
+- `insert`
+- `left`
+- `map`
+- `mutated`
+- `mutated_count`
+- `name`
+- `node`
+- `node_count`
+- `push_back`
+- `reserve`
+- `right`
+- `second`
+- `seen`
+- `size`
+- `sort`
+- `start_line`
+- `std`
+- `string`
+- `symbol_count`
+- `top_symbols`
+- `type`
+- `unordered_map`
+- `unordered_set`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+ContextMap build_context_map(const DependencyGraph& graph, const std::vector<Node>& mutated,
+                             const std::vector<Node>& context) {
+    ContextMap map;
+    map.symbol_count = graph.node_count();
+    map.edge_count = graph.edge_count();
+
+    std::unordered_set<NodeId> seen;
+    for (const Node& node : mutated) {
+        if (seen.size() >= 12) {
+            break;
+        }
+        if (seen.insert(node.id).second) {
+            map.top_symbols.push_back({node.name, node.type, node.file_path, node.start_line, node.end_line});
+        }
+    }
+    for (const Node& node : context) {
+        if (map.top_symbols.size() >= 12) {
+            break;
+        }
+        if (seen.insert(node.id).second) {
+            map.top_symbols.push_back({node.name, node.type, node.file_path, node.start_line, node.end_line});
+        }
+    }
+
+    std::unordered_map<std::string, ContextFile> file_counts;
+    for (const Node& node : context) {
+        ContextFile& entry = file_counts[node.file_path];
+        entry.file_path = node.file_path;
+        ++entry.symbol_count;
+    }
+    for (const Node& node : mutated) {
+        ContextFile& entry = file_counts[node.file_path];
+        entry.file_path = node.file_path;
+        ++entry.symbol_count;
+        ++entry.mutated_count;
+    }
+
+    std::vector<ContextFile> files;
+    files.reserve(file_counts.size());
+    for (const auto& [_, entry] : file_counts) {
+        files.push_back(entry);
+    }
+    std::sort(files.begin(), files.end(), [](const ContextFile& left, const ContextFile& right) {
+        if (left.mutated_count != right.mutated_count) {
+            return left.mutated_count > right.mutated_count;
+        }
+        if (left.symbol_count != right.symbol_count) {
+            return left.symbol_count > right.symbol_count;
+        }
+        return left.file_path < right.file_path;
+    });
+
+    for (const ContextFile& entry : files) {
+        if (map.hotspot_files.size() >= 8) {
+            break;
+        }
+        map.hotspot_files.push_back(entry);
+    }
+
+    return map;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

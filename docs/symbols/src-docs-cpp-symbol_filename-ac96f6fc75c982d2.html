@@ -1,0 +1,60 @@
+---
+title: "symbol_filename | API Reference"
+---
+
+# symbol_filename
+
+> Function defined in `src/docs.cpp`
+
+Use this page to understand how `symbol_filename` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/docs.cpp` |
+| **Source Range** | Lines 72 to 76 |
+| **Interface Hash** | `6651250992335654481` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string symbol_filename(const Node& node)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `Node`
+- `file_path`
+- `hex`
+- `id`
+- `name`
+- `node`
+- `ostringstream`
+- `out`
+- `sanitize`
+- `std`
+- `str`
+- `string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string symbol_filename(const Node& node) {
+    std::ostringstream out;
+    out << sanitize(node.file_path) << "-" << sanitize(node.name) << "-" << std::hex << node.id << ".html";
+    return out.str();
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

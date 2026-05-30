@@ -1,0 +1,99 @@
+---
+title: "read_slice | API Reference"
+---
+
+# read_slice
+
+> Function defined in `src/docs.cpp`
+
+Use this page to understand how `read_slice` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/docs.cpp` |
+| **Source Range** | Lines 78 to 109 |
+| **Interface Hash** | `3503476949664482557` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string read_slice(const std::filesystem::path& root, const Node& node, size_t limit)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `Node`
+- `end_line`
+- `file`
+- `file_path`
+- `filesystem`
+- `getline`
+- `ifstream`
+- `is_open`
+- `limit`
+- `line`
+- `line_number`
+- `node`
+- `ostringstream`
+- `out`
+- `path`
+- `remaining`
+- `root`
+- `size`
+- `start_line`
+- `std`
+- `str`
+- `string`
+- `substr`
+- `written`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string read_slice(const std::filesystem::path& root, const Node& node, size_t limit) {
+    std::ifstream file(root / node.file_path);
+    if (!file.is_open()) {
+        return {};
+    }
+
+    std::ostringstream out;
+    std::string line;
+    uint32_t line_number = 0;
+    size_t written = 0;
+
+    while (std::getline(file, line)) {
+        ++line_number;
+        if (line_number < node.start_line) {
+            continue;
+        }
+        if (line_number > node.end_line || written >= limit) {
+            break;
+        }
+
+        size_t remaining = limit - written;
+        if (line.size() + 1 > remaining) {
+            out << line.substr(0, remaining);
+            written = limit;
+        } else {
+            out << line << "\n";
+            written += line.size() + 1;
+        }
+    }
+
+    return out.str();
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

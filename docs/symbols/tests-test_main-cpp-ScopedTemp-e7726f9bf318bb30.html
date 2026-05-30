@@ -1,0 +1,60 @@
+---
+title: "ScopedTemp | API Reference"
+---
+
+# ScopedTemp
+
+> Method defined in `tests/test_main.cpp`
+
+Use this page to understand how `ScopedTemp` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Method |
+| **Source File** | `tests/test_main.cpp` |
+| **Source Range** | Lines 26 to 30 |
+| **Interface Hash** | `13135239578601645444` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+ScopedTemp()
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `chrono`
+- `count`
+- `create_directories`
+- `filesystem`
+- `now`
+- `path_`
+- `stamp`
+- `std`
+- `steady_clock`
+- `temp_directory_path`
+- `time_since_epoch`
+- `to_string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+    ScopedTemp() {
+        auto stamp = std::chrono::steady_clock::now().time_since_epoch().count();
+        path_ = std::filesystem::temp_directory_path() / ("archivum_tests_" + std::to_string(stamp));
+        std::filesystem::create_directories(path_);
+    }
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

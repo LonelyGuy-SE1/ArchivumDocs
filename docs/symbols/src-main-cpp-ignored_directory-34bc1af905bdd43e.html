@@ -1,0 +1,57 @@
+---
+title: "ignored_directory | API Reference"
+---
+
+# ignored_directory
+
+> Function defined in `src/main.cpp`
+
+Use this page to understand how `ignored_directory` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/main.cpp` |
+| **Source Range** | Lines 56 to 59 |
+| **Interface Hash** | `4465297872256443793` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+bool ignored_directory(const std::filesystem::path& path, const std::unordered_set<std::string>& ignore_dirs)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `end`
+- `filename`
+- `filesystem`
+- `find`
+- `ignore_dirs`
+- `name`
+- `path`
+- `std`
+- `string`
+- `unordered_set`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+bool ignored_directory(const std::filesystem::path& path, const std::unordered_set<std::string>& ignore_dirs) {
+    std::string name = path.filename().string();
+    return ignore_dirs.find(name) != ignore_dirs.end();
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

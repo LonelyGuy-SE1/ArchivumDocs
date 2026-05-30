@@ -1,0 +1,68 @@
+---
+title: "graph_handles_cycles | API Reference"
+---
+
+# graph_handles_cycles
+
+> Function defined in `tests/test_main.cpp`
+
+Use this page to understand how `graph_handles_cycles` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `tests/test_main.cpp` |
+| **Source Range** | Lines 133 to 144 |
+| **Interface Hash** | `15693871238517536844` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+void graph_handles_cycles()
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `DependencyGraph`
+- `NodeId`
+- `add_dependency`
+- `archivum`
+- `calculate_blast_radius`
+- `graph`
+- `make_node`
+- `radius`
+- `register_node`
+- `require`
+- `size`
+- `std`
+- `unordered_set`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+void graph_handles_cycles() {
+    archivum::DependencyGraph graph;
+    graph.register_node(make_node(1, "A", {}));
+    graph.register_node(make_node(2, "B", {}));
+    graph.register_node(make_node(3, "C", {}));
+    graph.add_dependency(1, 2);
+    graph.add_dependency(2, 3);
+    graph.add_dependency(3, 1);
+
+    std::unordered_set<archivum::NodeId> radius = graph.calculate_blast_radius(1);
+    require(radius.size() == 3, "cycle traversal did not converge");
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

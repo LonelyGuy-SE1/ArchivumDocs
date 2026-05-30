@@ -1,0 +1,61 @@
+---
+title: "overlaps | API Reference"
+---
+
+# overlaps
+
+> Function defined in `src/main.cpp`
+
+Use this page to understand how `overlaps` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/main.cpp` |
+| **Source Range** | Lines 160 to 167 |
+| **Interface Hash** | `11352494097033052614` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+bool overlaps(const archivum::Node& node, const std::vector<archivum::ModifiedRange>& ranges)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `ModifiedRange`
+- `Node`
+- `archivum`
+- `end_line`
+- `node`
+- `range`
+- `ranges`
+- `start_line`
+- `std`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+bool overlaps(const archivum::Node& node, const std::vector<archivum::ModifiedRange>& ranges) {
+    for (const archivum::ModifiedRange& range : ranges) {
+        if (range.start_line <= node.end_line && range.end_line >= node.start_line) {
+            return true;
+        }
+    }
+    return false;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

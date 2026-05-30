@@ -1,0 +1,73 @@
+---
+title: "GitScanner::lookup_commit | API Reference"
+---
+
+# GitScanner::lookup_commit
+
+> Function defined in `src/git_utils.cpp`
+
+Use this page to understand how `GitScanner::lookup_commit` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/git_utils.cpp` |
+| **Source Range** | Lines 47 to 61 |
+| **Interface Hash** | `15017511586612666878` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+git_commit* GitScanner::lookup_commit(const std::string& sha) const
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `GitScanner`
+- `c_str`
+- `commit`
+- `error`
+- `git_commit`
+- `git_commit_lookup`
+- `git_oid`
+- `git_oid_fromstr`
+- `last_git_error`
+- `oid`
+- `repo`
+- `runtime_error`
+- `sha`
+- `std`
+- `string`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+git_commit* GitScanner::lookup_commit(const std::string& sha) const {
+    git_oid oid;
+    int error = git_oid_fromstr(&oid, sha.c_str());
+    if (error < 0) {
+        throw std::runtime_error("[ArchivumDocs] FATAL: Invalid SHA format: " + sha);
+    }
+
+    git_commit* commit = nullptr;
+    error = git_commit_lookup(&commit, repo, &oid);
+    if (error < 0) {
+        throw std::runtime_error(last_git_error("Commit SHA not found in storage: " + sha));
+    }
+
+    return commit;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

@@ -1,0 +1,59 @@
+---
+title: "main | API Reference"
+---
+
+# main
+
+> Function defined in `src/main.cpp`
+
+Use this page to understand how `main` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/main.cpp` |
+| **Source Range** | Lines 374 to 381 |
+| **Interface Hash** | `4510716788629620878` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+int main(int argc, char* argv[])
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `argc`
+- `argv`
+- `cerr`
+- `error`
+- `exception`
+- `run`
+- `std`
+- `what`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+int main(int argc, char* argv[]) {
+    try {
+        return run(argc, argv);
+    } catch (const std::exception& error) {
+        std::cerr << error.what() << "\n";
+        return 1;
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

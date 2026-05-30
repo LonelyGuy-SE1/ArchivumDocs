@@ -1,0 +1,71 @@
+---
+title: "parse_write_mode | API Reference"
+---
+
+# parse_write_mode
+
+> Function defined in `src/config.cpp`
+
+Use this page to understand how `parse_write_mode` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/config.cpp` |
+| **Source Range** | Lines 51 to 66 |
+| **Interface Hash** | `5043848568753343159` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+WriteMode parse_write_mode(const std::string& value)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `AUTO_MERGE`
+- `DIRECT`
+- `NONE`
+- `PULL_REQUEST`
+- `WriteMode`
+- `lower`
+- `normalized`
+- `runtime_error`
+- `std`
+- `string`
+- `trim`
+- `value`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+WriteMode parse_write_mode(const std::string& value) {
+    std::string normalized = lower(trim(value));
+    if (normalized == "pull_request" || normalized == "pr") {
+        return WriteMode::PULL_REQUEST;
+    }
+    if (normalized == "auto_merge") {
+        return WriteMode::AUTO_MERGE;
+    }
+    if (normalized == "direct" || normalized == "commit") {
+        return WriteMode::DIRECT;
+    }
+    if (normalized == "none" || normalized == "shadow") {
+        return WriteMode::NONE;
+    }
+    throw std::runtime_error("[ArchivumDocs] FATAL: Unknown write mode: " + value);
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

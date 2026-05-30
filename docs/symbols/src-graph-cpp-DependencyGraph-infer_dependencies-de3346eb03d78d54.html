@@ -1,0 +1,101 @@
+---
+title: "DependencyGraph::infer_dependencies | API Reference"
+---
+
+# DependencyGraph::infer_dependencies
+
+> Function defined in `src/graph.cpp`
+
+Use this page to understand how `DependencyGraph::infer_dependencies` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/graph.cpp` |
+| **Source Range** | Lines 31 to 59 |
+| **Interface Hash** | `4092975540515250063` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+void DependencyGraph::infer_dependencies()
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `DependencyGraph`
+- `NodeId`
+- `clear`
+- `consumer`
+- `consumer_id`
+- `downstream_edges`
+- `end`
+- `find`
+- `id`
+- `insert`
+- `it`
+- `linked`
+- `name`
+- `node`
+- `provider_id`
+- `providers`
+- `push_back`
+- `reference`
+- `references`
+- `registry`
+- `reserve`
+- `second`
+- `size`
+- `std`
+- `string`
+- `symbol_key`
+- `unordered_map`
+- `unordered_set`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+void DependencyGraph::infer_dependencies() {
+    downstream_edges.clear();
+
+    std::unordered_map<std::string, std::vector<NodeId>> providers;
+    providers.reserve(registry.size() * 2);
+
+    for (const auto& [id, node] : registry) {
+        providers[node.name].push_back(id);
+        providers[symbol_key(node.name)].push_back(id);
+    }
+
+    for (const auto& [consumer_id, consumer] : registry) {
+        std::unordered_set<NodeId> linked;
+        for (const std::string& reference : consumer.references) {
+            auto it = providers.find(symbol_key(reference));
+            if (it == providers.end()) {
+                it = providers.find(reference);
+            }
+            if (it == providers.end()) {
+                continue;
+            }
+            for (NodeId provider_id : it->second) {
+                if (provider_id != consumer_id && linked.insert(provider_id).second) {
+                    downstream_edges[provider_id].insert(consumer_id);
+                }
+            }
+        }
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

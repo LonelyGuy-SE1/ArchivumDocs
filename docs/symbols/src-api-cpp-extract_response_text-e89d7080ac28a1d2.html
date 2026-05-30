@@ -1,0 +1,84 @@
+---
+title: "extract_response_text | API Reference"
+---
+
+# extract_response_text
+
+> Function defined in `src/api.cpp`
+
+Use this page to understand how `extract_response_text` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/api.cpp` |
+| **Source Range** | Lines 141 to 166 |
+| **Interface Hash** | `5810658659784451607` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::optional<std::string> extract_response_text(const std::string& body, const std::string& provider)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `body`
+- `choices`
+- `content`
+- `extract_json_string_after`
+- `find`
+- `has_value`
+- `message_content`
+- `npos`
+- `nullopt`
+- `optional`
+- `output_text`
+- `provider`
+- `std`
+- `string`
+- `text`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::optional<std::string> extract_response_text(const std::string& body, const std::string& provider) {
+    if (provider == "openai" || provider == "openrouter" || provider == "anthropic") {
+        size_t choices = body.find("\"choices\"");
+        if (choices != std::string::npos) {
+            size_t content = body.find("\"content\"", choices);
+            if (content != std::string::npos) {
+                return extract_json_string_after(body, content, "\"content\"");
+            }
+        }
+    }
+
+    size_t output_text = body.find("\"output_text\"");
+    if (output_text != std::string::npos) {
+        std::optional<std::string> text = extract_json_string_after(body, output_text, "\"text\"");
+        if (text.has_value()) {
+            return text;
+        }
+    }
+
+    size_t message_content = body.find("\"content\"");
+    if (message_content != std::string::npos) {
+        return extract_json_string_after(body, message_content, "\"content\"");
+    }
+
+    return std::nullopt;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

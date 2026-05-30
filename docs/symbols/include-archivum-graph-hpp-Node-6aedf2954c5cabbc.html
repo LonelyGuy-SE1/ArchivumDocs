@@ -1,0 +1,72 @@
+---
+title: "Node | API Reference"
+---
+
+# Node
+
+> Struct defined in `include/archivum/graph.hpp`
+
+Use this page to understand how `Node` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Struct |
+| **Source File** | `include/archivum/graph.hpp` |
+| **Source Range** | Lines 15 to 28 |
+| **Interface Hash** | `1410235776362031852` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+struct Node
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `NodeId`
+- `NodeType`
+- `end_line`
+- `file_path`
+- `id`
+- `interface_hash`
+- `name`
+- `references`
+- `signature`
+- `source_hash`
+- `start_line`
+- `std`
+- `string`
+- `type`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+struct Node {
+    NodeId id;
+    std::string name;
+    std::string file_path;
+    std::string signature;
+    std::vector<std::string> references;
+
+    uint32_t start_line;
+    uint32_t end_line;
+    NodeType type;
+
+    uint64_t interface_hash;
+    uint64_t source_hash;
+};
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

@@ -1,0 +1,55 @@
+---
+title: "relative_link | API Reference"
+---
+
+# relative_link
+
+> Function defined in `src/docs.cpp`
+
+Use this page to understand how `relative_link` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/docs.cpp` |
+| **Source Range** | Lines 68 to 70 |
+| **Interface Hash** | `17767781130707924402` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string relative_link(const std::filesystem::path& from, const std::filesystem::path& to)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `filesystem`
+- `from`
+- `generic_string`
+- `parent_path`
+- `path`
+- `relative`
+- `std`
+- `string`
+- `to`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string relative_link(const std::filesystem::path& from, const std::filesystem::path& to) {
+    return std::filesystem::relative(to, from.parent_path()).generic_string();
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

@@ -1,0 +1,77 @@
+---
+title: "print_nodes | API Reference"
+---
+
+# print_nodes
+
+> Function defined in `src/main.cpp`
+
+Use this page to understand how `print_nodes` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/main.cpp` |
+| **Source Range** | Lines 207 to 220 |
+| **Interface Hash** | `15257581353757047444` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+void print_nodes(const std::string& title, const std::vector<archivum::Node>& nodes, size_t limit)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `Node`
+- `archivum`
+- `cout`
+- `end_line`
+- `file_path`
+- `index`
+- `limit`
+- `min`
+- `name`
+- `node`
+- `nodes`
+- `shown`
+- `size`
+- `start_line`
+- `std`
+- `string`
+- `title`
+- `type`
+- `type_name`
+- `vector`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+void print_nodes(const std::string& title, const std::vector<archivum::Node>& nodes, size_t limit) {
+    std::cout << "[ArchivumDocs] " << title << ": " << nodes.size() << "\n";
+
+    size_t shown = std::min(limit, nodes.size());
+    for (size_t index = 0; index < shown; ++index) {
+        const archivum::Node& node = nodes[index];
+        std::cout << "  - " << type_name(node.type) << " " << node.name << " [" << node.file_path << ":"
+                  << node.start_line << "-" << node.end_line << "]\n";
+    }
+
+    if (nodes.size() > shown) {
+        std::cout << "  - +" << (nodes.size() - shown) << " more\n";
+    }
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

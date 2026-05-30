@@ -1,0 +1,78 @@
+---
+title: "simple_symbol | API Reference"
+---
+
+# simple_symbol
+
+> Function defined in `src/parser.cpp`
+
+Use this page to understand how `simple_symbol` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/parser.cpp` |
+| **Source Range** | Lines 72 to 89 |
+| **Interface Hash** | `8493691521077309200` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string simple_symbol(std::string value)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `back`
+- `begin`
+- `empty`
+- `erase`
+- `find`
+- `front`
+- `isalnum`
+- `npos`
+- `pop_back`
+- `rfind`
+- `scope`
+- `static_cast`
+- `std`
+- `string`
+- `substr`
+- `template_start`
+- `value`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string simple_symbol(std::string value) {
+    size_t template_start = value.find('<');
+    if (template_start != std::string::npos) {
+        value = value.substr(0, template_start);
+    }
+    size_t scope = value.rfind("::");
+    if (scope != std::string::npos) {
+        value = value.substr(scope + 2);
+    }
+    while (!value.empty() && !std::isalnum(static_cast<unsigned char>(value.front())) && value.front() != '_' &&
+           value.front() != '~') {
+        value.erase(value.begin());
+    }
+    while (!value.empty() && !std::isalnum(static_cast<unsigned char>(value.back())) && value.back() != '_') {
+        value.pop_back();
+    }
+    return value;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

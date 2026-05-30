@@ -1,0 +1,112 @@
+---
+title: "render_symbol_page | API Reference"
+---
+
+# render_symbol_page
+
+> Function defined in `src/docs.cpp`
+
+Use this page to understand how `render_symbol_page` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/docs.cpp` |
+| **Source Range** | Lines 127 to 176 |
+| **Interface Hash** | `13319630199632855732` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+std::string render_symbol_page(const Node& node, const std::string& source)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `Node`
+- `empty`
+- `end_line`
+- `file_path`
+- `interface_hash`
+- `name`
+- `node`
+- `ostringstream`
+- `out`
+- `reference`
+- `references`
+- `signature`
+- `source`
+- `start_line`
+- `std`
+- `str`
+- `string`
+- `type`
+- `type_name`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+std::string render_symbol_page(const Node& node, const std::string& source) {
+    std::ostringstream out;
+    out << "---\n";
+    out << "title: \"" << node.name << " | API Reference\"\n";
+    out << "---\n\n";
+
+    out << "# " << node.name << "\n\n";
+    out << "> " << type_name(node.type) << " defined in `" << node.file_path << "`\n\n";
+    out << "Use this page to understand how `" << node.name << "` fits into the codebase, what it depends on, and\n";
+    out << "where the implementation lives.\n\n";
+
+    out << "## At A Glance\n\n";
+    out << "| Attribute | Details |\n";
+    out << "| :--- | :--- |\n";
+    out << "| **Symbol Type** | " << type_name(node.type) << " |\n";
+    out << "| **Source File** | `" << node.file_path << "` |\n";
+    out << "| **Source Range** | Lines " << node.start_line << " to " << node.end_line << " |\n";
+    out << "| **Interface Hash** | `" << node.interface_hash << "` |\n\n";
+
+    if (!node.signature.empty()) {
+        out << "## Signature\n\n";
+        out << "Call signature as extracted from the AST.\n\n";
+        out << "```cpp\n" << node.signature << "\n```\n\n";
+    }
+
+    out << "## Dependencies\n\n";
+    if (node.references.empty()) {
+        out << "No external symbols were detected in this definition.\n\n";
+    } else {
+        out << "Symbols this definition refers to.\n\n";
+        for (const std::string& reference : node.references) {
+            out << "- `" << reference << "`\n";
+        }
+        out << "\n";
+    }
+
+    if (!source.empty()) {
+        out << "## Implementation\n\n";
+        out << "Source excerpt for quick review.\n\n";
+        out << "```cpp\n" << source << "\n```\n";
+    } else {
+        out << "## Implementation\n\n";
+        out << "No source excerpt available for this symbol.\n\n";
+    }
+
+    out << "## Related Documentation\n\n";
+    out << "- Return to the [project index](../index.md) for the full change overview.\n";
+
+    return out.str();
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

@@ -1,0 +1,56 @@
+---
+title: "stable_hash | API Reference"
+---
+
+# stable_hash
+
+> Function defined in `src/parser.cpp`
+
+Use this page to understand how `stable_hash` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Function |
+| **Source File** | `src/parser.cpp` |
+| **Source Range** | Lines 20 to 27 |
+| **Interface Hash** | `245245264662726832` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+uint64_t stable_hash(std::string_view value)
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `c`
+- `hash`
+- `std`
+- `string_view`
+- `value`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+uint64_t stable_hash(std::string_view value) {
+    uint64_t hash = 14695981039346656037ull;
+    for (unsigned char c : value) {
+        hash ^= c;
+        hash *= 1099511628211ull;
+    }
+    return hash;
+}
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.

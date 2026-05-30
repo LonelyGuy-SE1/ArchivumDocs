@@ -1,0 +1,53 @@
+---
+title: "DocumentationWriteResult | API Reference"
+---
+
+# DocumentationWriteResult
+
+> Struct defined in `include/archivum/docs.hpp`
+
+Use this page to understand how `DocumentationWriteResult` fits into the codebase, what it depends on, and
+where the implementation lives.
+
+## At A Glance
+
+| Attribute | Details |
+| :--- | :--- |
+| **Symbol Type** | Struct |
+| **Source File** | `include/archivum/docs.hpp` |
+| **Source Range** | Lines 26 to 29 |
+| **Interface Hash** | `1592849280504583628` |
+
+## Signature
+
+Call signature as extracted from the AST.
+
+```cpp
+struct DocumentationWriteResult
+```
+
+## Dependencies
+
+Symbols this definition refers to.
+
+- `changed`
+- `filesystem`
+- `path`
+- `std`
+- `vector`
+- `written_files`
+
+## Implementation
+
+Source excerpt for quick review.
+
+```cpp
+struct DocumentationWriteResult {
+    bool changed = false;
+    std::vector<std::filesystem::path> written_files;
+};
+
+```
+## Related Documentation
+
+- Return to the [project index](../index.md) for the full change overview.
